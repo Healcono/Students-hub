@@ -166,6 +166,12 @@
                 <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
+            <button onclick="switchTab('thesis')" id="nav-thesis" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                <span class="flex-1 text-right font-medium">دفاع از پایان‌نامه</span>
+                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
+            </button>
+
             <button onclick="switchTab('questions')" id="nav-questions" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
                 <i data-lucide="message-circle-question" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">بانک سوالات داوران</span>
@@ -184,11 +190,6 @@
                 <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
-            <button disabled class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-white/5 cursor-not-allowed opacity-60">
-                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
-                <span class="flex-1 text-right">دفاع از پایان‌نامه</span>
-                <span class="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full border border-gray-700">بزودی</span>
-            </button>
         </nav>
 
         <!-- Sidebar Footer -->
@@ -524,6 +525,149 @@
             </div>
         </div>
 
+        <!-- Tab Content: Final Thesis Defense -->
+        <div id="content-thesis" class="hidden fade-in max-w-5xl mx-auto space-y-8">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between items-end gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                        <i data-lucide="graduation-cap" class="text-emerald-600"></i>
+                        دفاع نهایی از پایان‌نامه
+                    </h1>
+                    <p class="text-gray-500 text-sm mt-1">گام آخر: تمرکز بر نتایج، دستاوردها و نوآوری</p>
+                </div>
+            </div>
+
+            <!-- Strategy Banner -->
+            <div class="bg-gradient-to-r from-emerald-50 to-amber-50 rounded-2xl p-6 border border-emerald-100/50 shadow-sm flex items-start gap-4">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-amber-500 shadow-sm shrink-0">
+                    <i data-lucide="trophy" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-1">تغییر استراتژی: از "چه خواهم کرد" به "چه کردم"</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        در دفاع نهایی، داوران به دنبال شنیدن روش تحقیق نیستند؛ آن‌ها می‌خواهند بدانند <span class="font-bold text-emerald-700">یافته‌های شما چیست</span> و چه ارزشی به علم اضافه کرده‌اید. بیش از ۵۰٪ زمان خود را صرف ارائه نتایج و تحلیل‌ها کنید.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8">
+                <!-- Left: Slide Architecture (8 cols) -->
+                <div class="lg:col-span-8 space-y-6">
+                    <h2 class="font-bold text-gray-800 flex items-center gap-2">
+                        <i data-lucide="layers" class="text-emerald-600"></i>
+                        معماری اسلایدهای دفاع نهایی
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Intro -->
+                        <div class="flex gap-4 items-center group">
+                            <div class="w-20 text-center text-xs font-bold text-gray-400">۱۰٪ زمان<br>(۵ دقیقه)</div>
+                            <div class="flex-1 bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:border-blue-200 transition-colors relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-1 bg-blue-400"></div>
+                                <h3 class="font-bold text-gray-800 text-sm">کلیات و مسئله (اسلاید ۱-۵)</h3>
+                                <p class="text-xs text-gray-500 mt-1">تکرار بسیار سریع مسئله و ضرورت پژوهش.</p>
+                            </div>
+                        </div>
+
+                        <!-- Methodology -->
+                        <div class="flex gap-4 items-center group">
+                            <div class="w-20 text-center text-xs font-bold text-gray-400">۱۵٪ زمان</div>
+                            <div class="flex-1 bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:border-indigo-200 transition-colors relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-1 bg-indigo-400"></div>
+                                <h3 class="font-bold text-gray-800 text-sm">روش‌شناسی (اسلاید ۶-۱۰)</h3>
+                                <p class="text-xs text-gray-500 mt-1">توضیح مختصر متد اجرا شده (فقط برای یادآوری).</p>
+                            </div>
+                        </div>
+
+                        <!-- Results (Main Focus) -->
+                        <div class="flex gap-4 items-center group transform hover:scale-[1.02] transition-transform">
+                            <div class="w-20 text-center text-sm font-black text-amber-600">۵۰٪ زمان</div>
+                            <div class="flex-1 bg-white p-6 rounded-xl border-2 border-amber-100 shadow-lg relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-2 bg-gradient-to-b from-amber-400 to-amber-600"></div>
+                                <div class="flex justify-between items-start">
+                                    <h3 class="font-bold text-gray-900 text-lg">نتایج و یافته‌ها (اسلاید ۱۱-۲۵)</h3>
+                                    <span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-1 rounded-full">بدنه اصلی</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                                    ارائه نمودارها، جداول، خروجی نرم‌افزارها و تحلیل‌های آماری. اینجا جایی است که باید بدرخشید.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Discussion -->
+                        <div class="flex gap-4 items-center group">
+                            <div class="w-20 text-center text-xs font-bold text-gray-400">۱۵٪ زمان</div>
+                            <div class="flex-1 bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:border-purple-200 transition-colors relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-1 bg-purple-400"></div>
+                                <h3 class="font-bold text-gray-800 text-sm">بحث و مقایسه (اسلاید ۲۶-۳۰)</h3>
+                                <p class="text-xs text-gray-500 mt-1">مقایسه نتایج خود با پژوهش‌های پیشین و پاسخ به سوالات تحقیق.</p>
+                            </div>
+                        </div>
+
+                        <!-- Conclusion -->
+                        <div class="flex gap-4 items-center group">
+                            <div class="w-20 text-center text-xs font-bold text-gray-400">۱۰٪ زمان</div>
+                            <div class="flex-1 bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:border-emerald-200 transition-colors relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bottom-0 w-1 bg-emerald-400"></div>
+                                <h3 class="font-bold text-gray-800 text-sm">نتیجه‌گیری و پیشنهادات (اسلاید ۳۱-۳۳)</h3>
+                                <p class="text-xs text-gray-500 mt-1">جمع‌بندی نهایی و ارائه مسیرهای آینده.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Tools (4 cols) -->
+                <div class="lg:col-span-4 space-y-6">
+                    <!-- Contribution Card -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-lg p-6 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                        <h3 class="font-bold text-gray-800 text-sm mb-3">دستاورد اصلی من در یک جمله (Contribution)</h3>
+                        <textarea id="contribution-text" class="w-full p-3 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:border-emerald-500 focus:ring-1 focus:ring-emerald-200 outline-none resize-none transition-all placeholder:text-gray-300" rows="3" placeholder="مثال: ارائه مدلی نوین برای پیش‌بینی..."></textarea>
+                        <p class="text-[10px] text-gray-400 mt-2">این جمله را برای پاسخ به سوال "خب که چی؟ (So What?)" حفظ کنید.</p>
+                    </div>
+
+                    <!-- Golden Checklist -->
+                    <div class="bg-gradient-to-b from-amber-50 to-white rounded-2xl border border-amber-100 shadow-sm p-6">
+                        <div class="flex items-center gap-2 mb-4 pb-3 border-b border-amber-100/50">
+                            <i data-lucide="check-circle" class="text-amber-500 w-5 h-5"></i>
+                            <h2 class="font-bold text-gray-800 text-sm">چک‌لیست طلایی شب دفاع</h2>
+                        </div>
+                        <div class="space-y-3">
+                            <label class="flex items-start gap-3 cursor-pointer group">
+                                <input type="checkbox" class="peer hidden">
+                                <div class="w-4 h-4 rounded border border-amber-300 flex items-center justify-center bg-white peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all mt-0.5">
+                                    <i data-lucide="check" class="w-3 h-3 text-white hidden peer-checked:block"></i>
+                                </div>
+                                <span class="text-xs text-gray-600 peer-checked:line-through peer-checked:text-gray-400">استخراج نتایج کلیدی در قالب نمودارهای باکیفیت</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer group">
+                                <input type="checkbox" class="peer hidden">
+                                <div class="w-4 h-4 rounded border border-amber-300 flex items-center justify-center bg-white peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all mt-0.5">
+                                    <i data-lucide="check" class="w-3 h-3 text-white hidden peer-checked:block"></i>
+                                </div>
+                                <span class="text-xs text-gray-600 peer-checked:line-through peer-checked:text-gray-400">آمادگی برای دفاع از انحرافات احتمالی نتایج</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer group">
+                                <input type="checkbox" class="peer hidden">
+                                <div class="w-4 h-4 rounded border border-amber-300 flex items-center justify-center bg-white peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all mt-0.5">
+                                    <i data-lucide="check" class="w-3 h-3 text-white hidden peer-checked:block"></i>
+                                </div>
+                                <span class="text-xs text-gray-600 peer-checked:line-through peer-checked:text-gray-400">بررسی فونت‌ها و فرمول‌ها در سیستم سالن</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer group">
+                                <input type="checkbox" class="peer hidden">
+                                <div class="w-4 h-4 rounded border border-amber-300 flex items-center justify-center bg-white peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all mt-0.5">
+                                    <i data-lucide="check" class="w-3 h-3 text-white hidden peer-checked:block"></i>
+                                </div>
+                                <span class="text-xs text-gray-600 peer-checked:line-through peer-checked:text-gray-400">تمرین سناریوی «اگر سیستم قطع شد چه بگویم؟»</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Tab Content: Juror Questions -->
         <div id="content-questions" class="hidden fade-in max-w-5xl mx-auto space-y-8">
             
@@ -796,16 +940,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div id="content-thesis" class="hidden fade-in flex items-center justify-center min-h-[60vh]">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
-                    <i data-lucide="hammer" class="w-8 h-8"></i>
-                </div>
-                <h2 class="text-xl font-bold text-gray-600">بخش دفاع از پایان‌نامه</h2>
-                <p class="text-gray-400 mt-2">این بخش در بروزرسانی‌های بعدی فعال خواهد شد.</p>
             </div>
         </div>
 
