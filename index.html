@@ -85,6 +85,10 @@
         .accordion-btn[aria-expanded="true"] .accordion-icon {
             transform: rotate(180deg);
         }
+        
+        /* Star Animation */
+        .star-icon { transition: all 0.2s ease; }
+        .star-icon.active { fill: #fbbf24; color: #fbbf24; transform: scale(1.1); }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
@@ -134,6 +138,12 @@
             <button onclick="switchTab('questions')" id="nav-questions" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
                 <i data-lucide="message-circle-question" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">بانک سوالات داوران</span>
+                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
+            </button>
+
+            <button onclick="switchTab('glossary')" id="nav-glossary" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+                <i data-lucide="book-a" class="w-5 h-5"></i>
+                <span class="flex-1 text-right font-medium">فرهنگ لغات تخصصی</span>
                 <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
@@ -502,6 +512,29 @@
             </div>
         </div>
 
+        <!-- Tab Content: Academic Glossary -->
+        <div id="content-glossary" class="hidden fade-in max-w-5xl mx-auto space-y-6">
+            <!-- Header & Search -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                <div class="w-full md:w-auto text-right">
+                    <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                        <i data-lucide="book-marked" class="text-primary-600"></i>
+                        فرهنگ لغات تخصصی
+                    </h1>
+                    <p class="text-gray-500 text-sm mt-1">واژگان کلیدی برای یک دفاع علمی و دقیق</p>
+                </div>
+                <div class="relative w-full md:w-96 group">
+                    <input type="text" id="glossary-search" oninput="filterGlossary()" placeholder="جستجو در لغات (فارسی یا انگلیسی)..." class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all shadow-sm group-hover:shadow-md bg-white">
+                    <i data-lucide="search" class="absolute left-3 top-3.5 text-gray-400 w-5 h-5"></i>
+                </div>
+            </div>
+
+            <!-- Categories and Cards -->
+            <div id="glossary-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-20">
+                <!-- Cards will be populated by JS -->
+            </div>
+        </div>
+
         <!-- Placeholder for other tabs -->
         <div id="content-report" class="hidden fade-in flex items-center justify-center min-h-[60vh]">
             <div class="text-center">
@@ -562,6 +595,17 @@
                 q: "کاربرد عملی این پژوهش چیست؟", 
                 tip: "دقیقاً نام ببرید: سازمان‌ها، مدیران، سیاست‌گذاران. حداقل یک 'پیشنهاد کاربردی' مشخص برای آن‌ها داشته باشید."
             }
+        ];
+
+        // Glossary Data
+        const glossaryDB = [
+            { id: 'g1', termEn: 'Reliability', termFa: 'پایایی (قابلیت اعتماد)', def: 'میزان تکرارپذیری و ثبات نتایج ابزار اندازه‌گیری در شرایط یکسان.', tip: 'وقتی از آلفای کرونباخ صحبت می‌کنید استفاده کنید: «پایایی ابزار با آلفای ۰.۸۵ تایید شد.»', category: 'Methodology' },
+            { id: 'g2', termEn: 'Validity', termFa: 'روایی (اعتبار)', def: 'آیا ابزار دقیقا همان چیزی را می‌سنجد که قصد سنجش آن را داریم؟', tip: 'در دفاع از پرسشنامه: «روایی صوری و محتوایی توسط ۵ متخصص تایید گردید.»', category: 'Methodology' },
+            { id: 'g3', termEn: 'Generalizability', termFa: 'تعمیم‌پذیری', def: 'قابلیت گسترش نتایج نمونه به کل جامعه آماری.', tip: 'در بخش محدودیت‌ها: «به دلیل نمونه‌گیری غیرتصادفی، تعمیم‌پذیری با احتیاط انجام شود.»', category: 'General Research' },
+            { id: 'g4', termEn: 'Research Gap', termFa: 'شکاف تحقیقاتی', def: 'نقطه‌ای که در پژوهش‌های قبلی مغفول مانده و پژوهش شما آن را پر می‌کند.', tip: 'در بیان مسئله: «این پژوهش به پر کردن شکاف مطالعاتی در زمینه X می‌پردازد.»', category: 'General Research' },
+            { id: 'g5', termEn: 'Significance Level', termFa: 'سطح معناداری (P-value)', def: 'احتمال اینکه نتایج مشاهده شده ناشی از شانس باشد (معمولاً کمتر از 0.05).', tip: 'در بخش یافته‌ها: «رابطه با سطح اطمینان ۹۵٪ معنادار شد.»', category: 'Statistical' },
+            { id: 'g6', termEn: 'Limitations', termFa: 'محدودیت‌های پژوهش', def: 'موانعی که در اختیار پژوهشگر نبوده و ممکن است بر نتایج اثر بگذارد.', tip: 'صادقانه بیان کنید: «عدم دسترسی به داده‌های دقیق مالی از محدودیت‌های این طرح بود.»', category: 'Methodology' },
+            { id: 'g7', termEn: 'Contribution', termFa: 'دستاور/نوآوری', def: 'ارزش افزوده علمی یا عملی که پژوهش شما ایجاد کرده است.', tip: 'در اسلاید آخر: «مهمترین دستاورد این پژوهش ارائه مدل بومی X است.»', category: 'General Research' }
         ];
 
         // Render Checklist
@@ -630,8 +674,9 @@
             }
 
             // Show Content
-            ['content-proposal', 'content-questions', 'content-report', 'content-thesis'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
+            ['content-proposal', 'content-questions', 'content-glossary', 'content-report', 'content-thesis'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
             });
             document.getElementById('content-' + tabId).classList.remove('hidden');
 
@@ -646,14 +691,6 @@
             const content = document.getElementById(id);
             const btn = content.previousElementSibling;
             const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-            
-            // Close all others (optional)
-            /*
-            document.querySelectorAll('.accordion-content').forEach(el => {
-                el.classList.remove('open');
-                el.previousElementSibling.setAttribute('aria-expanded', 'false');
-            });
-            */
 
             if (isExpanded) {
                 content.classList.remove('open');
@@ -683,6 +720,67 @@
                 box.classList.add('opacity-100');
             }, 200);
         }
+
+        // Glossary Logic
+        function renderGlossary(terms = glossaryDB) {
+            const grid = document.getElementById('glossary-grid');
+            grid.innerHTML = terms.map(item => {
+                const isFav = localStorage.getItem('fav_' + item.id) === 'true';
+                
+                // Color coding for categories
+                let badgeClass = "bg-gray-100 text-gray-600";
+                if(item.category === 'Methodology') badgeClass = "bg-blue-50 text-blue-600 border border-blue-100";
+                if(item.category === 'Statistical') badgeClass = "bg-purple-50 text-purple-600 border border-purple-100";
+                if(item.category === 'General Research') badgeClass = "bg-orange-50 text-orange-600 border border-orange-100";
+
+                return `
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 relative group flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeClass}">${item.category}</span>
+                            <button onclick="toggleFavorite('${item.id}')" class="text-gray-300 hover:text-amber-400 transition-colors p-1 -mt-1 -mr-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 star-icon ${isFav ? 'active' : ''}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            </button>
+                        </div>
+                        
+                        <h3 class="text-lg font-bold text-gray-800 mb-1 flex items-center gap-2 flex-wrap">
+                            ${item.termFa}
+                            <span class="text-sm font-normal text-gray-400 font-sans" dir="ltr">${item.termEn}</span>
+                        </h3>
+                        
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed flex-grow border-b border-gray-50 pb-3">${item.def}</p>
+                        
+                        <div class="flex items-start gap-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                            <i data-lucide="message-square" class="w-4 h-4 text-primary-500 mt-0.5 shrink-0"></i>
+                            <p class="text-xs text-gray-500 italic leading-relaxed"><span class="font-bold text-gray-600">کاربرد در دفاع:</span> ${item.tip}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Re-init icons for the new content
+            lucide.createIcons();
+        }
+
+        function filterGlossary() {
+            const query = document.getElementById('glossary-search').value.toLowerCase();
+            const filtered = glossaryDB.filter(item => 
+                item.termFa.includes(query) || 
+                item.termEn.toLowerCase().includes(query) ||
+                item.def.includes(query)
+            );
+            renderGlossary(filtered);
+        }
+
+        function toggleFavorite(id) {
+            const current = localStorage.getItem('fav_' + id) === 'true';
+            localStorage.setItem('fav_' + id, !current);
+            // Re-render to update UI, but keep filter if active
+            filterGlossary();
+        }
+
+        // Initial Render
+        renderGlossary();
+
     </script>
 </body>
 </html>
