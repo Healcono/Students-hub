@@ -3,617 +3,902 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DefaYar | دفاع‌یار</title>
-    
-    <!-- Tailwind CSS -->
+    <title>GradPath Dashboard | دستیار دانشجو</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- React & ReactDOM (v18) -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel for JSX (v7) -->
-    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
-
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Vazirmatn', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Vazirmatn', 'sans-serif'] },
                     colors: {
-                        emerald: {
-                            50: '#ecfdf5',
-                            100: '#d1fae5',
-                            200: '#a7f3d0',
-                            300: '#6ee7b7',
-                            400: '#34d399',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                            800: '#065f46',
-                            900: '#064e3b',
-                        },
-                        teal: {
-                            800: '#115e59',
-                            900: '#134e4a',
-                        }
-                    },
-                    animation: {
-                        'fadeIn': 'fadeIn 0.5s ease-out forwards',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
+                        academic: { 50: '#f0f9ff', 100: '#e0f2fe', 600: '#0284c7', 800: '#075985', 900: '#0c4a6e' },
+                        gold: { 50: '#fefce8', 100: '#fef9c3', 500: '#eab308', 600: '#ca8a04', 700: '#a16207' }
                     }
-                },
-            },
+                }
+            }
         }
     </script>
-    
     <style>
-        body { background-color: #f8fafc; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        body { background-color: #f8fafc; color: #334155; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="antialiased text-slate-800">
+<body class="flex h-screen overflow-hidden">
 
-    <div id="root">
-        <!-- Initial Loading State -->
-        <div class="fixed inset-0 flex flex-col items-center justify-center bg-slate-50 z-[100]">
-            <div class="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mb-4"></div>
-            <p class="font-sans text-lg text-emerald-800 animate-pulse">در حال بارگذاری دفاع‌یار...</p>
+    <!-- Mobile Menu Button -->
+    <button onclick="toggleSidebar()" class="lg:hidden fixed top-4 right-4 z-50 p-2 bg-academic-900 text-white rounded-md shadow-lg">
+        <i data-lucide="menu"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 right-0 w-64 bg-slate-900 text-white transform translate-x-full lg:translate-x-0 transition-transform duration-300 z-40 overflow-y-auto">
+        <div class="p-6 border-b border-slate-700">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <i data-lucide="graduation-cap" class="text-sky-400"></i>
+                GradPath
+            </h1>
+            <p class="text-xs text-slate-400 mt-1">دستیار هوشمند دانشجو</p>
         </div>
-    </div>
+        <nav class="p-4 space-y-2">
+            <button onclick="switchTab('proposal')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors bg-academic-800 text-white border-r-4 border-sky-400">
+                <i data-lucide="shield"></i> دفاع از پروپوزال
+            </button>
+            <button onclick="switchTab('progress')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border-r-4 border-transparent">
+                <i data-lucide="trending-up"></i> گزارش شش‌ماهه
+            </button>
+            <button onclick="switchTab('thesis')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border-r-4 border-transparent">
+                <i data-lucide="award"></i> دفاع از پایان‌نامه
+            </button>
+            <button onclick="switchTab('questions')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border-r-4 border-transparent">
+                <i data-lucide="help-circle"></i> بانک سوالات داوران
+            </button>
+             <button onclick="switchTab('glossary')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border-r-4 border-transparent">
+                <i data-lucide="book-open"></i> فرهنگ لغات تخصصی
+            </button>
+            <button onclick="switchTab('templates')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border-r-4 border-transparent">
+                <i data-lucide="file-text"></i> متن‌های رسمی و تشکر
+            </button>
+            <div class="pt-4 mt-4 border-t border-slate-700">
+                <button class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-slate-500 cursor-not-allowed">
+                    <i data-lucide="pen-tool"></i> نگارش مقاله (بزودی)
+                </button>
+            </div>
+        </nav>
+    </aside>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef, useMemo } = React;
+    <!-- Main Content -->
+    <main class="flex-1 lg:mr-64 h-full overflow-y-auto bg-slate-50 p-6 lg:p-10">
+        
+        <!-- Tab: Proposal Defense -->
+        <div id="proposal" class="tab-content active">
+            <header class="mb-8 border-b border-slate-200 pb-4 flex justify-between items-center flex-wrap gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800">نقشه راه جلسه دفاع از پروپوزال</h2>
+                    <p class="text-slate-500 mt-2">زمان‌بندی استاندارد: ۲۰ دقیقه ارائه + ۱۰ دقیقه پرسش و پاسخ</p>
+                </div>
+                 <a href="#" class="flex items-center gap-2 bg-academic-100 text-academic-800 px-4 py-2 rounded-lg hover:bg-academic-200 transition-colors text-sm font-medium">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    دانلود راهنمای کامل PDF
+                </a>
+            </header>
 
-        /**
-         * Safe Icon Component
-         * Isolates Lucide DOM manipulation from React to prevent crashes/Script Errors.
-         */
-        const Icon = ({ name, className }) => {
-            const containerRef = useRef(null);
+            <!-- Phase 1: Structure Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="table"></i> ساختار اسلایدها
+                    </h3>
+                    <button onclick="copyChecklist()" class="text-sm text-academic-600 hover:text-academic-800 flex items-center gap-1 font-medium">
+                        <i data-lucide="copy"></i> کپی چک‌لیست
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-right">
+                        <thead class="bg-slate-50 text-slate-500">
+                            <tr>
+                                <th class="p-4 font-medium">اسلاید</th>
+                                <th class="p-4 font-medium">موضوع</th>
+                                <th class="p-4 font-medium">زمان پیشنهادی</th>
+                                <th class="p-4 font-medium">نکات کلیدی</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 text-slate-500">۱</td>
+                                <td class="p-4 font-bold text-slate-800">عنوان و تیم تحقیق</td>
+                                <td class="p-4 text-emerald-600 font-medium">۱ دقیقه</td>
+                                <td class="p-4 text-slate-600">لوگوی دانشگاه و نام استاد راهنما فراموش نشود.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 text-slate-500">۲-۴</td>
+                                <td class="p-4 font-bold text-slate-800">بیان مسئله و ضرورت</td>
+                                <td class="p-4 text-emerald-600 font-medium">۵ دقیقه</td>
+                                <td class="p-4 text-slate-600">روی "چرا این تحقیق مهم است؟" تمرکز کنید. آمار بدهید.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 text-slate-500">۵</td>
+                                <td class="p-4 font-bold text-slate-800">اهداف و فرضیات</td>
+                                <td class="p-4 text-emerald-600 font-medium">۳ دقیقه</td>
+                                <td class="p-4 text-slate-600">بسیار تیتروار و شفاف بیان شود.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 text-slate-500">۶-۷</td>
+                                <td class="p-4 font-bold text-slate-800">مرور ادبیات و نوآوری</td>
+                                <td class="p-4 text-emerald-600 font-medium">۳ دقیقه</td>
+                                <td class="p-4 text-slate-600">فقط کارهای مرتبط اخیر. روی "گپ تحقیقاتی" تاکید کنید.</td>
+                            </tr>
+                            <tr class="bg-academic-50 hover:bg-academic-100 transition-colors border-l-4 border-academic-600">
+                                <td class="p-4 text-slate-500">۸-۱۵</td>
+                                <td class="p-4 font-bold text-academic-800">روش‌شناسی و اجرا</td>
+                                <td class="p-4 text-academic-600 font-bold">۱۲ دقیقه</td>
+                                <td class="p-4 text-slate-700">حیاتی‌ترین بخش. جامعه، نمونه، ابزار و روش تحلیل.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 text-slate-500">۱۶-۱۸</td>
+                                <td class="p-4 font-bold text-slate-800">زمان‌بندی و منابع</td>
+                                <td class="p-4 text-emerald-600 font-medium">۱ دقیقه</td>
+                                <td class="p-4 text-slate-600">نمودار گانت چارت زمان‌بندی را نشان دهید.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 text-slate-500">۱۹</td>
+                                <td class="p-4 font-bold text-slate-800">پرسش و پاسخ</td>
+                                <td class="p-4 text-amber-600 font-medium">۵ دقیقه +</td>
+                                <td class="p-4 text-slate-600">صادقانه و با اعتماد به نفس پاسخ دهید.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-            useEffect(() => {
-                if (containerRef.current && window.lucide) {
-                    // Create a temporary element to hold the icon
-                    const temp = document.createElement('div');
-                    const i = document.createElement('i');
-                    i.setAttribute('data-lucide', name);
-                    if (className) i.setAttribute('class', className);
-                    temp.appendChild(i);
-                    
-                    // Let Lucide process it
-                    window.lucide.createIcons({
-                        root: temp,
-                        nameAttr: 'data-lucide'
-                    });
-                    
-                    // Move the SVG to our container
-                    containerRef.current.innerHTML = temp.innerHTML;
-                }
-            }, [name, className]);
-
-            return <span ref={containerRef} className="inline-flex items-center justify-center" />;
-        };
-
-        // --- Data & Content ---
-        const SECTIONS = {
-            proposal: {
-                title: "دفاع از پروپوزال",
-                icon: "shield",
-                content: (
-                    <div className="space-y-6 animate-fadeIn">
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                            <h3 className="text-xl font-bold text-emerald-700 mb-4 flex items-center gap-2">
-                                <Icon name="check-circle" className="w-5 h-5" />
-                                نکات کلیدی دفاع از پروپوزال
-                            </h3>
-                            <ul className="space-y-4 text-slate-600 leading-relaxed list-disc list-inside marker:text-emerald-500">
-                                <li><strong className="text-slate-800">تسلط بر موضوع:</strong> باید نشان دهید که ادبیات تحقیق را به خوبی مطالعه کرده‌اید و خلاءهای پژوهشی را می‌شناسید.</li>
-                                <li><strong className="text-slate-800">اهمیت پژوهش:</strong> چرا این تحقیق مهم است؟ چه مشکلی را حل می‌کند؟ این مهم‌ترین سوالی است که باید پاسخ دهید.</li>
-                                <li><strong className="text-slate-800">روش‌شناسی دقیق:</strong> روش تحقیق، جامعه آماری، و ابزار گردآوری داده‌ها باید کاملاً شفاف و علمی باشند.</li>
-                                <li><strong className="text-slate-800">نوآوری:</strong> جنبه نوآورانه کار شما چیست؟ چه چیزی آن را از کارهای قبلی متمایز می‌کند؟</li>
-                                <li><strong className="text-slate-800">زمان‌بندی:</strong> ارائه گانت‌چارت (Gantt Chart) واقع‌بینانه برای مراحل انجام کار الزامی است.</li>
-                            </ul>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-emerald-50 p-5 rounded-xl border border-emerald-100">
-                                <h4 className="font-bold text-emerald-800 mb-2">ساختار ارائه (۱۰ دقیقه)</h4>
-                                <ul className="text-sm text-emerald-700 space-y-2">
-                                    <li>۱. عنوان و معرفی (۱ دقیقه)</li>
-                                    <li>۲. بیان مسئله و اهمیت (۲ دقیقه)</li>
-                                    <li>۳. پیشینه تحقیق (۲ دقیقه)</li>
-                                    <li>۴. روش تحقیق (۳ دقیقه)</li>
-                                    <li>۵. برنامه زمانی و منابع (۲ دقیقه)</li>
-                                </ul>
-                            </div>
-                             <div className="bg-white p-5 rounded-xl border border-slate-200">
-                                <h4 className="font-bold text-slate-800 mb-2">مدارک مورد نیاز</h4>
-                                <ul className="text-sm text-slate-600 space-y-2">
-                                    <li>• فایل پاورپوینت نهایی</li>
-                                    <li>• یک نسخه چاپ شده از پروپوزال</li>
-                                    <li>• قلم و کاغذ برای یادداشت نظرات داوران</li>
-                                    <li>• آب و پذیرایی مختصر (طبق عرف دانشگاه)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                )
-            },
-            report: {
-                title: "گزارش شش‌ماهه",
-                icon: "bar-chart-3",
-                content: (
-                     <div className="space-y-6 animate-fadeIn">
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                            <h3 className="text-xl font-bold text-emerald-700 mb-4">ساختار استاندارد گزارش پیشرفت</h3>
-                            <p className="mb-4 text-slate-600">دانشجویان دکتری موظفند هر شش ماه یکبار گزارش پیشرفت کار پایان‌نامه خود را ارائه دهند.</p>
-                            
-                            <div className="space-y-4">
-                                <div className="flex items-start gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold">۱</div>
-                                    <div>
-                                        <h5 className="font-bold text-slate-800">کارهای انجام شده</h5>
-                                        <p className="text-sm text-slate-600 mt-1">شرح دقیق فعالیت‌های صورت گرفته طبق برنامه زمان‌بندی مصوب.</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold">۲</div>
-                                    <div>
-                                        <h5 className="font-bold text-slate-800">موانع و مشکلات</h5>
-                                        <p className="text-sm text-slate-600 mt-1">بیان صادقانه چالش‌های علمی یا اجرایی که با آن مواجه شده‌اید.</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold">۳</div>
-                                    <div>
-                                        <h5 className="font-bold text-slate-800">برنامه آینده</h5>
-                                        <p className="text-sm text-slate-600 mt-1">برنامه عملیاتی برای ۶ ماه آینده تا گزارش بعدی.</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold">۴</div>
-                                    <div>
-                                        <h5 className="font-bold text-slate-800">تولیدات علمی</h5>
-                                        <p className="text-sm text-slate-600 mt-1">مقالات مستخرج، کنفرانس‌ها و دستاوردهای علمی مرتبط.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )
-            },
-            thesis: {
-                title: "دفاع از پایان‌نامه",
-                icon: "graduation-cap",
-                content: (
-                    <div className="space-y-6 animate-fadeIn">
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div className="lg:col-span-2 space-y-6">
-                                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                                    <h3 className="text-xl font-bold text-emerald-700 mb-4">ساختار جلسه دفاع (۲۰ تا ۳۰ دقیقه)</h3>
-                                    <div className="space-y-3">
-                                        <div className="p-3 bg-slate-50 rounded-lg border-r-4 border-emerald-500">
-                                            <span className="font-bold block text-slate-800">مقدمه و کلیات (۱۵٪ زمان)</span>
-                                            <span className="text-sm text-slate-500">بیان مسئله، اهداف، سوالات و ضرورت تحقیق.</span>
-                                        </div>
-                                        <div className="p-3 bg-slate-50 rounded-lg border-r-4 border-emerald-400">
-                                            <span className="font-bold block text-slate-800">مرور ادبیات (۱۰٪ زمان)</span>
-                                            <span className="text-sm text-slate-500">اشاره کوتاه به نظریه‌ها و کارهای پیشین مرتبط.</span>
-                                        </div>
-                                        <div className="p-3 bg-slate-50 rounded-lg border-r-4 border-emerald-300">
-                                            <span className="font-bold block text-slate-800">روش‌شناسی (۲۰٪ زمان)</span>
-                                            <span className="text-sm text-slate-500">جامعه، نمونه، ابزار، روش تجزیه و تحلیل.</span>
-                                        </div>
-                                        <div className="p-3 bg-emerald-50 rounded-lg border-r-4 border-emerald-600">
-                                            <span className="font-bold block text-emerald-900">یافته‌ها و بحث (۴۰٪ زمان)</span>
-                                            <span className="text-sm text-emerald-700">مهمترین بخش. ارائه جداول، نمودارها و تفسیر نتایج.</span>
-                                        </div>
-                                        <div className="p-3 bg-slate-50 rounded-lg border-r-4 border-emerald-500">
-                                            <span className="font-bold block text-slate-800">نتیجه‌گیری و پیشنهادات (۱۵٪ زمان)</span>
-                                            <span className="text-sm text-slate-500">پاسخ به سوالات تحقیق و پیشنهادات کاربردی.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white p-6 rounded-2xl shadow-lg">
-                                    <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
-                                        <Icon name="star" className="w-5 h-5 text-yellow-300" />
-                                        نکات طلایی
-                                    </h4>
-                                    <ul className="text-emerald-50 text-sm space-y-3">
-                                        <li>• از روخوانی اسلایدها جداً پرهیز کنید.</li>
-                                        <li>• با اعتماد به نفس و صدای رسا صحبت کنید.</li>
-                                        <li>• مدیریت زمان را تمرین کنید.</li>
-                                        <li>• به داوران پشت نکنید و ارتباط چشمی داشته باشید.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )
-            },
-            questions: {
-                title: "بانک سوالات داوران",
-                icon: "message-circle-question",
-                content: (
-                     <div className="space-y-6 animate-fadeIn">
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                            <h3 className="text-xl font-bold text-emerald-700 mb-6">سوالات متداول جلسات دفاع</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {[
-                                    "چرا این روش تحقیق را انتخاب کردید؟",
-                                    "نوآوری اصلی کار شما دقیقاً چیست؟",
-                                    "محدودیت‌های تحقیق شما چه بود و چگونه مدیریت کردید؟",
-                                    "آیا نتایج شما با تحقیقات قبلی همسو است؟ اگر نه، چرا؟",
-                                    "کاربرد عملی نتایج شما در صنعت/جامعه چیست؟",
-                                    "روایی و پایایی ابزار چگونه سنجیده شد؟",
-                                    "اگر زمان بیشتری داشتید، چه کاری را متفاوت انجام می‌دادید؟",
-                                    "جامعه آماری چگونه انتخاب شد؟"
-                                ].map((q, i) => (
-                                    <div key={i} className="flex gap-3 items-start p-3 hover:bg-slate-50 rounded-lg transition-colors">
-                                        <span className="text-emerald-500 font-bold">؟</span>
-                                        <p className="text-slate-700 font-medium">{q}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                )
-            },
-            glossary: {
-                title: "فرهنگ لغات تخصصی",
-                icon: "book-a",
-                content: (
-                     <div className="space-y-6 animate-fadeIn">
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                            <div className="grid grid-cols-1 gap-4">
-                                {[
-                                    { en: "Methodology", fa: "روش‌شناسی", desc: "روش سیستماتیک حل مسئله پژوهش." },
-                                    { en: "Literature Review", fa: "مرور پیشینه", desc: "بررسی انتقادی کارهای علمی انجام شده قبلی." },
-                                    { en: "Hypothesis", fa: "فرضیه", desc: "حدس علمی و آزمون‌پذیر درباره رابطه متغیرها." },
-                                    { en: "Variable", fa: "متغیر", desc: "ویژگی یا صفتی که می‌تواند مقادیر مختلف بگیرد." },
-                                    { en: "Reliability", fa: "پایایی", desc: "ثبات و تکرارپذیری نتایج ابزار اندازه‌گیری." },
-                                    { en: "Validity", fa: "روایی", desc: "میزان توانایی ابزار در سنجش آنچه باید بسنجد." },
-                                    { en: "Abstract", fa: "چکیده", desc: "خلاصه‌ای جامع از تمام بخش‌های پایان‌نامه." },
-                                ].map((item, i) => (
-                                    <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 last:border-0 pb-3 last:pb-0">
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-bold text-emerald-700">{item.fa}</span>
-                                            <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full font-mono">{item.en}</span>
-                                        </div>
-                                        <p className="text-sm text-slate-600 mt-1 sm:mt-0">{item.desc}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                )
-            },
-            etiquette: {
-                title: "آداب و تشریفات",
-                icon: "user-check",
-                content: (
-                     <div className="space-y-6 animate-fadeIn">
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                            <h3 className="text-xl font-bold text-emerald-700 mb-4">اصول حرفه‌ای و رفتاری</h3>
-                            <div className="space-y-4">
-                                <div className="flex gap-4">
-                                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
-                                        <Icon name="shirt" className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <h5 className="font-bold text-slate-800">پوشش ظاهری</h5>
-                                        <p className="text-sm text-slate-600">لباس رسمی و آراسته. برای آقایان کت و شلوار و برای خانم‌ها پوشش اداری و رسمی دانشگاهی توصیه می‌شود.</p>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4">
-                                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
-                                        <Icon name="clock" className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <h5 className="font-bold text-slate-800">مدیریت زمان</h5>
-                                        <p className="text-sm text-slate-600">حداقل ۴۵ دقیقه قبل از جلسه در محل حضور داشته باشید و تجهیزات را چک کنید.</p>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4">
-                                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
-                                        <Icon name="coffee" className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <h5 className="font-bold text-slate-800">پذیرایی</h5>
-                                        <p className="text-sm text-slate-600">پذیرایی باید بسته و بهداشتی باشد. از چیدن میوه و شیرینی باز قبل از جلسه خودداری کنید. بطری آب برای داوران الزامی است.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )
-            },
-            slideDesign: {
-                title: "طراحی اسلاید",
-                icon: "presentation",
-                content: (
-                     <div className="space-y-6 animate-fadeIn">
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                            <h3 className="text-xl font-bold text-emerald-700 mb-4">اصول طراحی پاورپوینت علمی</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                <div className="p-4 border border-slate-100 rounded-xl bg-slate-50">
-                                    <span className="block font-bold text-emerald-600 mb-1">قانون ۱۰-۲۰-۳۰</span>
-                                    <p className="text-xs text-slate-600">۱۰ اسلاید، ۲۰ دقیقه زمان، فونت حداقل ۳۰. (البته برای پایان‌نامه تعداد اسلاید بیشتر است)</p>
-                                </div>
-                                <div className="p-4 border border-slate-100 rounded-xl bg-slate-50">
-                                    <span className="block font-bold text-emerald-600 mb-1">کنتراست بالا</span>
-                                    <p className="text-xs text-slate-600">متن تیره روی زمینه روشن بهترین خوانایی را دارد. از پس‌زمینه‌های شلوغ بپرهیزید.</p>
-                                </div>
-                            </div>
-                            <h4 className="font-bold text-slate-800 mb-2">فونت‌های پیشنهادی فارسی</h4>
-                            <div className="flex flex-wrap gap-2">
-                                <span className="px-3 py-1 bg-slate-100 rounded text-sm font-sans">B Nazanin</span>
-                                <span className="px-3 py-1 bg-slate-100 rounded text-sm font-sans">B Yekan</span>
-                                <span className="px-3 py-1 bg-slate-100 rounded text-sm font-sans">Vazirmatn</span>
-                                <span className="px-3 py-1 bg-slate-100 rounded text-sm font-sans">B Mitra</span>
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
-        };
-
-        // --- Zen Mode Component ---
-        const ZenMode = ({ onClose }) => {
-            const [isActive, setIsActive] = useState(false);
-            const [phase, setPhase] = useState('ready'); // 'ready', 'inhale', 'hold', 'exhale'
-            
-            // Animation loop logic
-            useEffect(() => {
-                let timer;
-                if (isActive) {
-                    // Start cycle
-                    const runCycle = () => {
-                        setPhase('inhale');
-                        timer = setTimeout(() => {
-                            setPhase('exhale');
-                            timer = setTimeout(() => {
-                                runCycle();
-                            }, 4000); // 4s Exhale
-                        }, 4000); // 4s Inhale
-                    };
-                    runCycle();
-                } else {
-                    setPhase('ready');
-                    clearTimeout(timer);
-                }
-                return () => clearTimeout(timer);
-            }, [isActive]);
-
-            return (
-                <div className="fixed inset-0 z-[100] bg-gradient-to-b from-teal-900 to-slate-900 flex flex-col items-center justify-center text-white overflow-hidden animate-fadeIn">
-                    
-                    {/* Background Ambient Light */}
-                    <div className="absolute w-[500px] h-[500px] bg-teal-500/20 rounded-full blur-[100px] animate-pulse"></div>
-
-                    <div className="relative z-10 flex flex-col items-center">
-                        <h2 className="text-2xl font-light mb-12 tracking-wide text-teal-100 opacity-90">تمرکز و آرامش</h2>
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Phase 2: Visual Timeline -->
+                <div class="lg:col-span-2 space-y-4">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2 mb-4">
+                        <i data-lucide="git-merge"></i> مسیر ارائه
+                    </h3>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 relative">
+                        <div class="absolute right-8 top-6 bottom-6 w-0.5 bg-slate-100"></div>
                         
-                        {/* Breathing Circle Container */}
-                        <div className="relative w-72 h-72 flex items-center justify-center">
-                            {/* Expanding Outer Glow */}
-                            <div 
-                                className="absolute w-full h-full rounded-full bg-teal-400/30 blur-xl transition-all duration-[4000ms] ease-in-out"
-                                style={{ 
-                                    transform: phase === 'inhale' ? 'scale(1.5)' : 'scale(1)',
-                                    opacity: phase === 'inhale' ? 0.6 : 0.2
-                                }}
-                            ></div>
-
-                            {/* Main Circle */}
-                            <div 
-                                className="w-48 h-48 rounded-full border-2 border-teal-200/50 flex items-center justify-center backdrop-blur-sm bg-white/5 transition-all duration-[4000ms] ease-in-out relative z-20 shadow-2xl shadow-teal-500/20"
-                                style={{ 
-                                    transform: phase === 'inhale' ? 'scale(1.2)' : 'scale(1)' 
-                                }}
-                            >
-                                <div className="text-center transition-opacity duration-500">
-                                    <span className="block text-4xl font-bold mb-2 text-white">
-                                        {phase === 'inhale' ? 'دم' : phase === 'exhale' ? 'بازدم' : 'آماده'}
-                                    </span>
-                                    <span className="block text-xs uppercase tracking-[0.2em] text-teal-200 opacity-70 font-mono">
-                                        {phase === 'inhale' ? 'Inhale' : phase === 'exhale' ? 'Exhale' : 'Ready'}
-                                    </span>
-                                </div>
+                        <div class="relative flex items-start gap-4 mb-8 group">
+                            <div class="w-8 h-8 rounded-full bg-academic-100 text-academic-600 flex items-center justify-center font-bold relative z-10 group-hover:bg-academic-600 group-hover:text-white transition-colors">1</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-slate-800">مقدمه قدرتمند</h4>
+                                <p class="text-sm text-slate-500 mt-1">شروع با یک آمار تکان‌دهنده یا سوال کلیدی برای جذب داوران.</p>
                             </div>
                         </div>
-
-                        {/* Controls */}
-                        <div className="mt-16 flex flex-col gap-4 items-center">
-                            <button 
-                                onClick={() => setIsActive(!isActive)}
-                                className={`px-8 py-3 rounded-full min-w-[160px] font-bold transition-all duration-300 shadow-lg ${
-                                    isActive 
-                                    ? 'bg-slate-700/50 text-slate-300 hover:bg-slate-700' 
-                                    : 'bg-teal-500 hover:bg-teal-400 text-white hover:shadow-teal-500/50'
-                                }`}
-                            >
-                                {isActive ? 'توقف' : 'شروع تمرین'}
-                            </button>
-                            
-                            <button 
-                                onClick={onClose}
-                                className="text-sm text-slate-400 hover:text-white transition-colors mt-2"
-                            >
-                                بازگشت به داشبورد
-                            </button>
+                        <div class="relative flex items-start gap-4 mb-8 group">
+                            <div class="w-8 h-8 rounded-full bg-academic-100 text-academic-600 flex items-center justify-center font-bold relative z-10 group-hover:bg-academic-600 group-hover:text-white transition-colors">2</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-slate-800">شکاف تحقیقاتی (Research Gap)</h4>
+                                <p class="text-sm text-slate-500 mt-1">اثبات کنید که پژوهش‌های قبلی این مشکل را حل نکرده‌اند.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-start gap-4 mb-8 group">
+                            <div class="w-8 h-8 rounded-full bg-academic-100 text-academic-600 flex items-center justify-center font-bold relative z-10 group-hover:bg-academic-600 group-hover:text-white transition-colors">3</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-slate-800">متدولوژی دقیق</h4>
+                                <p class="text-sm text-slate-500 mt-1">توضیح دهید "چگونه" می‌خواهید به سوالات پاسخ دهید.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-start gap-4 group">
+                            <div class="w-8 h-8 rounded-full bg-academic-100 text-academic-600 flex items-center justify-center font-bold relative z-10 group-hover:bg-academic-600 group-hover:text-white transition-colors">4</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-slate-800">برنامه عملیاتی</h4>
+                                <p class="text-sm text-slate-500 mt-1">نشان دهید که کار در زمان مقرر قابل انجام است.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            );
-        };
 
-        // --- Main App Component ---
-        const App = () => {
-            const [activeTab, setActiveTab] = useState('proposal');
-            const [mobileOpen, setMobileOpen] = useState(false);
-            const [zenMode, setZenMode] = useState(false);
-
-            return (
-                <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-emerald-200 selection:text-emerald-900">
-                    
-                    {/* Mobile Header */}
-                    <header className="lg:hidden bg-white/80 backdrop-blur-md border-b border-slate-200 p-4 sticky top-0 z-30 flex items-center justify-between shadow-sm">
-                        <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center">
-                                <Icon name="graduation-cap" className="w-5 h-5" />
-                            </div>
-                            <span className="font-bold text-slate-800">DefaYar</span>
+                <!-- Phase 3: Pro Tips & Checklist -->
+                <div class="space-y-6">
+                    <!-- Checklist -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="check-square"></i> چک‌لیست آمادگی
+                        </h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-academic-600 focus:ring-academic-500">
+                                <span class="text-slate-600 group-hover:text-slate-900 transition-colors">فایل پاورپوینت نهایی شد</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-academic-600 focus:ring-academic-500">
+                                <span class="text-slate-600 group-hover:text-slate-900 transition-colors">نسخه PDF پشتیبان</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-academic-600 focus:ring-academic-500">
+                                <span class="text-slate-600 group-hover:text-slate-900 transition-colors">تمرین با تایمر (۲۰ دقیقه)</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-academic-600 focus:ring-academic-500">
+                                <span class="text-slate-600 group-hover:text-slate-900 transition-colors">چک کردن فونت‌ها در سیستم</span>
+                            </label>
                         </div>
-                        <button onClick={() => setMobileOpen(true)} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
-                            <Icon name="menu" className="w-6 h-6" />
+                    </div>
+
+                    <!-- Golden Rule Card -->
+                    <div class="bg-gradient-to-br from-academic-800 to-academic-900 text-white p-6 rounded-xl shadow-lg">
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="lightbulb" class="w-6 h-6 text-yellow-300 shrink-0"></i>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">قانون ۲۰/۸۰</h4>
+                                <p class="text-academic-100 text-sm leading-relaxed">
+                                    ۸۰٪ زمان خود را صرف ۲۰٪ اسلایدها (بیان مسئله و روش‌شناسی) کنید. داوران بیشتر روی "چرایی" و "چگونگی" تمرکز دارند تا کلیات تئوریک.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Progress Report (New) -->
+        <div id="progress" class="tab-content">
+            <header class="mb-8 border-b border-slate-200 pb-4">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold">ویژه دانشجویان دکتری</span>
+                    <span class="text-slate-400 text-sm"><i data-lucide="clock" class="inline w-3 h-3 ml-1"></i>هر ۶ ماه یکبار</span>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-800">گزارش پیشرفت شش‌ماهه</h2>
+            </header>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Visual Tracker Sidebar -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 text-center">
+                        <h3 class="font-bold text-slate-700 mb-6">وضعیت کلی پایان‌نامه</h3>
+                        <!-- Circular Progress Simulator -->
+                        <div class="relative w-40 h-40 mx-auto mb-4 flex items-center justify-center">
+                             <svg class="transform -rotate-90 w-full h-full">
+                                <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="10" fill="transparent" class="text-slate-100" />
+                                <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="10" fill="transparent" stroke-dasharray="440" stroke-dashoffset="300" class="text-indigo-600" />
+                            </svg>
+                            <span class="absolute text-3xl font-bold text-slate-800">35%</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="35" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" oninput="updateProgress(this.value)">
+                        <p class="text-xs text-slate-500 mt-2">درصد پیشرفت خود را تنظیم کنید</p>
+                    </div>
+
+                    <div class="bg-indigo-50 border border-indigo-100 p-5 rounded-xl">
+                        <div class="flex gap-3 mb-2">
+                            <i data-lucide="zap" class="text-indigo-600 w-5 h-5"></i>
+                            <h4 class="font-bold text-indigo-800">استراتژی دفاع</h4>
+                        </div>
+                        <p class="text-sm text-indigo-700 leading-relaxed">
+                            در گزارش پیشرفت، داوران دنبال "نظریه" نیستند. حتی اگر داده‌هایتان ناقص است، حتماً <strong>نمودار و خروجی اولیه</strong> نشان دهید تا ببینند کار عملی انجام شده است.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Main Content Cards -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <!-- Card 1 -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-300 transition-colors group">
+                            <div class="bg-green-100 text-green-600 w-10 h-10 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="check-circle-2"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 mb-2">فعالیت‌های انجام شده</h4>
+                            <p class="text-sm text-slate-500">لیست دقیق کارهایی که در ۶ ماه گذشته تکمیل شده است (مطالعه، آزمایش، کدنویسی).</p>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-300 transition-colors group">
+                            <div class="bg-blue-100 text-blue-600 w-10 h-10 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="flask-conical"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 mb-2">خروجی‌های علمی</h4>
+                            <p class="text-sm text-slate-500">مقالات سابمیت شده، کنفرانس‌ها، یا دیتاست‌های جمع‌آوری شده.</p>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-300 transition-colors group">
+                            <div class="bg-red-100 text-red-600 w-10 h-10 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="alert-triangle"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 mb-2">موانع و چالش‌ها</h4>
+                            <p class="text-sm text-slate-500">مشکلات فنی، مالی یا اداری که سرعت کار را کم کرده‌اند (صادق باشید).</p>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-300 transition-colors group">
+                            <div class="bg-purple-100 text-purple-600 w-10 h-10 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="calendar-days"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 mb-2">برنامه ۶ ماه آینده</h4>
+                            <p class="text-sm text-slate-500">تعهدات اجرایی دقیق برای بازه زمانی بعدی (با ذکر تاریخ احتمالی).</p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone Checklist -->
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 p-4 border-b border-slate-200">
+                            <h3 class="font-bold text-slate-700">چک‌لیست نقاط عطف (Milestones)</h3>
+                        </div>
+                        <div class="divide-y divide-slate-100 p-2">
+                            <label class="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-slate-700">تکمیل و تصویب پروپوزال</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-slate-700">پایان فاز مرور ادبیات و پیشینه</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-slate-700">جمع‌آوری داده‌های اولیه / پایلوت</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-slate-700">نگارش پیش‌نویس مقاله اول</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Final Thesis Defense (NEW & ACTIVATED) -->
+        <div id="thesis" class="tab-content">
+            <header class="mb-8 border-b border-slate-200 pb-4 flex justify-between items-end">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                         <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold animate-pulse">مرحله نهایی</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-slate-800">دفاع از پایان‌نامه</h2>
+                    <p class="text-slate-500 mt-2">زمان استاندارد: ۳۰ تا ۴۰ دقیقه ارائه | تمرکز بر نتایج</p>
+                </div>
+                <div class="hidden lg:block text-right">
+                    <p class="text-sm font-bold text-emerald-600">هدف اصلی:</p>
+                    <p class="text-xs text-slate-500">اثبات مشارکت علمی (Contribution)</p>
+                </div>
+            </header>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Left Column: Checklist & Summary -->
+                <div class="space-y-6 lg:col-span-1 lg:order-2">
+                    <!-- Contribution Card -->
+                    <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-xl shadow-lg text-white">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i data-lucide="crown" class="w-5 h-5 text-yellow-300"></i>
+                            <h3 class="font-bold">دستاورد اصلی من</h3>
+                        </div>
+                        <p class="text-emerald-100 text-xs mb-3">این جمله را حفظ کنید تا در پاسخ به سوال "کار تو چه فرقی داشت؟" بگویید.</p>
+                        <textarea class="w-full bg-white/10 border border-white/20 rounded-lg p-3 text-sm text-white placeholder-emerald-200 focus:outline-none focus:bg-white/20 h-32 resize-none" placeholder="مثلاً: من نشان دادم که روش X در شرایط Y باعث بهبود Z می‌شود..."></textarea>
+                    </div>
+
+                    <!-- Golden Checklist -->
+                    <div class="bg-gold-50 border border-gold-100 rounded-xl p-6 shadow-sm">
+                        <h3 class="font-bold text-gold-700 mb-4 flex items-center gap-2">
+                            <i data-lucide="list-checks" class="w-5 h-5"></i>
+                            چک‌لیست طلایی شب دفاع
+                        </h3>
+                        <div class="space-y-3">
+                            <label class="flex items-start gap-3 cursor-pointer group">
+                                <input type="checkbox" class="mt-1 w-4 h-4 rounded border-gold-300 text-gold-600 focus:ring-gold-500">
+                                <span class="text-sm text-slate-700 group-hover:text-black">استخراج نتایج کلیدی در قالب نمودارهای باکیفیت</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer group">
+                                <input type="checkbox" class="mt-1 w-4 h-4 rounded border-gold-300 text-gold-600 focus:ring-gold-500">
+                                <span class="text-sm text-slate-700 group-hover:text-black">آمادگی برای دفاع از انحرافات احتمالی نتایج</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer group">
+                                <input type="checkbox" class="mt-1 w-4 h-4 rounded border-gold-300 text-gold-600 focus:ring-gold-500">
+                                <span class="text-sm text-slate-700 group-hover:text-black">بررسی فونت‌ها و فرمول‌ها در سیستم سالن</span>
+                            </label>
+                            <label class="flex items-start gap-3 cursor-pointer group">
+                                <input type="checkbox" class="mt-1 w-4 h-4 rounded border-gold-300 text-gold-600 focus:ring-gold-500">
+                                <span class="text-sm text-slate-700 group-hover:text-black">تمرین سناریوی «اگر سیستم قطع شد چه بگویم؟»</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Architecture Table -->
+                <div class="lg:col-span-2 space-y-6 lg:order-1">
+                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="p-4 bg-slate-50 border-b border-slate-200">
+                            <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                                <i data-lucide="layers"></i> معماری اسلایدهای دفاع نهایی
+                            </h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-right">
+                                <thead class="bg-slate-50 text-slate-500">
+                                    <tr>
+                                        <th class="p-4 font-medium">بخش</th>
+                                        <th class="p-4 font-medium">سهم زمانی</th>
+                                        <th class="p-4 font-medium">محتوای کلیدی</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-4 font-bold text-slate-800 border-r-4 border-slate-300">مقدمه و کلیات</td>
+                                        <td class="p-4 text-slate-500">۱۰٪</td>
+                                        <td class="p-4 text-slate-600">بیان مسئله، اهداف و ضرورت (بسیار سریع عبور کنید).</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-4 font-bold text-slate-800 border-r-4 border-slate-300">مرور روش‌شناسی</td>
+                                        <td class="p-4 text-slate-500">۱۵٪</td>
+                                        <td class="p-4 text-slate-600">توضیح متد اجرا شده (فقط یادآوری، نه جزئیات پروپوزال).</td>
+                                    </tr>
+                                    <tr class="bg-emerald-50 hover:bg-emerald-100 transition-colors">
+                                        <td class="p-4 font-bold text-emerald-900 border-r-4 border-emerald-500 flex items-center gap-2">
+                                            یافته‌ها و نتایج
+                                            <span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-0.5 rounded">بخش اصلی</span>
+                                        </td>
+                                        <td class="p-4 font-bold text-emerald-700">۵۰٪</td>
+                                        <td class="p-4 text-emerald-900">نمودارها، جداول، تحلیل آماری و خروجی نرم‌افزار.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-4 font-bold text-slate-800 border-r-4 border-slate-300">بحث و مقایسه</td>
+                                        <td class="p-4 text-slate-500">۱۵٪</td>
+                                        <td class="p-4 text-slate-600">مقایسه نتایج خود با پژوهش‌های پیشین.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-4 font-bold text-slate-800 border-r-4 border-slate-300">نتیجه‌گیری و پیشنهادات</td>
+                                        <td class="p-4 text-slate-500">۱۰٪</td>
+                                        <td class="p-4 text-slate-600">پاسخ نهایی به سوالات تحقیق و مسیرهای آینده.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tip Box -->
+                    <div class="flex items-start gap-4 p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+                        <div class="bg-sky-100 text-sky-600 p-2 rounded-lg">
+                            <i data-lucide="info"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">نکته حرفه‌ای</h4>
+                            <p class="text-slate-500 text-sm mt-1 leading-relaxed">
+                                اگر در نتایج شما تناقضی با تئوری‌ها وجود دارد، آن را پنهان نکنید! داوران متوجه می‌شوند. در عوض، سعی کنید دلایل علمی احتمالی (مثل تفاوت در نمونه یا شرایط محیطی) را توضیح دهید. این نشان‌دهنده بلوغ علمی شماست.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Question Bank -->
+        <div id="questions" class="tab-content">
+            <header class="mb-8 border-b border-slate-200 pb-4 flex justify-between items-center">
+                 <div>
+                    <h2 class="text-3xl font-bold text-slate-800">بانک سوالات داوران</h2>
+                    <p class="text-slate-500 mt-2">سوالات متداول و نحوه پاسخگویی حرفه‌ای</p>
+                </div>
+                <button onclick="showRandomQuestion()" class="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-md shadow-indigo-200 text-sm font-medium">
+                    <i data-lucide="shuffle" class="w-4 h-4"></i>
+                    سوال شانسی (تمرین)
+                </button>
+            </header>
+
+            <!-- Random Question Display Area -->
+            <div id="random-question-box" class="hidden mb-8 bg-gradient-to-r from-indigo-500 to-purple-600 p-1 rounded-xl shadow-lg animate-bounce-in">
+                <div class="bg-white p-6 rounded-lg text-center">
+                    <span class="text-indigo-600 font-bold text-xs uppercase tracking-wider mb-2 block">چالش امروز</span>
+                    <h3 id="rq-text" class="text-xl font-bold text-slate-800 mb-4">سوال اینجا نمایش داده می‌شود...</h3>
+                    <p id="rq-tip" class="text-slate-500 text-sm italic bg-slate-50 p-3 rounded mx-auto max-w-2xl">راهنمایی...</p>
+                    <button onclick="document.getElementById('random-question-box').classList.add('hidden')" class="mt-4 text-xs text-slate-400 hover:text-slate-600 underline">بستن</button>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Category 1 -->
+                <div class="accordion-group">
+                    <h3 class="text-lg font-bold text-slate-700 mb-3 border-r-4 border-blue-500 pr-3">بخش کلیات و مسئله (The Why)</h3>
+                    <!-- Q1 -->
+                    <div class="bg-white border border-slate-200 rounded-lg mb-2 overflow-hidden">
+                        <button onclick="toggleAccordion('q1')" class="w-full text-right p-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                            <span class="font-bold text-slate-800">چرا این موضوع را انتخاب کردید؟</span>
+                            <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform" id="icon-q1"></i>
                         </button>
-                    </header>
-
-                    {/* Mobile Overlay */}
-                    {mobileOpen && (
-                        <div 
-                            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden animate-fadeIn"
-                            onClick={() => setMobileOpen(false)}
-                        />
-                    )}
-
-                    {/* Sidebar */}
-                    <aside className={`fixed top-0 right-0 h-full w-72 bg-white border-l border-slate-200 z-50 transition-transform duration-300 ease-out lg:translate-x-0 flex flex-col shadow-2xl lg:shadow-none ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-                        {/* Sidebar Header */}
-                        <div className="p-6 flex items-center justify-between border-b border-slate-50">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-700 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                                    <Icon name="shield-check" className="w-6 h-6" />
-                                </div>
+                        <div id="q1" class="hidden bg-amber-50 p-4 border-t border-amber-100">
+                            <div class="flex gap-3">
+                                <i data-lucide="lightbulb" class="text-amber-600 shrink-0 mt-1"></i>
                                 <div>
-                                    <h1 className="font-bold text-xl text-slate-800 tracking-tight font-sans">DefaYar</h1>
-                                    <p className="text-xs text-emerald-600 font-medium font-mono">@healthcono</p>
+                                    <strong class="text-amber-800 text-sm block mb-1">راهنمای پاسخ:</strong>
+                                    <p class="text-slate-700 text-sm leading-relaxed">
+                                        اشتباه نکنید! نگویید "چون استاد گفت". بگویید: "با توجه به خلاء تحقیقاتی در زمینه X و اهمیت آن در صنعت Y، این موضوع پتانسیل بالایی برای حل مشکل Z داشت."
+                                    </p>
                                 </div>
                             </div>
-                            <button onClick={() => setMobileOpen(false)} className="lg:hidden text-slate-400 hover:text-red-500 transition-colors">
-                                <Icon name="x" className="w-6 h-6" />
+                        </div>
+                    </div>
+                    <!-- Q2 -->
+                    <div class="bg-white border border-slate-200 rounded-lg mb-2 overflow-hidden">
+                        <button onclick="toggleAccordion('q2')" class="w-full text-right p-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                            <span class="font-bold text-slate-800">نوآوری تحقیق شما دقیقا چیست؟</span>
+                            <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform" id="icon-q2"></i>
+                        </button>
+                        <div id="q2" class="hidden bg-amber-50 p-4 border-t border-amber-100">
+                            <div class="flex gap-3">
+                                <i data-lucide="lightbulb" class="text-amber-600 shrink-0 mt-1"></i>
+                                <div>
+                                    <strong class="text-amber-800 text-sm block mb-1">راهنمای پاسخ:</strong>
+                                    <p class="text-slate-700 text-sm leading-relaxed">
+                                        صریح باشید: "نوآوری کار من در سه سطح است: ۱. استفاده از روش جدید X، ۲. بومی‌سازی مدل برای ایران، ۳. ترکیب متغیر A و B برای اولین بار."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="accordion-group mt-6">
+                    <h3 class="text-lg font-bold text-slate-700 mb-3 border-r-4 border-emerald-500 pr-3">روش‌شناسی و اجرا (The How)</h3>
+                    <!-- Q3 -->
+                    <div class="bg-white border border-slate-200 rounded-lg mb-2 overflow-hidden">
+                        <button onclick="toggleAccordion('q3')" class="w-full text-right p-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                            <span class="font-bold text-slate-800">چرا از این روش/ابزار استفاده کردید؟</span>
+                            <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform" id="icon-q3"></i>
+                        </button>
+                        <div id="q3" class="hidden bg-amber-50 p-4 border-t border-amber-100">
+                            <div class="flex gap-3">
+                                <i data-lucide="lightbulb" class="text-amber-600 shrink-0 mt-1"></i>
+                                <div>
+                                    <strong class="text-amber-800 text-sm block mb-1">راهنمای پاسخ:</strong>
+                                    <p class="text-slate-700 text-sm leading-relaxed">
+                                        باید با ادبیات موضوع توجیه کنید: "چون طبق مطالعات فلانی (۲۰۲۰)، این روش برای نمونه‌های کوچک دقیق‌ترین نتایج را می‌دهد و خطای کمتری نسبت به روش Y دارد."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Q4 -->
+                    <div class="bg-white border border-slate-200 rounded-lg mb-2 overflow-hidden">
+                        <button onclick="toggleAccordion('q4')" class="w-full text-right p-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                            <span class="font-bold text-slate-800">حجم نمونه را چطور تعیین کردید؟</span>
+                            <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform" id="icon-q4"></i>
+                        </button>
+                        <div id="q4" class="hidden bg-amber-50 p-4 border-t border-amber-100">
+                            <div class="flex gap-3">
+                                <i data-lucide="lightbulb" class="text-amber-600 shrink-0 mt-1"></i>
+                                <div>
+                                    <strong class="text-amber-800 text-sm block mb-1">راهنمای پاسخ:</strong>
+                                    <p class="text-slate-700 text-sm leading-relaxed">
+                                        اشاره به فرمول کوکران یا جدول مورگان: "بر اساس جدول مورگان برای جامعه آماری N نفر، تعداد ۳۸۴ نفر انتخاب شد که با ضریب اطمینان ۹۵٪ قابل قبول است."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="accordion-group mt-6">
+                    <h3 class="text-lg font-bold text-slate-700 mb-3 border-r-4 border-purple-500 pr-3">نتایج و کاربرد (The Impact)</h3>
+                    <!-- Q5 -->
+                    <div class="bg-white border border-slate-200 rounded-lg mb-2 overflow-hidden">
+                        <button onclick="toggleAccordion('q5')" class="w-full text-right p-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                            <span class="font-bold text-slate-800">کاربرد عملی این تحقیق چیست؟</span>
+                            <i data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform" id="icon-q5"></i>
+                        </button>
+                        <div id="q5" class="hidden bg-amber-50 p-4 border-t border-amber-100">
+                            <div class="flex gap-3">
+                                <i data-lucide="lightbulb" class="text-amber-600 shrink-0 mt-1"></i>
+                                <div>
+                                    <strong class="text-amber-800 text-sm block mb-1">راهنمای پاسخ:</strong>
+                                    <p class="text-slate-700 text-sm leading-relaxed">
+                                        به یک سازمان یا صنعت خاص اشاره کنید: "مدیران شهرداری می‌توانند با استفاده از این مدل، هزینه‌های ترافیکی را تا ۱۵٪ کاهش دهند."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Glossary (New) -->
+        <div id="glossary" class="tab-content">
+             <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800">فرهنگ لغات تخصصی</h2>
+                    <p class="text-slate-500 mt-2 text-sm">واژگان کلیدی برای یک دفاع علمی و دقیق</p>
+                </div>
+                <div class="relative w-full md:w-64">
+                    <input type="text" id="glossary-search" oninput="filterGlossary()" placeholder="جستجو در لغات..." class="w-full pl-4 pr-10 py-2 rounded-lg border border-slate-300 focus:border-academic-600 focus:outline-none focus:ring-1 focus:ring-academic-600 text-sm">
+                    <i data-lucide="search" class="absolute right-3 top-2.5 w-4 h-4 text-slate-400"></i>
+                </div>
+            </header>
+
+            <div id="glossary-grid" class="grid md:grid-cols-2 gap-4">
+                <!-- Terms will be populated by JS -->
+                <!-- Example structure for reference, actual content via JS -->
+                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative group">
+                    <button onclick="toggleStar(this)" class="absolute top-4 left-4 text-slate-300 hover:text-yellow-400 transition-colors"><i data-lucide="star" class="w-5 h-5"></i></button>
+                    <div class="flex justify-between items-start pr-2 border-r-4 border-academic-500 pl-8">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">Reliability</h4>
+                            <span class="text-sm text-academic-600 font-medium">پایایی (قابلیت اعتماد)</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-sm mt-3 leading-relaxed">میزانی که ابزار اندازه‌گیری (مثل پرسشنامه) در شرایط یکسان نتایج ثابتی می‌دهد.</p>
+                    <div class="mt-3 bg-slate-50 p-2 rounded text-xs text-slate-500 flex gap-2">
+                        <i data-lucide="message-square" class="w-3 h-3 mt-0.5"></i>
+                        <span>کاربرد: "آلفای کرونباخ ۰.۸ نشان‌دهنده پایایی بالای ابزار است."</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="no-results" class="hidden text-center py-10 text-slate-500">
+                <i data-lucide="frown" class="w-10 h-10 mx-auto mb-2 opacity-50"></i>
+                <p>واژه‌ای یافت نشد.</p>
+            </div>
+        </div>
+
+        <!-- Tab: Templates (New) -->
+        <div id="templates" class="tab-content">
+            <header class="mb-8 border-b border-slate-200 pb-4">
+                <h2 class="text-3xl font-bold text-slate-800">متن‌های رسمی و تشکر</h2>
+                <p class="text-slate-500 mt-2">قالب‌های آماده برای مکاتبات و اسلایدها</p>
+            </header>
+
+            <div class="grid lg:grid-cols-3 gap-8 h-full">
+                <!-- Inputs Side -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                            <i data-lucide="settings"></i> تنظیمات
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">نوع متن</label>
+                                <div class="flex flex-col gap-2">
+                                    <button onclick="setTemplateType('email')" class="template-btn w-full text-right px-4 py-2 rounded border border-slate-200 text-sm hover:bg-slate-50 focus:bg-academic-50 focus:border-academic-500 focus:text-academic-700 active-template">
+                                        📧 ایمیل دعوت از داوران
+                                    </button>
+                                    <button onclick="setTemplateType('slide')" class="template-btn w-full text-right px-4 py-2 rounded border border-slate-200 text-sm hover:bg-slate-50 focus:bg-academic-50 focus:border-academic-500 focus:text-academic-700">
+                                        🙏 متن اسلاید سپاسگزاری
+                                    </button>
+                                    <button onclick="setTemplateType('followup')" class="template-btn w-full text-right px-4 py-2 rounded border border-slate-200 text-sm hover:bg-slate-50 focus:bg-academic-50 focus:border-academic-500 focus:text-academic-700">
+                                        📝 پیگیری اصلاحات
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <hr class="border-slate-100">
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">نام استاد راهنما / داور</label>
+                                <input type="text" id="profName" oninput="updateTemplate()" placeholder="مثلاً: دکتر علوی" class="w-full px-3 py-2 border border-slate-300 rounded focus:border-academic-500 focus:outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">نام دانشجو</label>
+                                <input type="text" id="studentName" oninput="updateTemplate()" placeholder="نام شما" class="w-full px-3 py-2 border border-slate-300 rounded focus:border-academic-500 focus:outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">موضوع تحقیق</label>
+                                <input type="text" id="thesisTopic" oninput="updateTemplate()" placeholder="عنوان پایان‌نامه" class="w-full px-3 py-2 border border-slate-300 rounded focus:border-academic-500 focus:outline-none text-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Side -->
+                <div class="lg:col-span-2">
+                    <div class="bg-[#fdfbf7] p-8 rounded-xl border border-slate-200 shadow-inner h-full flex flex-col relative">
+                        <div class="absolute top-4 left-4">
+                            <button onclick="copyTemplate()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-600 px-3 py-1.5 rounded text-sm flex items-center gap-2 transition-colors shadow-sm">
+                                <i data-lucide="copy" class="w-4 h-4"></i> کپی متن
                             </button>
                         </div>
-
-                        {/* Navigation */}
-                        <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
-                            {Object.entries(SECTIONS).map(([key, data]) => (
-                                <button
-                                    key={key}
-                                    onClick={() => {
-                                        setActiveTab(key);
-                                        setMobileOpen(false);
-                                    }}
-                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                                        activeTab === key 
-                                        ? 'bg-emerald-50 text-emerald-700 font-bold shadow-sm ring-1 ring-emerald-100' 
-                                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-                                    }`}
-                                >
-                                    <span className={`transition-colors ${activeTab === key ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-600'}`}>
-                                        <Icon name={data.icon} className="w-5 h-5" />
-                                    </span>
-                                    <span className="flex-1 text-right">{data.title}</span>
-                                    {activeTab === key && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>}
-                                </button>
-                            ))}
-                        </nav>
-
-                        {/* Footer / Developer Info */}
-                        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
-                            <div className="bg-gradient-to-tr from-emerald-600 to-emerald-500 rounded-2xl p-4 text-white shadow-lg shadow-emerald-500/20 relative overflow-hidden group cursor-default">
-                                <div className="absolute -right-6 -top-6 w-20 h-20 bg-white/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-                                <div className="absolute -left-6 -bottom-6 w-20 h-20 bg-emerald-800/20 rounded-full blur-2xl"></div>
-                                
-                                <div className="relative z-10 flex flex-col gap-3">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shrink-0">
-                                            <Icon name="code-2" className="w-5 h-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <p className="text-[10px] text-emerald-100 uppercase tracking-widest font-semibold mb-0.5">Developer</p>
-                                            <p className="text-sm font-bold leading-tight">Dr. Fatemeh Zarei</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="h-px w-full bg-white/20"></div>
-                                    
-                                    <div className="space-y-1.5">
-                                        <a href="mailto:healcono@gmail.com" className="flex items-center gap-2 text-xs text-emerald-50 hover:text-white transition-colors">
-                                            <Icon name="mail" className="w-3 h-3 opacity-70" />
-                                            <span className="font-mono tracking-tight">healcono@gmail.com</span>
-                                        </a>
-                                        <div className="flex items-center gap-2 text-xs text-emerald-50">
-                                             <Icon name="instagram" className="w-3 h-3 opacity-70" />
-                                            <span className="font-mono">@healthcono</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <h3 class="font-bold text-slate-400 text-xs uppercase tracking-wider mb-6">پیش‌نمایش زنده</h3>
+                        
+                        <div id="template-output" class="text-slate-800 leading-8 whitespace-pre-wrap font-serif text-lg">
+                            <!-- Text generates here -->
                         </div>
-                    </aside>
-
-                    {/* Main Content Area */}
-                    <main className="lg:mr-72 min-h-screen transition-all duration-300 p-4 lg:p-8">
-                        <div className="max-w-5xl mx-auto">
-                            {/* Page Header */}
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-                                <div>
-                                    <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                                        {SECTIONS[activeTab].title}
-                                    </h2>
-                                    <p className="text-slate-500 text-sm mt-1">دستیار هوشمند موفقیت تحصیلی شما</p>
-                                </div>
-                                <button 
-                                    onClick={() => setZenMode(true)}
-                                    className="flex items-center gap-2 bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-600 hover:text-emerald-700 px-4 py-2 rounded-xl transition-all shadow-sm group"
-                                >
-                                    <Icon name="flower-2" className="w-5 h-5 group-hover:rotate-45 transition-transform" />
-                                    <span className="font-medium">حالت تمرکز (Zen)</span>
-                                </button>
-                            </div>
-
-                            {/* Content Render */}
-                            {SECTIONS[activeTab].content}
-                        </div>
-                    </main>
-
-                    {/* Zen Mode Overlay */}
-                    {zenMode && <ZenMode onClose={() => setZenMode(false)} />}
-
+                    </div>
                 </div>
-            );
-        };
+            </div>
+        </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+    </main>
+
+    <script>
+        // --- Initialization ---
+        lucide.createIcons();
+        
+        // --- Tab Switching ---
+        function switchTab(tabId) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Show target
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update Sidebar UI
+            document.querySelectorAll('.nav-item').forEach(el => {
+                if (el.getAttribute('onclick').includes(tabId)) {
+                    el.className = 'nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm bg-academic-800 text-white border-r-4 border-sky-400 transition-colors';
+                } else {
+                    el.className = 'nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border-r-4 border-transparent';
+                }
+            });
+            
+            // Re-render icons for new content visibility
+            lucide.createIcons();
+
+            // Close mobile sidebar
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar.classList.contains('translate-x-full') && window.innerWidth < 1024) {
+                toggleSidebar();
+            }
+        }
+
+        // --- Sidebar Toggle ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('translate-x-full');
+        }
+
+        // --- Interactive Features ---
+        function copyChecklist() {
+            const text = `چک‌لیست دفاع:
+- [ ] اسلاید ۱: عنوان و تیم (۱ دقیقه)
+- [ ] اسلاید ۲-۴: بیان مسئله (۵ دقیقه)
+- [ ] اسلاید ۵: اهداف و فرضیات (۳ دقیقه)
+- [ ] اسلاید ۶-۷: مرور ادبیات (۳ دقیقه)
+- [ ] اسلاید ۸-۱۵: روش‌شناسی (۱۲ دقیقه)
+- [ ] اسلاید ۱۶-۱۸: زمان‌بندی (۱ دقیقه)
+- [ ] اسلاید ۱۹: پرسش و پاسخ`;
+            navigator.clipboard.writeText(text);
+            alert('چک‌لیست در حافظه کپی شد!');
+        }
+
+        // --- Questions Logic ---
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        const questionsData = [
+            { q: "چرا این موضوع را انتخاب کردید؟", tip: "نگویید استاد گفت! بگویید بخاطر خلاء تحقیقاتی X و کاربرد Y." },
+            { q: "نوآوری تحقیق شما چیست؟", tip: "صریح باشید: ۱. روش جدید، ۲. جامعه جدید، ۳. ترکیب متغیرها." },
+            { q: "چرا از این روش آماری استفاده کردید؟", tip: "اشاره به رفرنس‌ها: طبق مطالعه فلانی، این روش برای خطای کمتر مناسب‌تر است." },
+            { q: "کاربرد عملی تحقیق چیست؟", tip: "مدیران صنعت X می‌توانند با این نتایج، هزینه Y را کاهش دهند." },
+            { q: "محدودیت اصلی کارتان چه بود؟", tip: "صادق باشید: عدم دسترسی به داده‌های دقیق یا محدودیت زمانی." }
+        ];
+
+        function showRandomQuestion() {
+            const random = questionsData[Math.floor(Math.random() * questionsData.length)];
+            document.getElementById('rq-text').innerText = random.q;
+            document.getElementById('rq-tip').innerText = "راهنما: " + random.tip;
+            document.getElementById('random-question-box').classList.remove('hidden');
+        }
+
+        // --- Glossary Logic ---
+        const glossaryData = [
+            { term: "Validity", fa: "روایی (اعتبار)", def: "آیا ابزار ما واقعاً همان چیزی را می‌سنجد که باید بسنجد؟", tip: "کاربرد: روایی صوری توسط ۵ متخصص تایید شد." },
+            { term: "Reliability", fa: "پایایی (قابلیت اعتماد)", def: "ثبات نتایج در تکرار آزمون.", tip: "کاربرد: آلفای کرونباخ ۰.۸۵ نشان‌دهنده پایایی است." },
+            { term: "Generalizability", fa: "تعمیم‌پذیری", def: "آیا نتایج را می‌توان به کل جامعه بسط داد؟", tip: "کاربرد: بدلیل نمونه‌گیری تصادفی، نتایج قابل تعمیم است." },
+            { term: "Research Gap", fa: "خلاء تحقیقاتی", def: "آنچه پژوهش‌های قبلی انجام نداده‌اند و شما انجام می‌دهید.", tip: "کاربرد: این گپ نقطه شروع پژوهش من بود." },
+            { term: "Significance Level", fa: "سطح معناداری (P-value)", def: "احتمال اینکه نتایج شانسی باشد.", tip: "کاربرد: چون P < 0.05 است، فرضیه تایید می‌شود." },
+            { term: "Limitations", fa: "محدودیت‌ها", def: "موانعی که خارج از کنترل محقق بوده است.", tip: "کاربرد: عدم همکاری سازمان X از محدودیت‌های تحقیق بود." },
+            { term: "Contribution", fa: "نوآوری / مشارکت", def: "ارزش افزوده‌ای که کار شما به علم اضافه کرده است.", tip: "کاربرد: اصلی‌ترین کانتریبیوشن این تز، مدل بومی..." }
+        ];
+
+        function renderGlossary(items) {
+            const grid = document.getElementById('glossary-grid');
+            grid.innerHTML = items.map(item => `
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative group">
+                    <button onclick="toggleStar(this)" class="absolute top-4 left-4 text-slate-300 hover:text-yellow-400 transition-colors"><i data-lucide="star" class="w-5 h-5"></i></button>
+                    <div class="flex justify-between items-start pr-2 border-r-4 border-academic-500 pl-8">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">${item.term}</h4>
+                            <span class="text-sm text-academic-600 font-medium">${item.fa}</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-sm mt-3 leading-relaxed">${item.def}</p>
+                    <div class="mt-3 bg-slate-50 p-2 rounded text-xs text-slate-500 flex gap-2">
+                        <i data-lucide="message-square" class="w-3 h-3 mt-0.5"></i>
+                        <span>${item.tip}</span>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+            
+            const noRes = document.getElementById('no-results');
+            if(items.length === 0) noRes.classList.remove('hidden');
+            else noRes.classList.add('hidden');
+        }
+
+        // Initial render
+        renderGlossary(glossaryData);
+
+        function filterGlossary() {
+            const query = document.getElementById('glossary-search').value.toLowerCase();
+            const filtered = glossaryData.filter(item => 
+                item.term.toLowerCase().includes(query) || 
+                item.fa.includes(query)
+            );
+            renderGlossary(filtered);
+        }
+
+        function toggleStar(btn) {
+            if(btn.classList.contains('text-yellow-400')) {
+                btn.classList.remove('text-yellow-400');
+                btn.classList.add('text-slate-300');
+                btn.innerHTML = '<i data-lucide="star" class="w-5 h-5"></i>';
+            } else {
+                btn.classList.add('text-yellow-400');
+                btn.classList.remove('text-slate-300');
+                btn.innerHTML = '<i data-lucide="star" class="w-5 h-5" fill="currentColor"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        // --- Templates Logic ---
+        let currentTemplate = 'email';
+
+        function setTemplateType(type) {
+            currentTemplate = type;
+            // Update active button state
+            document.querySelectorAll('.template-btn').forEach(btn => {
+                btn.classList.remove('bg-academic-50', 'border-academic-500', 'text-academic-700');
+                if(btn.getAttribute('onclick').includes(type)) {
+                    btn.classList.add('bg-academic-50', 'border-academic-500', 'text-academic-700');
+                }
+            });
+            updateTemplate();
+        }
+
+        function updateTemplate() {
+            const prof = document.getElementById('profName').value || '[نام استاد]';
+            const student = document.getElementById('studentName').value || '[نام شما]';
+            const topic = document.getElementById('thesisTopic').value || '[عنوان پایان‌نامه]';
+            
+            let text = '';
+            
+            if (currentTemplate === 'email') {
+                text = `با سلام و احترام؛\nاستاد گرامی جناب آقای/سرکار خانم ${prof}،\n\nبدین‌وسیله از جنابعالی دعوت می‌گردد تا به عنوان داور در جلسه دفاع از پایان‌نامه اینجانب ${student} با موضوع «${topic}» حضور بهم رسانید.\nنظرات ارزشمند شما موجب غنای علمی این پژوهش خواهد بود.\n\nپیشاپیش از بذل توجه شما سپاسگزارم.\nارادتمند،\n${student}`;
+            } else if (currentTemplate === 'slide') {
+                text = `با سپاس بیکران از خداوند متعال که توفیق این پژوهش را عطا فرمود.\n\nاز استاد راهنمای گرانقدر، ${prof} که با صبوری و دانش خود مسیر را روشن نمودند، صمیمانه سپاسگزارم.\n\nهمچنین از داوران محترم که با مطالعه دقیق این رساله و ارائه نظرات ارزشمند، به ارتقای کیفیت آن کمک می‌کنند، تشکر می‌نمایم.\n\n${student}`;
+            } else if (currentTemplate === 'followup') {
+                text = `با سلام و عرض ادب؛\nاستاد ارجمند ${prof}،\n\nاحتراماً به پیوست نسخه اصلاح‌شده پایان‌نامه با عنوان «${topic}» که بر اساس نظرات اصلاحی جلسه دفاع مورخ ... بازنگری شده است، تقدیم می‌گردد.\nموارد اصلاحی در متن با رنگ متفاوت مشخص شده‌اند.\n\nمنتظر تایید نهایی جنابعالی جهت انجام امور فارغ‌التحصیلی هستم.\nبا تشکر،\n${student}`;
+            }
+
+            document.getElementById('template-output').innerText = text;
+        }
+
+        function copyTemplate() {
+            const text = document.getElementById('template-output').innerText;
+            navigator.clipboard.writeText(text);
+            alert('متن کپی شد!');
+        }
+        
+        // Initial Template Render
+        updateTemplate();
+        
+        // --- Progress Tracker Logic ---
+        function updateProgress(val) {
+             const circle = document.querySelector('circle:nth-child(2)');
+             const percentText = document.querySelector('.relative span');
+             const circumference = 440; // 2 * pi * 70
+             const offset = circumference - (val / 100) * circumference;
+             
+             circle.style.strokeDashoffset = offset;
+             percentText.innerText = val + '%';
+        }
+
     </script>
 </body>
 </html>
