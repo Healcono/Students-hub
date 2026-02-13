@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Defa | دستیار هوشمند دفاع</title>
+    <title>دفاع‌یار - دستیار هوشمند دانشجویان</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,6 +40,27 @@
                             900: '#0f172a',
                             800: '#1e293b',
                             700: '#334155',
+                        },
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        royal: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        gold: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
                         }
                     }
                 },
@@ -64,6 +85,12 @@
             background-color: #059669;
             border-color: #059669;
         }
+        /* Custom Checkbox for Etiquette Tab (Gold) */
+        .checkbox-wrapper.gold input:checked + div {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+        }
+
         .checkbox-wrapper input:checked + div svg {
             display: block;
         }
@@ -114,6 +141,15 @@
         input[type=range]:focus {
             outline: none; 
         }
+
+        /* Breathing Animation */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 0.4; }
+        }
+        .breathing-circle {
+            animation: breathe 4s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
@@ -124,7 +160,7 @@
             <div class="w-8 h-8 bg-primary-50 text-primary-600 rounded-lg flex items-center justify-center">
                 <i data-lucide="shield-check" class="w-5 h-5"></i>
             </div>
-            <span class="font-bold text-gray-800">Defa</span>
+            <span class="font-bold text-gray-800">DefaYar</span>
         </div>
         <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors">
             <i data-lucide="menu"></i>
@@ -133,6 +169,22 @@
 
     <!-- Overlay -->
     <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/30 z-40 hidden lg:hidden transition-opacity opacity-0"></div>
+
+    <!-- Zen Mode Overlay -->
+    <div id="zen-overlay" class="fixed inset-0 bg-navy-950 z-[60] hidden flex-col items-center justify-center transition-opacity duration-500 opacity-0">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+        <div class="relative z-10 text-center">
+            <div class="w-48 h-48 bg-gold-400/20 rounded-full blur-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 breathing-circle"></div>
+            <div class="w-32 h-32 bg-gold-500 rounded-full flex items-center justify-center text-navy-900 mx-auto mb-8 shadow-[0_0_40px_rgba(245,158,11,0.4)] relative">
+                <i data-lucide="wind" class="w-12 h-12"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-white mb-4">نفس عمیق بکشید...</h2>
+            <p class="text-slate-300 text-lg mb-8">دم (۴ ثانیه) ... نگه‌دارید (۲ ثانیه) ... بازدم (۴ ثانیه)</p>
+            <button onclick="stopZenMode()" class="px-8 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm transition-all">
+                بازگشت به برنامه
+            </button>
+        </div>
+    </div>
 
     <!-- Sidebar -->
     <aside id="sidebar" class="fixed top-0 right-0 h-full bg-dark-900 text-white w-72 z-50 transform translate-x-full lg:translate-x-0 transition-transform duration-300 shadow-2xl lg:shadow-none flex flex-col">
@@ -143,8 +195,8 @@
                     <i data-lucide="shield-check" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg tracking-tight">Defa</h1>
-                    <p class="text-xs text-gray-400">دستیار هوشمند دانشجو</p>
+                    <h1 class="font-bold text-lg tracking-tight">DefaYar</h1>
+                    <p class="text-xs text-gray-400">دستیار هوشمند دفاع</p>
                 </div>
             </div>
             <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-white">
@@ -184,6 +236,12 @@
                 <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
+            <button onclick="switchTab('etiquette')" id="nav-etiquette" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+                <i data-lucide="user-check" class="w-5 h-5"></i>
+                <span class="flex-1 text-right font-medium">آداب و تشریفات دفاع</span>
+                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
+            </button>
+
             <button onclick="switchTab('templates')" id="nav-templates" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
                 <i data-lucide="pen-tool" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">متن‌های رسمی و تشکر</span>
@@ -191,6 +249,17 @@
             </button>
 
         </nav>
+
+        <!-- Sidebar Zen Mode (Footer Area) -->
+        <div class="px-4 pb-2">
+            <button onclick="startZenMode()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-navy-800 text-gold-400 border border-gold-500/20 hover:bg-navy-950 hover:border-gold-500/40 hover:shadow-lg transition-all duration-300 group">
+                <div class="relative w-6 h-6 flex items-center justify-center">
+                    <i data-lucide="wind" class="w-5 h-5 relative z-10"></i>
+                    <div class="absolute inset-0 bg-gold-400/20 rounded-full animate-ping group-hover:bg-gold-400/30"></div>
+                </div>
+                <span class="flex-1 text-right font-bold text-sm">حالت آرامش (Zen Mode)</span>
+            </button>
+        </div>
 
         <!-- Sidebar Footer -->
         <div class="p-4 bg-dark-800/50 border-t border-gray-800">
@@ -862,6 +931,122 @@
             </div>
         </div>
 
+        <!-- Tab Content: Defense Etiquette -->
+        <div id="content-etiquette" class="hidden fade-in max-w-5xl mx-auto space-y-8">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between items-end gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-royal-900 flex items-center gap-2">
+                        <i data-lucide="user-check" class="text-royal-700"></i>
+                        آداب و تشریفات دفاع
+                    </h1>
+                    <p class="text-gray-500 text-sm mt-1">اصول حرفه‌ای، پوشش و زبان بدن برای یک ارائه تاثیرگذار</p>
+                </div>
+            </div>
+
+            <!-- 4 Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Protocol Card -->
+                <div class="bg-white rounded-2xl p-6 border border-royal-100 shadow-sm hover:shadow-md transition-all group">
+                    <div class="w-12 h-12 bg-royal-50 text-royal-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-royal-600 group-hover:text-white transition-colors">
+                        <i data-lucide="scroll-text" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2">کسب اجازه (Protocol)</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                        پیش از شروع، حتماً از "نماینده تحصیلات تکمیلی" و سپس "اساتید راهنما و داور" برای آغاز صحبت یا نشستن اجازه بگیرید.
+                    </p>
+                    <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-500 border border-gray-100 flex items-center justify-between gap-2">
+                        <span>«با کسب اجازه از محضر اساتید محترم...»</span>
+                        <i data-lucide="copy" class="w-3 h-3 cursor-pointer hover:text-royal-600" title="کپی"></i>
+                    </div>
+                </div>
+
+                <!-- Attire Card -->
+                <div class="bg-white rounded-2xl p-6 border border-royal-100 shadow-sm hover:shadow-md transition-all group">
+                    <div class="w-12 h-12 bg-royal-50 text-royal-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-royal-600 group-hover:text-white transition-colors">
+                        <i data-lucide="shirt" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2">پوشش و ظاهر (Attire)</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i data-lucide="user" class="w-4 h-4 text-royal-500 mt-0.5 shrink-0"></i>
+                            <p class="text-xs text-gray-600 leading-relaxed"><span class="font-bold">آقایان:</span> کت و شلوار رسمی (تیره) یا پیراهن اتو کشیده، کفش رسمی.</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i data-lucide="user-check" class="w-4 h-4 text-royal-500 mt-0.5 shrink-0"></i>
+                            <p class="text-xs text-gray-600 leading-relaxed"><span class="font-bold">خانم‌ها:</span> مقنعه رسمی، مانتو شلوار اداری، کفش راحت و رسمی.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body Language Card -->
+                <div class="bg-white rounded-2xl p-6 border border-royal-100 shadow-sm hover:shadow-md transition-all group">
+                    <div class="w-12 h-12 bg-royal-50 text-royal-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-royal-600 group-hover:text-white transition-colors">
+                        <i data-lucide="user" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2">زبان بدن (Body Language)</h3>
+                    <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside marker:text-royal-500">
+                        <li>ایستادن صاف و با اعتماد به نفس</li>
+                        <li>عدم استفاده از جیب یا بازی با دست</li>
+                        <li>ارتباط چشمی چرخشی با تمام داوران</li>
+                    </ul>
+                </div>
+
+                <!-- Speech Control Card -->
+                <div class="bg-white rounded-2xl p-6 border border-royal-100 shadow-sm hover:shadow-md transition-all group">
+                    <div class="w-12 h-12 bg-royal-50 text-royal-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-royal-600 group-hover:text-white transition-colors">
+                        <i data-lucide="mic" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2">مدیریت بیان (Speech Control)</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-3">
+                        استرس باعث تند صحبت کردن می‌شود. سرعت کلام را کنترل کنید و از بطری آب برای مدیریت خشکی گلو استفاده نمایید.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tech Kit & Checklist Split -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Emergency Tech Kit (2 cols) -->
+                <div class="lg:col-span-2 bg-gradient-to-br from-royal-50 to-white rounded-2xl p-6 border border-royal-100 shadow-sm">
+                    <h2 class="font-bold text-royal-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="briefcase" class="text-royal-700"></i>
+                        جعبه ابزار اضطراری (Emergency Tech Kit)
+                    </h2>
+                    
+                    <div class="grid sm:grid-cols-3 gap-4">
+                        <div class="flex flex-col items-center text-center p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-royal-300 transition-colors">
+                            <i data-lucide="file-text" class="w-8 h-8 text-red-500 mb-2"></i>
+                            <h3 class="font-bold text-sm text-gray-800">نسخه PDF</h3>
+                            <p class="text-[10px] text-gray-500 mt-1">بکاپ اسلایدها در فرمت PDF</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-royal-300 transition-colors">
+                            <i data-lucide="printer" class="w-8 h-8 text-gray-600 mb-2"></i>
+                            <h3 class="font-bold text-sm text-gray-800">Handout چاپی</h3>
+                            <p class="text-[10px] text-gray-500 mt-1">پرینت اسلایدها برای داوران</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-royal-300 transition-colors">
+                            <i data-lucide="cloud" class="w-8 h-8 text-blue-500 mb-2"></i>
+                            <h3 class="font-bold text-sm text-gray-800">فلش و کلود</h3>
+                            <p class="text-[10px] text-gray-500 mt-1">ذخیره در تلگرام/ایمیل + USB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5-Minute Checklist (1 col) -->
+                <div class="bg-royal-900 rounded-2xl p-6 border border-royal-800 text-white shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gold-400 to-amber-600"></div>
+                    <h2 class="font-bold text-gold-400 mb-4 flex items-center gap-2 text-sm">
+                        <i data-lucide="list-checks" class="w-4 h-4"></i>
+                        چک‌لیست ۵ دقیقه قبل از دفاع
+                    </h2>
+                    <div class="space-y-3" id="etiquette-checklist-container">
+                        <!-- JS will populate -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Tab Content: Official Templates -->
         <div id="content-templates" class="hidden fade-in max-w-5xl mx-auto space-y-8">
             <!-- Header -->
@@ -970,6 +1155,14 @@
             { id: 'rcl_6', text: 'تدوین فصول ۱ تا ۳' },
         ];
 
+        // Etiquette Checklist Data (5-Minute Before)
+        const etiquetteChecklistItems = [
+            { id: 'ecl_1', text: 'گوشی موبایل سایلنت؟' },
+            { id: 'ecl_2', text: 'وضعیت ظاهری چک شد؟' },
+            { id: 'ecl_3', text: 'بطری آب آماده؟' },
+            { id: 'ecl_4', text: 'نفس عمیق کشیدی؟' },
+        ];
+
         // Question Bank Data
         const questionsDB = [
             { 
@@ -1017,19 +1210,22 @@
         let currentTemplateType = 'speech';
 
         // Render Checklists
-        function renderChecklist(items, containerId) {
+        function renderChecklist(items, containerId, customClass = '') {
             const container = document.getElementById(containerId);
             if(!container) return;
 
             container.innerHTML = items.map(item => {
                 const isChecked = localStorage.getItem(item.id) === 'true';
+                // If customClass contains 'gold', use the gold wrapper style, otherwise default
+                const wrapperClass = customClass ? `checkbox-wrapper ${customClass}` : 'checkbox-wrapper';
+                
                 return `
-                    <label class="checkbox-wrapper flex items-start gap-3 cursor-pointer group">
+                    <label class="${wrapperClass} flex items-start gap-3 cursor-pointer group">
                         <input type="checkbox" class="hidden" onchange="toggleCheck('${item.id}', this)" ${isChecked ? 'checked' : ''}>
                         <div class="w-5 h-5 rounded border border-gray-300 flex items-center justify-center bg-white transition-all duration-200 mt-0.5 shrink-0 group-hover:border-primary-400">
                             <svg class="w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                         </div>
-                        <span class="text-sm text-gray-600 select-none group-hover:text-gray-900 transition-colors ${isChecked ? 'line-through text-gray-400' : ''}">${item.text}</span>
+                        <span class="text-sm select-none transition-colors ${isChecked ? 'line-through opacity-60' : ''}">${item.text}</span>
                     </label>
                 `;
             }).join('');
@@ -1039,14 +1235,16 @@
             localStorage.setItem(id, el.checked);
             const span = el.parentElement.querySelector('span');
             if(el.checked) {
-                span.classList.add('line-through', 'text-gray-400');
+                span.classList.add('line-through', 'opacity-60');
             } else {
-                span.classList.remove('line-through', 'text-gray-400');
+                span.classList.remove('line-through', 'opacity-60');
             }
         }
 
         renderChecklist(checklistItems, 'checklist-container');
         renderChecklist(reportChecklistItems, 'report-checklist-container');
+        // Render Etiquette Checklist with Gold theme
+        renderChecklist(etiquetteChecklistItems, 'etiquette-checklist-container', 'gold');
 
         // Mobile Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
@@ -1084,7 +1282,7 @@
             }
 
             // Show Content
-            ['content-proposal', 'content-questions', 'content-glossary', 'content-templates', 'content-report', 'content-thesis'].forEach(id => {
+            ['content-proposal', 'content-questions', 'content-glossary', 'content-templates', 'content-report', 'content-thesis', 'content-etiquette'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
@@ -1241,6 +1439,15 @@
                 console.error('خطا در کپی متن', err);
             });
         }
+        
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('متن با موفقیت کپی شد!');
+            }).catch(err => {
+                console.error('خطا در کپی متن', err);
+            });
+        }
 
         // Progress Slider Logic
         function updateProgress(value) {
@@ -1256,6 +1463,25 @@
             circle.style.strokeDashoffset = offset;
             display.innerText = `${value}%`;
             text.innerText = `${value}%`;
+        }
+
+        // Zen Mode Logic
+        function startZenMode() {
+            const overlay = document.getElementById('zen-overlay');
+            overlay.classList.remove('hidden', 'flex');
+            overlay.classList.add('flex');
+            // Trigger reflow
+            void overlay.offsetWidth;
+            overlay.classList.remove('opacity-0');
+        }
+
+        function stopZenMode() {
+            const overlay = document.getElementById('zen-overlay');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => {
+                overlay.classList.remove('flex');
+                overlay.classList.add('hidden');
+            }, 500);
         }
 
         // Initial Render
