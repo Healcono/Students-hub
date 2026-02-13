@@ -89,6 +89,31 @@
         /* Star Animation */
         .star-icon { transition: all 0.2s ease; }
         .star-icon.active { fill: #fbbf24; color: #fbbf24; transform: scale(1.1); }
+
+        /* Paper texture for templates */
+        .paper-texture {
+            background-color: #fffdf5;
+            background-image: linear-gradient(#f1f5f9 1px, transparent 1px);
+            background-size: 100% 2rem;
+            line-height: 2rem;
+        }
+        
+        /* Circular Progress */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+        }
+        input[type=range]:focus {
+            outline: none; 
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
@@ -135,6 +160,12 @@
                 <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
             </button>
 
+            <button onclick="switchTab('report')" id="nav-report" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                <span class="flex-1 text-right font-medium">گزارش شش‌ماهه</span>
+                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
+            </button>
+
             <button onclick="switchTab('questions')" id="nav-questions" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
                 <i data-lucide="message-circle-question" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">بانک سوالات داوران</span>
@@ -147,10 +178,10 @@
                 <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
-            <button disabled class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-white/5 cursor-not-allowed opacity-60">
-                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-                <span class="flex-1 text-right">گزارش شش‌ماهه</span>
-                <span class="text-[10px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full border border-gray-700">بزودی</span>
+            <button onclick="switchTab('templates')" id="nav-templates" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+                <i data-lucide="pen-tool" class="w-5 h-5"></i>
+                <span class="flex-1 text-right font-medium">متن‌های رسمی و تشکر</span>
+                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
             <button disabled class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-white/5 cursor-not-allowed opacity-60">
@@ -338,6 +369,158 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+
+        <!-- Tab Content: Progress Report -->
+        <div id="content-report" class="hidden fade-in max-w-5xl mx-auto space-y-8">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between items-end gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                        <i data-lucide="trending-up" class="text-primary-600"></i>
+                        گزارش پیشرفت تحصیلی
+                    </h1>
+                    <p class="text-gray-500 text-sm mt-1">ویژه دانشجویان دکتری جهت ارائه به کمیته نظارت</p>
+                </div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm relative overflow-hidden">
+                <h2 class="font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <i data-lucide="pie-chart" class="w-5 h-5 text-primary-500"></i>
+                    وضعیت کلی پیشرفت پایان‌نامه
+                </h2>
+                
+                <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+                    <!-- Circular Progress -->
+                    <div class="relative w-40 h-40 shrink-0">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle class="text-gray-100" stroke-width="12" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80"></circle>
+                            <circle id="progress-circle" class="text-primary-500 transition-all duration-1000 ease-out" stroke-width="12" stroke-dasharray="440" stroke-dashoffset="440" stroke-linecap="round" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="progress-text" class="text-3xl font-bold text-gray-800">0%</span>
+                            <span class="text-xs text-gray-400">تکمیل شده</span>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="flex-1 w-full space-y-6">
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-2 font-medium">
+                                <span>درصد پیشرفت خود را تنظیم کنید:</span>
+                                <span id="progress-value-display">0%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="0" id="progress-slider" oninput="updateProgress(this.value)" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600">
+                            <div class="flex justify-between text-xs text-gray-400 mt-2 px-1">
+                                <span>شروع</span>
+                                <span>دفاع نهایی</span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-primary-50 rounded-xl border border-primary-100 flex items-start gap-3">
+                            <i data-lucide="info" class="w-5 h-5 text-primary-600 mt-0.5 shrink-0"></i>
+                            <p class="text-sm text-primary-800 leading-relaxed">
+                                این درصد نمایانگر کل مسیر از تصویب پروپوزال تا دفاع نهایی است. برای جلسه گزارش شش‌ماهه، معمولاً پیشرفت‌های ۲۰٪ تا ۸۰٪ ارائه می‌شود.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roadmap Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600 mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">فعالیت‌های انجام شده</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        لیست دقیق کارهایی که در ۶ ماه گذشته تکمیل کرده‌اید. شفاف و تیتروار بنویسید.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside marker:text-green-500">
+                        <li>مطالعات کتابخانه‌ای</li>
+                        <li>گردآوری داده‌های اولیه</li>
+                        <li>آنالیز بخش اول</li>
+                    </ul>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="file-text" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">خروجی‌های علمی</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        محصولات ملموس پژوهش شما. داوران عاشق دیدن خروجی هستند.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside marker:text-blue-500">
+                        <li>مقالات چاپ شده یا تحت داوری</li>
+                        <li>مدل‌های مفهومی طراحی شده</li>
+                        <li>دیتاست‌های پاکسازی شده</li>
+                    </ul>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-red-600 mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">موانع و چالش‌ها</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        مشکلاتی که باعث کندی پیشرفت شده‌اند را صادقانه اما با راه حل بیان کنید.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside marker:text-red-500">
+                        <li>مشکلات دسترسی به نمونه‌ها</li>
+                        <li>چالش‌های فنی آزمایشگاه</li>
+                        <li>محدودیت‌های مالی یا زمانی</li>
+                    </ul>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">برنامه آتی</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">
+                        نقشه راه ۶ ماه آینده. باید واقع‌بینانه و زمان‌بندی شده باشد.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside marker:text-purple-500">
+                        <li>تکمیل فصل ۴</li>
+                        <li>ارسال مقاله دوم</li>
+                        <li>آمادگی برای پیش‌دفاع</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
+                <!-- Milestones Checklist -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <div class="flex items-center gap-2 mb-6 pb-4 border-b border-gray-100">
+                        <i data-lucide="list-checks" class="text-primary-600"></i>
+                        <h2 class="font-bold text-gray-800">نقاط عطف کلیدی (Milestones)</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="report-checklist-container">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Pro Tip -->
+                <div class="bg-gradient-to-br from-dark-800 to-dark-900 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden flex flex-col justify-center">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 opacity-10 rounded-full -translate-y-10 translate-x-10 blur-xl"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm text-yellow-400">
+                            <i data-lucide="lightbulb" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">استراتژی دفاع</h3>
+                        <p class="text-sm text-gray-300 leading-relaxed">
+                            "تمرکز بر پیشرفت باشد، نه فقط تئوری. حتی اگر داده‌های شما هنوز خام یا اولیه هستند، حتماً نمودار و ارقام ارائه دهید تا اساتید پیشرفت کار را لمس کنند."
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -535,14 +718,84 @@
             </div>
         </div>
 
-        <!-- Placeholder for other tabs -->
-        <div id="content-report" class="hidden fade-in flex items-center justify-center min-h-[60vh]">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
-                    <i data-lucide="clock" class="w-8 h-8"></i>
+        <!-- Tab Content: Official Templates -->
+        <div id="content-templates" class="hidden fade-in max-w-5xl mx-auto space-y-8">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                        <i data-lucide="pen-tool" class="text-primary-600"></i>
+                        متن‌های رسمی و تشکر
+                    </h1>
+                    <p class="text-gray-500 text-sm mt-1">تولید خودکار متن‌های رسمی برای ایمیل، اسلاید و مکاتبات</p>
                 </div>
-                <h2 class="text-xl font-bold text-gray-600">بخش گزارش شش‌ماهه</h2>
-                <p class="text-gray-400 mt-2">این بخش در بروزرسانی‌های بعدی فعال خواهد شد.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left: Configuration Form -->
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm sticky top-24">
+                        <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="user-cog" class="w-4 h-4 text-primary-500"></i>
+                            اطلاعات پایه
+                        </h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-1.5">نام دانشجو</label>
+                                <input type="text" id="tpl-student" oninput="updateTemplatePreview()" class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition-all text-sm" placeholder="مثال: علی محمدی">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-1.5">نام استاد راهنما</label>
+                                <input type="text" id="tpl-supervisor" oninput="updateTemplatePreview()" class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition-all text-sm" placeholder="مثال: دکتر حسینی">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-1.5">موضوع تحقیق</label>
+                                <textarea id="tpl-topic" oninput="updateTemplatePreview()" rows="3" class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition-all text-sm resize-none" placeholder="مثال: بررسی تاثیر هوش مصنوعی بر سلامت..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Template Preview -->
+                <div class="lg:col-span-8 space-y-6">
+                    <!-- Tabs -->
+                    <div class="flex flex-wrap gap-2 p-1.5 bg-gray-100/80 rounded-xl backdrop-blur-sm">
+                        <button onclick="setTemplateType('speech')" id="btn-tpl-speech" class="flex-1 min-w-[120px] px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm bg-white text-primary-700">
+                            متن اسلاید سپاسگزاری
+                        </button>
+                        <button onclick="setTemplateType('email')" id="btn-tpl-email" class="flex-1 min-w-[120px] px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-gray-500 hover:text-gray-700 hover:bg-white/50">
+                            ایمیل دعوت از داوران
+                        </button>
+                        <button onclick="setTemplateType('followup')" id="btn-tpl-followup" class="flex-1 min-w-[120px] px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-gray-500 hover:text-gray-700 hover:bg-white/50">
+                            پیگیری اصلاحات
+                        </button>
+                    </div>
+
+                    <!-- Editor/Preview -->
+                    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col min-h-[400px]">
+                        <div class="bg-gray-50 px-6 py-3 border-b border-gray-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-400/20 border border-red-400/50"></div>
+                                <div class="w-3 h-3 rounded-full bg-amber-400/20 border border-amber-400/50"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-400/20 border border-green-400/50"></div>
+                            </div>
+                            <span class="text-xs text-gray-400 font-mono">preview.txt</span>
+                        </div>
+                        
+                        <div class="flex-1 p-8 paper-texture relative">
+                            <div id="template-preview-content" class="font-serif text-lg text-gray-800 whitespace-pre-line leading-loose">
+                                <!-- Content will be injected here -->
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+                            <button onclick="copyTemplate()" class="flex items-center gap-2 bg-dark-800 hover:bg-dark-900 text-white px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-dark-800/20 active:scale-95">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                                <span>کپی متن</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -571,6 +824,16 @@
             { id: 'cl_5', text: 'تکمیل بخش روش‌شناسی' },
             { id: 'cl_6', text: 'طراحی اسلاید زمان‌بندی' },
             { id: 'cl_7', text: 'تمرین ارائه (حداقل ۳ بار)' },
+        ];
+
+        // Report Checklist Data
+        const reportChecklistItems = [
+            { id: 'rcl_1', text: 'تکمیل مرور ادبیات' },
+            { id: 'rcl_2', text: 'انجام مطالعه پایلوت' },
+            { id: 'rcl_3', text: 'نگارش پیش‌نویس مقاله اول' },
+            { id: 'rcl_4', text: 'جمع‌آوری داده‌های اصلی' },
+            { id: 'rcl_5', text: 'تحلیل اولیه داده‌ها' },
+            { id: 'rcl_6', text: 'تدوین فصول ۱ تا ۳' },
         ];
 
         // Question Bank Data
@@ -608,11 +871,23 @@
             { id: 'g7', termEn: 'Contribution', termFa: 'دستاور/نوآوری', def: 'ارزش افزوده علمی یا عملی که پژوهش شما ایجاد کرده است.', tip: 'در اسلاید آخر: «مهمترین دستاورد این پژوهش ارائه مدل بومی X است.»', category: 'General Research' }
         ];
 
-        // Render Checklist
-        const checklistContainer = document.getElementById('checklist-container');
-        
-        function renderChecklist() {
-            checklistContainer.innerHTML = checklistItems.map(item => {
+        // Templates Data
+        const templatesDB = {
+            speech: "با نام و یاد خدا.\n\nبا سپاس از بذل توجه شما اساتید فرهیخته، و تشکر ویژه از استاد راهنمای دلسوزم [supervisor] که در انجام پژوهش «[topic]» همواره حامی و راهنمای من بودند.\n\nهمچنین از داوران محترم که زحمت بررسی این پایان‌نامه را متقبل شدند صمیمانه قدردانی می‌کنم.\n\nاکنون مشتاقانه آماده شنیدن نظرات و راهنمایی‌های ارزشمند شما جهت ارتقای کیفی این پژوهش هستم.",
+            
+            email: "موضوع: دعوت به جلسه دفاع از پایان‌نامه - [student]\n\nاستاد ارجمند، جناب آقای/سرکار خانم دکتر [نام داور]\nبا سلام و احترام،\n\nبدین‌وسیله از جنابعالی دعوت می‌شود تا به عنوان داور در جلسه دفاع از پایان‌نامه اینجانب [student] با موضوع «[topic]» که با راهنمایی استاد گرانقدر [supervisor] انجام شده است، حضور بهم رسانید.\n\nنظرات ارزشمند شما موجب غنای این پژوهش خواهد بود.\n\nزمان: ...\nمکان: ...\n\nبا تشکر\n[student]",
+            
+            followup: "استاد گرامی، با سلام و احترام.\n\nپیرو جلسه دفاع و نکات ارزشمندی که در خصوص پایان‌نامه با عنوان «[topic]» فرمودید، به استحضار می‌رساند که اصلاحات مدنظر جنابعالی به شرح زیر در متن اعمال گردید:\n\n۱- ...\n۲- ...\n\nفایل نهایی جهت بازبینی و تایید نهایی خدمتتان ارسال می‌گردد.\nپیشاپیش از حسن نظر و راهنمایی‌های شما سپاسگزارم.\n\nارادتمند،\n[student]"
+        };
+
+        let currentTemplateType = 'speech';
+
+        // Render Checklists
+        function renderChecklist(items, containerId) {
+            const container = document.getElementById(containerId);
+            if(!container) return;
+
+            container.innerHTML = items.map(item => {
                 const isChecked = localStorage.getItem(item.id) === 'true';
                 return `
                     <label class="checkbox-wrapper flex items-start gap-3 cursor-pointer group">
@@ -636,7 +911,8 @@
             }
         }
 
-        renderChecklist();
+        renderChecklist(checklistItems, 'checklist-container');
+        renderChecklist(reportChecklistItems, 'report-checklist-container');
 
         // Mobile Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
@@ -674,7 +950,7 @@
             }
 
             // Show Content
-            ['content-proposal', 'content-questions', 'content-glossary', 'content-report', 'content-thesis'].forEach(id => {
+            ['content-proposal', 'content-questions', 'content-glossary', 'content-templates', 'content-report', 'content-thesis'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
@@ -684,6 +960,14 @@
             if(window.innerWidth < 1024) {
                 toggleSidebar();
             }
+            
+            // Initial Render for new tab if needed
+            if(tabId === 'templates') {
+                updateTemplatePreview();
+            }
+
+            // Re-render icons if needed
+            lucide.createIcons();
         }
 
         // Accordion Logic
@@ -724,6 +1008,8 @@
         // Glossary Logic
         function renderGlossary(terms = glossaryDB) {
             const grid = document.getElementById('glossary-grid');
+            if(!grid) return;
+            
             grid.innerHTML = terms.map(item => {
                 const isFav = localStorage.getItem('fav_' + item.id) === 'true';
                 
@@ -778,8 +1064,71 @@
             filterGlossary();
         }
 
+        // Templates Logic
+        function setTemplateType(type) {
+            currentTemplateType = type;
+            
+            // Update button styles
+            ['speech', 'email', 'followup'].forEach(t => {
+                const btn = document.getElementById('btn-tpl-' + t);
+                if (t === type) {
+                    btn.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:bg-white/50');
+                    btn.classList.add('shadow-sm', 'bg-white', 'text-primary-700', 'font-bold');
+                    btn.classList.remove('font-medium');
+                } else {
+                    btn.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:bg-white/50', 'font-medium');
+                    btn.classList.remove('shadow-sm', 'bg-white', 'text-primary-700', 'font-bold');
+                }
+            });
+            
+            updateTemplatePreview();
+        }
+
+        function updateTemplatePreview() {
+            const student = document.getElementById('tpl-student').value || '[نام دانشجو]';
+            const supervisor = document.getElementById('tpl-supervisor').value || '[نام استاد راهنما]';
+            const topic = document.getElementById('tpl-topic').value || '[موضوع تحقیق]';
+            
+            let text = templatesDB[currentTemplateType];
+            
+            // Replace placeholders
+            text = text.replace(/\[student\]/g, student);
+            text = text.replace(/\[supervisor\]/g, supervisor);
+            text = text.replace(/\[topic\]/g, topic);
+            
+            document.getElementById('template-preview-content').innerText = text;
+        }
+
+        function copyTemplate() {
+            const text = document.getElementById('template-preview-content').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('متن با موفقیت کپی شد!');
+            }).catch(err => {
+                console.error('خطا در کپی متن', err);
+            });
+        }
+
+        // Progress Slider Logic
+        function updateProgress(value) {
+            const circle = document.getElementById('progress-circle');
+            const display = document.getElementById('progress-value-display');
+            const text = document.getElementById('progress-text');
+            
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            
+            const offset = circumference - value / 100 * circumference;
+            
+            circle.style.strokeDashoffset = offset;
+            display.innerText = `${value}%`;
+            text.innerText = `${value}%`;
+        }
+
         // Initial Render
         renderGlossary();
+        setTemplateType('speech');
+        // Set initial progress
+        updateProgress(0);
 
     </script>
 </body>
