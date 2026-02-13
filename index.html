@@ -3,48 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DefaYar - Academic Dashboard</title>
+    <title>DefaYar | دفاع‌یار</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+    <!-- React & ReactDOM (v18) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX (v7) -->
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Vazirmatn', 'sans-serif'],
                     },
                     colors: {
-                        primary: {
+                        emerald: {
                             50: '#ecfdf5',
                             100: '#d1fae5',
                             200: '#a7f3d0',
                             300: '#6ee7b7',
                             400: '#34d399',
                             500: '#10b981',
-                            600: '#059669', // Healthcono Green Base
+                            600: '#059669',
                             700: '#047857',
                             800: '#065f46',
                             900: '#064e3b',
                         },
-                        dark: {
-                            900: '#1a202c',
-                        },
+                        teal: {
+                            800: '#115e59',
+                            900: '#134e4a',
+                        }
                     },
                     animation: {
+                        'fadeIn': 'fadeIn 0.5s ease-out forwards',
                         'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
@@ -54,210 +67,553 @@
             },
         }
     </script>
-
+    
     <style>
-        /* Minimal Scrollbar */
+        body { background-color: #f8fafc; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
-        
-        body {
-            background-color: #f8fafc;
-            color: #334155;
-        }
-
-        .nav-item {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-item.active {
-            background-color: #ecfdf5;
-            color: #059669;
-            font-weight: 700;
-        }
-        
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background-color: #059669;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-        }
-
-        .card-academic {
-            background: white;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            border-radius: 1rem;
-        }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="bg-slate-50 font-sans antialiased overflow-x-hidden selection:bg-primary-200 selection:text-primary-900">
+<body class="antialiased text-slate-800">
 
-    <!-- Mobile Header -->
-    <header class="lg:hidden bg-white/80 backdrop-blur-md border-b border-gray-200 p-4 sticky top-0 z-30 flex items-center justify-between shadow-sm">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-primary-100 text-primary-700 rounded-lg flex items-center justify-center">
-                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
-            </div>
-            <span class="font-bold text-gray-800">DefaYar</span>
+    <div id="root">
+        <!-- Initial Loading State -->
+        <div class="fixed inset-0 flex flex-col items-center justify-center bg-slate-50 z-[100]">
+            <div class="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mb-4"></div>
+            <p class="font-sans text-lg text-emerald-800 animate-pulse">در حال بارگذاری دفاع‌یار...</p>
         </div>
-        <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors">
-            <i data-lucide="menu"></i>
-        </button>
-    </header>
+    </div>
 
-    <!-- Overlay -->
-    <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 hidden lg:hidden transition-all duration-300 opacity-0"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo } = React;
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed top-0 right-0 h-full bg-white border-l border-gray-200 w-72 z-50 transform translate-x-full lg:translate-x-0 transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) shadow-2xl lg:shadow-none flex flex-col">
-        <!-- Sidebar Header -->
-        <div class="p-6 flex items-center justify-between border-b border-gray-50">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 text-white rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30 animate-float">
-                    <i data-lucide="shield-check" class="w-6 h-6"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-xl text-gray-900 tracking-tight font-sans">DefaYar</h1>
-                    <p class="text-xs text-primary-600 font-medium">@healthcono</p>
-                </div>
-            </div>
-            <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-red-500 transition-colors">
-                <i data-lucide="x"></i>
-            </button>
-        </div>
+        /**
+         * Safe Icon Component
+         * Isolates Lucide DOM manipulation from React to prevent crashes/Script Errors.
+         */
+        const Icon = ({ name, className }) => {
+            const containerRef = useRef(null);
 
-        <!-- Navigation -->
-        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
-            <button onclick="switchTab('proposal')" id="nav-proposal" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                <i data-lucide="shield" class="w-5 h-5"></i>
-                <span class="flex-1 text-right font-medium">دفاع از پروپوزال</span>
-            </button>
+            useEffect(() => {
+                if (containerRef.current && window.lucide) {
+                    // Create a temporary element to hold the icon
+                    const temp = document.createElement('div');
+                    const i = document.createElement('i');
+                    i.setAttribute('data-lucide', name);
+                    if (className) i.setAttribute('class', className);
+                    temp.appendChild(i);
+                    
+                    // Let Lucide process it
+                    window.lucide.createIcons({
+                        root: temp,
+                        nameAttr: 'data-lucide'
+                    });
+                    
+                    // Move the SVG to our container
+                    containerRef.current.innerHTML = temp.innerHTML;
+                }
+            }, [name, className]);
 
-            <button onclick="switchTab('report')" id="nav-report" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-                <span class="flex-1 text-right font-medium">گزارش شش‌ماهه</span>
-            </button>
+            return <span ref={containerRef} className="inline-flex items-center justify-center" />;
+        };
 
-            <button onclick="switchTab('thesis')" id="nav-thesis" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
-                <span class="flex-1 text-right font-medium">دفاع از پایان‌نامه</span>
-            </button>
-
-            <button onclick="switchTab('questions')" id="nav-questions" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                <i data-lucide="message-circle-question" class="w-5 h-5"></i>
-                <span class="flex-1 text-right font-medium">بانک سوالات داوران</span>
-            </button>
-
-            <button onclick="switchTab('glossary')" id="nav-glossary" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                <i data-lucide="book-a" class="w-5 h-5"></i>
-                <span class="flex-1 text-right font-medium">فرهنگ لغات تخصصی</span>
-            </button>
-
-            <button onclick="switchTab('etiquette')" id="nav-etiquette" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                <i data-lucide="user-check" class="w-5 h-5"></i>
-                <span class="flex-1 text-right font-medium">آداب و تشریفات دفاع</span>
-            </button>
-
-            <button onclick="switchTab('slide-design')" id="nav-slide-design" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                <i data-lucide="presentation" class="w-5 h-5"></i>
-                <span class="flex-1 text-right font-medium">طراحی حرفه‌ای اسلاید</span>
-            </button>
-        </nav>
-
-        <!-- Developer Info Footer -->
-        <div class="p-4 border-t border-gray-100 bg-gray-50/80 backdrop-blur">
-            <div class="bg-gradient-to-tr from-primary-600 to-primary-500 rounded-2xl p-4 text-white shadow-lg shadow-primary-500/20 relative overflow-hidden group">
-                <!-- Iconic decorative effect -->
-                <div class="absolute -right-6 -top-6 w-20 h-20 bg-white/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-                <div class="absolute -left-6 -bottom-6 w-20 h-20 bg-primary-800/20 rounded-full blur-2xl"></div>
-                
-                <div class="relative z-10 flex flex-col gap-3">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shrink-0">
-                            <i data-lucide="code-2" class="w-5 h-5 text-white"></i>
+        // --- Data & Content ---
+        const SECTIONS = {
+            proposal: {
+                title: "دفاع از پروپوزال",
+                icon: "shield",
+                content: (
+                    <div className="space-y-6 animate-fadeIn">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h3 className="text-xl font-bold text-emerald-700 mb-4 flex items-center gap-2">
+                                <Icon name="check-circle" className="w-5 h-5" />
+                                نکات کلیدی دفاع از پروپوزال
+                            </h3>
+                            <ul className="space-y-4 text-slate-600 leading-relaxed list-disc list-inside marker:text-emerald-500">
+                                <li><strong className="text-slate-800">تسلط بر موضوع:</strong> باید نشان دهید که ادبیات تحقیق را به خوبی مطالعه کرده‌اید و خلاءهای پژوهشی را می‌شناسید.</li>
+                                <li><strong className="text-slate-800">اهمیت پژوهش:</strong> چرا این تحقیق مهم است؟ چه مشکلی را حل می‌کند؟ این مهم‌ترین سوالی است که باید پاسخ دهید.</li>
+                                <li><strong className="text-slate-800">روش‌شناسی دقیق:</strong> روش تحقیق، جامعه آماری، و ابزار گردآوری داده‌ها باید کاملاً شفاف و علمی باشند.</li>
+                                <li><strong className="text-slate-800">نوآوری:</strong> جنبه نوآورانه کار شما چیست؟ چه چیزی آن را از کارهای قبلی متمایز می‌کند؟</li>
+                                <li><strong className="text-slate-800">زمان‌بندی:</strong> ارائه گانت‌چارت (Gantt Chart) واقع‌بینانه برای مراحل انجام کار الزامی است.</li>
+                            </ul>
                         </div>
-                        <div>
-                            <p class="text-[10px] text-primary-100 uppercase tracking-widest font-semibold mb-0.5">Developer</p>
-                            <p class="text-sm font-bold leading-tight">Dr. Fatemeh Zarei</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-emerald-50 p-5 rounded-xl border border-emerald-100">
+                                <h4 className="font-bold text-emerald-800 mb-2">ساختار ارائه (۱۰ دقیقه)</h4>
+                                <ul className="text-sm text-emerald-700 space-y-2">
+                                    <li>۱. عنوان و معرفی (۱ دقیقه)</li>
+                                    <li>۲. بیان مسئله و اهمیت (۲ دقیقه)</li>
+                                    <li>۳. پیشینه تحقیق (۲ دقیقه)</li>
+                                    <li>۴. روش تحقیق (۳ دقیقه)</li>
+                                    <li>۵. برنامه زمانی و منابع (۲ دقیقه)</li>
+                                </ul>
+                            </div>
+                             <div className="bg-white p-5 rounded-xl border border-slate-200">
+                                <h4 className="font-bold text-slate-800 mb-2">مدارک مورد نیاز</h4>
+                                <ul className="text-sm text-slate-600 space-y-2">
+                                    <li>• فایل پاورپوینت نهایی</li>
+                                    <li>• یک نسخه چاپ شده از پروپوزال</li>
+                                    <li>• قلم و کاغذ برای یادداشت نظرات داوران</li>
+                                    <li>• آب و پذیرایی مختصر (طبق عرف دانشگاه)</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="h-px w-full bg-white/20"></div>
-                    
-                    <div class="space-y-1.5">
-                        <a href="mailto:healcono@gmal.com" class="flex items-center gap-2 text-xs text-primary-50 hover:text-white transition-colors group/link">
-                            <i data-lucide="mail" class="w-3 h-3 opacity-70 group-hover/link:opacity-100"></i>
-                            <span class="font-mono tracking-tight">healcono@gmal.com</span>
-                        </a>
-                        <div class="flex items-center gap-2 text-xs text-primary-50">
-                             <i data-lucide="instagram" class="w-3 h-3 opacity-70"></i>
-                            <span class="font-mono">@healthcono</span>
+                )
+            },
+            report: {
+                title: "گزارش شش‌ماهه",
+                icon: "bar-chart-3",
+                content: (
+                     <div className="space-y-6 animate-fadeIn">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h3 className="text-xl font-bold text-emerald-700 mb-4">ساختار استاندارد گزارش پیشرفت</h3>
+                            <p className="mb-4 text-slate-600">دانشجویان دکتری موظفند هر شش ماه یکبار گزارش پیشرفت کار پایان‌نامه خود را ارائه دهند.</p>
+                            
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold">۱</div>
+                                    <div>
+                                        <h5 className="font-bold text-slate-800">کارهای انجام شده</h5>
+                                        <p className="text-sm text-slate-600 mt-1">شرح دقیق فعالیت‌های صورت گرفته طبق برنامه زمان‌بندی مصوب.</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold">۲</div>
+                                    <div>
+                                        <h5 className="font-bold text-slate-800">موانع و مشکلات</h5>
+                                        <p className="text-sm text-slate-600 mt-1">بیان صادقانه چالش‌های علمی یا اجرایی که با آن مواجه شده‌اید.</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold">۳</div>
+                                    <div>
+                                        <h5 className="font-bold text-slate-800">برنامه آینده</h5>
+                                        <p className="text-sm text-slate-600 mt-1">برنامه عملیاتی برای ۶ ماه آینده تا گزارش بعدی.</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 font-bold">۴</div>
+                                    <div>
+                                        <h5 className="font-bold text-slate-800">تولیدات علمی</h5>
+                                        <p className="text-sm text-slate-600 mt-1">مقالات مستخرج، کنفرانس‌ها و دستاوردهای علمی مرتبط.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Main Content Root -->
-    <main class="lg:mr-72 min-h-screen transition-all duration-300">
-        <div id="root" class="h-full">
-            <!-- React App Mounts Here -->
-            <!-- Static placeholder for immediate visual feedback -->
-            <div class="p-8 h-full flex flex-col items-center justify-center text-center space-y-6 opacity-60 animate-pulse">
-                <div class="w-20 h-20 bg-primary-100 rounded-3xl flex items-center justify-center">
-                    <i data-lucide="layout-grid" class="w-10 h-10 text-primary-600"></i>
-                </div>
-                <h2 class="text-xl font-medium text-gray-500">در حال بارگذاری داشبورد...</h2>
-            </div>
-        </div>
-    </main>
-
-    <!-- Import Main App -->
-    <script type="module" src="/index.tsx"></script>
-
-    <script>
-        // Icons
-        lucide.createIcons();
-
-        // Sidebar Interaction
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            const isClosed = sidebar.classList.contains('translate-x-full');
-            
-            if (isClosed) {
-                sidebar.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-            } else {
-                sidebar.classList.add('translate-x-full');
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
+                )
+            },
+            thesis: {
+                title: "دفاع از پایان‌نامه",
+                icon: "graduation-cap",
+                content: (
+                    <div className="space-y-6 animate-fadeIn">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div className="lg:col-span-2 space-y-6">
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                                    <h3 className="text-xl font-bold text-emerald-700 mb-4">ساختار جلسه دفاع (۲۰ تا ۳۰ دقیقه)</h3>
+                                    <div className="space-y-3">
+                                        <div className="p-3 bg-slate-50 rounded-lg border-r-4 border-emerald-500">
+                                            <span className="font-bold block text-slate-800">مقدمه و کلیات (۱۵٪ زمان)</span>
+                                            <span className="text-sm text-slate-500">بیان مسئله، اهداف، سوالات و ضرورت تحقیق.</span>
+                                        </div>
+                                        <div className="p-3 bg-slate-50 rounded-lg border-r-4 border-emerald-400">
+                                            <span className="font-bold block text-slate-800">مرور ادبیات (۱۰٪ زمان)</span>
+                                            <span className="text-sm text-slate-500">اشاره کوتاه به نظریه‌ها و کارهای پیشین مرتبط.</span>
+                                        </div>
+                                        <div className="p-3 bg-slate-50 rounded-lg border-r-4 border-emerald-300">
+                                            <span className="font-bold block text-slate-800">روش‌شناسی (۲۰٪ زمان)</span>
+                                            <span className="text-sm text-slate-500">جامعه، نمونه، ابزار، روش تجزیه و تحلیل.</span>
+                                        </div>
+                                        <div className="p-3 bg-emerald-50 rounded-lg border-r-4 border-emerald-600">
+                                            <span className="font-bold block text-emerald-900">یافته‌ها و بحث (۴۰٪ زمان)</span>
+                                            <span className="text-sm text-emerald-700">مهمترین بخش. ارائه جداول، نمودارها و تفسیر نتایج.</span>
+                                        </div>
+                                        <div className="p-3 bg-slate-50 rounded-lg border-r-4 border-emerald-500">
+                                            <span className="font-bold block text-slate-800">نتیجه‌گیری و پیشنهادات (۱۵٪ زمان)</span>
+                                            <span className="text-sm text-slate-500">پاسخ به سوالات تحقیق و پیشنهادات کاربردی.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white p-6 rounded-2xl shadow-lg">
+                                    <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+                                        <Icon name="star" className="w-5 h-5 text-yellow-300" />
+                                        نکات طلایی
+                                    </h4>
+                                    <ul className="text-emerald-50 text-sm space-y-3">
+                                        <li>• از روخوانی اسلایدها جداً پرهیز کنید.</li>
+                                        <li>• با اعتماد به نفس و صدای رسا صحبت کنید.</li>
+                                        <li>• مدیریت زمان را تمرین کنید.</li>
+                                        <li>• به داوران پشت نکنید و ارتباط چشمی داشته باشید.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            },
+            questions: {
+                title: "بانک سوالات داوران",
+                icon: "message-circle-question",
+                content: (
+                     <div className="space-y-6 animate-fadeIn">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h3 className="text-xl font-bold text-emerald-700 mb-6">سوالات متداول جلسات دفاع</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {[
+                                    "چرا این روش تحقیق را انتخاب کردید؟",
+                                    "نوآوری اصلی کار شما دقیقاً چیست؟",
+                                    "محدودیت‌های تحقیق شما چه بود و چگونه مدیریت کردید؟",
+                                    "آیا نتایج شما با تحقیقات قبلی همسو است؟ اگر نه، چرا؟",
+                                    "کاربرد عملی نتایج شما در صنعت/جامعه چیست؟",
+                                    "روایی و پایایی ابزار چگونه سنجیده شد؟",
+                                    "اگر زمان بیشتری داشتید، چه کاری را متفاوت انجام می‌دادید؟",
+                                    "جامعه آماری چگونه انتخاب شد؟"
+                                ].map((q, i) => (
+                                    <div key={i} className="flex gap-3 items-start p-3 hover:bg-slate-50 rounded-lg transition-colors">
+                                        <span className="text-emerald-500 font-bold">؟</span>
+                                        <p className="text-slate-700 font-medium">{q}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )
+            },
+            glossary: {
+                title: "فرهنگ لغات تخصصی",
+                icon: "book-a",
+                content: (
+                     <div className="space-y-6 animate-fadeIn">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <div className="grid grid-cols-1 gap-4">
+                                {[
+                                    { en: "Methodology", fa: "روش‌شناسی", desc: "روش سیستماتیک حل مسئله پژوهش." },
+                                    { en: "Literature Review", fa: "مرور پیشینه", desc: "بررسی انتقادی کارهای علمی انجام شده قبلی." },
+                                    { en: "Hypothesis", fa: "فرضیه", desc: "حدس علمی و آزمون‌پذیر درباره رابطه متغیرها." },
+                                    { en: "Variable", fa: "متغیر", desc: "ویژگی یا صفتی که می‌تواند مقادیر مختلف بگیرد." },
+                                    { en: "Reliability", fa: "پایایی", desc: "ثبات و تکرارپذیری نتایج ابزار اندازه‌گیری." },
+                                    { en: "Validity", fa: "روایی", desc: "میزان توانایی ابزار در سنجش آنچه باید بسنجد." },
+                                    { en: "Abstract", fa: "چکیده", desc: "خلاصه‌ای جامع از تمام بخش‌های پایان‌نامه." },
+                                ].map((item, i) => (
+                                    <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 last:border-0 pb-3 last:pb-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-bold text-emerald-700">{item.fa}</span>
+                                            <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full font-mono">{item.en}</span>
+                                        </div>
+                                        <p className="text-sm text-slate-600 mt-1 sm:mt-0">{item.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )
+            },
+            etiquette: {
+                title: "آداب و تشریفات",
+                icon: "user-check",
+                content: (
+                     <div className="space-y-6 animate-fadeIn">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h3 className="text-xl font-bold text-emerald-700 mb-4">اصول حرفه‌ای و رفتاری</h3>
+                            <div className="space-y-4">
+                                <div className="flex gap-4">
+                                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+                                        <Icon name="shirt" className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h5 className="font-bold text-slate-800">پوشش ظاهری</h5>
+                                        <p className="text-sm text-slate-600">لباس رسمی و آراسته. برای آقایان کت و شلوار و برای خانم‌ها پوشش اداری و رسمی دانشگاهی توصیه می‌شود.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4">
+                                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+                                        <Icon name="clock" className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h5 className="font-bold text-slate-800">مدیریت زمان</h5>
+                                        <p className="text-sm text-slate-600">حداقل ۴۵ دقیقه قبل از جلسه در محل حضور داشته باشید و تجهیزات را چک کنید.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4">
+                                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+                                        <Icon name="coffee" className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h5 className="font-bold text-slate-800">پذیرایی</h5>
+                                        <p className="text-sm text-slate-600">پذیرایی باید بسته و بهداشتی باشد. از چیدن میوه و شیرینی باز قبل از جلسه خودداری کنید. بطری آب برای داوران الزامی است.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            },
+            slideDesign: {
+                title: "طراحی اسلاید",
+                icon: "presentation",
+                content: (
+                     <div className="space-y-6 animate-fadeIn">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h3 className="text-xl font-bold text-emerald-700 mb-4">اصول طراحی پاورپوینت علمی</h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                <div className="p-4 border border-slate-100 rounded-xl bg-slate-50">
+                                    <span className="block font-bold text-emerald-600 mb-1">قانون ۱۰-۲۰-۳۰</span>
+                                    <p className="text-xs text-slate-600">۱۰ اسلاید، ۲۰ دقیقه زمان، فونت حداقل ۳۰. (البته برای پایان‌نامه تعداد اسلاید بیشتر است)</p>
+                                </div>
+                                <div className="p-4 border border-slate-100 rounded-xl bg-slate-50">
+                                    <span className="block font-bold text-emerald-600 mb-1">کنتراست بالا</span>
+                                    <p className="text-xs text-slate-600">متن تیره روی زمینه روشن بهترین خوانایی را دارد. از پس‌زمینه‌های شلوغ بپرهیزید.</p>
+                                </div>
+                            </div>
+                            <h4 className="font-bold text-slate-800 mb-2">فونت‌های پیشنهادی فارسی</h4>
+                            <div className="flex flex-wrap gap-2">
+                                <span className="px-3 py-1 bg-slate-100 rounded text-sm font-sans">B Nazanin</span>
+                                <span className="px-3 py-1 bg-slate-100 rounded text-sm font-sans">B Yekan</span>
+                                <span className="px-3 py-1 bg-slate-100 rounded text-sm font-sans">Vazirmatn</span>
+                                <span className="px-3 py-1 bg-slate-100 rounded text-sm font-sans">B Mitra</span>
+                            </div>
+                        </div>
+                    </div>
+                )
             }
-        }
+        };
 
-        // Tab Switching Visualization
-        function switchTab(tabId) {
-            document.querySelectorAll('.nav-item').forEach(el => {
-                el.classList.remove('active');
-            });
-            const activeBtn = document.getElementById('nav-' + tabId);
-            if(activeBtn) activeBtn.classList.add('active');
+        // --- Zen Mode Component ---
+        const ZenMode = ({ onClose }) => {
+            const [isActive, setIsActive] = useState(false);
+            const [phase, setPhase] = useState('ready'); // 'ready', 'inhale', 'hold', 'exhale'
             
-            if(window.innerWidth < 1024) toggleSidebar();
-        }
+            // Animation loop logic
+            useEffect(() => {
+                let timer;
+                if (isActive) {
+                    // Start cycle
+                    const runCycle = () => {
+                        setPhase('inhale');
+                        timer = setTimeout(() => {
+                            setPhase('exhale');
+                            timer = setTimeout(() => {
+                                runCycle();
+                            }, 4000); // 4s Exhale
+                        }, 4000); // 4s Inhale
+                    };
+                    runCycle();
+                } else {
+                    setPhase('ready');
+                    clearTimeout(timer);
+                }
+                return () => clearTimeout(timer);
+            }, [isActive]);
 
-        // Initialize
-        switchTab('proposal');
+            return (
+                <div className="fixed inset-0 z-[100] bg-gradient-to-b from-teal-900 to-slate-900 flex flex-col items-center justify-center text-white overflow-hidden animate-fadeIn">
+                    
+                    {/* Background Ambient Light */}
+                    <div className="absolute w-[500px] h-[500px] bg-teal-500/20 rounded-full blur-[100px] animate-pulse"></div>
+
+                    <div className="relative z-10 flex flex-col items-center">
+                        <h2 className="text-2xl font-light mb-12 tracking-wide text-teal-100 opacity-90">تمرکز و آرامش</h2>
+                        
+                        {/* Breathing Circle Container */}
+                        <div className="relative w-72 h-72 flex items-center justify-center">
+                            {/* Expanding Outer Glow */}
+                            <div 
+                                className="absolute w-full h-full rounded-full bg-teal-400/30 blur-xl transition-all duration-[4000ms] ease-in-out"
+                                style={{ 
+                                    transform: phase === 'inhale' ? 'scale(1.5)' : 'scale(1)',
+                                    opacity: phase === 'inhale' ? 0.6 : 0.2
+                                }}
+                            ></div>
+
+                            {/* Main Circle */}
+                            <div 
+                                className="w-48 h-48 rounded-full border-2 border-teal-200/50 flex items-center justify-center backdrop-blur-sm bg-white/5 transition-all duration-[4000ms] ease-in-out relative z-20 shadow-2xl shadow-teal-500/20"
+                                style={{ 
+                                    transform: phase === 'inhale' ? 'scale(1.2)' : 'scale(1)' 
+                                }}
+                            >
+                                <div className="text-center transition-opacity duration-500">
+                                    <span className="block text-4xl font-bold mb-2 text-white">
+                                        {phase === 'inhale' ? 'دم' : phase === 'exhale' ? 'بازدم' : 'آماده'}
+                                    </span>
+                                    <span className="block text-xs uppercase tracking-[0.2em] text-teal-200 opacity-70 font-mono">
+                                        {phase === 'inhale' ? 'Inhale' : phase === 'exhale' ? 'Exhale' : 'Ready'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Controls */}
+                        <div className="mt-16 flex flex-col gap-4 items-center">
+                            <button 
+                                onClick={() => setIsActive(!isActive)}
+                                className={`px-8 py-3 rounded-full min-w-[160px] font-bold transition-all duration-300 shadow-lg ${
+                                    isActive 
+                                    ? 'bg-slate-700/50 text-slate-300 hover:bg-slate-700' 
+                                    : 'bg-teal-500 hover:bg-teal-400 text-white hover:shadow-teal-500/50'
+                                }`}
+                            >
+                                {isActive ? 'توقف' : 'شروع تمرین'}
+                            </button>
+                            
+                            <button 
+                                onClick={onClose}
+                                className="text-sm text-slate-400 hover:text-white transition-colors mt-2"
+                            >
+                                بازگشت به داشبورد
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Main App Component ---
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('proposal');
+            const [mobileOpen, setMobileOpen] = useState(false);
+            const [zenMode, setZenMode] = useState(false);
+
+            return (
+                <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-emerald-200 selection:text-emerald-900">
+                    
+                    {/* Mobile Header */}
+                    <header className="lg:hidden bg-white/80 backdrop-blur-md border-b border-slate-200 p-4 sticky top-0 z-30 flex items-center justify-between shadow-sm">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center">
+                                <Icon name="graduation-cap" className="w-5 h-5" />
+                            </div>
+                            <span className="font-bold text-slate-800">DefaYar</span>
+                        </div>
+                        <button onClick={() => setMobileOpen(true)} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
+                            <Icon name="menu" className="w-6 h-6" />
+                        </button>
+                    </header>
+
+                    {/* Mobile Overlay */}
+                    {mobileOpen && (
+                        <div 
+                            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden animate-fadeIn"
+                            onClick={() => setMobileOpen(false)}
+                        />
+                    )}
+
+                    {/* Sidebar */}
+                    <aside className={`fixed top-0 right-0 h-full w-72 bg-white border-l border-slate-200 z-50 transition-transform duration-300 ease-out lg:translate-x-0 flex flex-col shadow-2xl lg:shadow-none ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                        {/* Sidebar Header */}
+                        <div className="p-6 flex items-center justify-between border-b border-slate-50">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-700 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                                    <Icon name="shield-check" className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h1 className="font-bold text-xl text-slate-800 tracking-tight font-sans">DefaYar</h1>
+                                    <p className="text-xs text-emerald-600 font-medium font-mono">@healthcono</p>
+                                </div>
+                            </div>
+                            <button onClick={() => setMobileOpen(false)} className="lg:hidden text-slate-400 hover:text-red-500 transition-colors">
+                                <Icon name="x" className="w-6 h-6" />
+                            </button>
+                        </div>
+
+                        {/* Navigation */}
+                        <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+                            {Object.entries(SECTIONS).map(([key, data]) => (
+                                <button
+                                    key={key}
+                                    onClick={() => {
+                                        setActiveTab(key);
+                                        setMobileOpen(false);
+                                    }}
+                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+                                        activeTab === key 
+                                        ? 'bg-emerald-50 text-emerald-700 font-bold shadow-sm ring-1 ring-emerald-100' 
+                                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                                    }`}
+                                >
+                                    <span className={`transition-colors ${activeTab === key ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-600'}`}>
+                                        <Icon name={data.icon} className="w-5 h-5" />
+                                    </span>
+                                    <span className="flex-1 text-right">{data.title}</span>
+                                    {activeTab === key && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>}
+                                </button>
+                            ))}
+                        </nav>
+
+                        {/* Footer / Developer Info */}
+                        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+                            <div className="bg-gradient-to-tr from-emerald-600 to-emerald-500 rounded-2xl p-4 text-white shadow-lg shadow-emerald-500/20 relative overflow-hidden group cursor-default">
+                                <div className="absolute -right-6 -top-6 w-20 h-20 bg-white/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                                <div className="absolute -left-6 -bottom-6 w-20 h-20 bg-emerald-800/20 rounded-full blur-2xl"></div>
+                                
+                                <div className="relative z-10 flex flex-col gap-3">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shrink-0">
+                                            <Icon name="code-2" className="w-5 h-5 text-white" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] text-emerald-100 uppercase tracking-widest font-semibold mb-0.5">Developer</p>
+                                            <p className="text-sm font-bold leading-tight">Dr. Fatemeh Zarei</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="h-px w-full bg-white/20"></div>
+                                    
+                                    <div className="space-y-1.5">
+                                        <a href="mailto:healcono@gmail.com" className="flex items-center gap-2 text-xs text-emerald-50 hover:text-white transition-colors">
+                                            <Icon name="mail" className="w-3 h-3 opacity-70" />
+                                            <span className="font-mono tracking-tight">healcono@gmail.com</span>
+                                        </a>
+                                        <div className="flex items-center gap-2 text-xs text-emerald-50">
+                                             <Icon name="instagram" className="w-3 h-3 opacity-70" />
+                                            <span className="font-mono">@healthcono</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    {/* Main Content Area */}
+                    <main className="lg:mr-72 min-h-screen transition-all duration-300 p-4 lg:p-8">
+                        <div className="max-w-5xl mx-auto">
+                            {/* Page Header */}
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                                <div>
+                                    <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                                        {SECTIONS[activeTab].title}
+                                    </h2>
+                                    <p className="text-slate-500 text-sm mt-1">دستیار هوشمند موفقیت تحصیلی شما</p>
+                                </div>
+                                <button 
+                                    onClick={() => setZenMode(true)}
+                                    className="flex items-center gap-2 bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-600 hover:text-emerald-700 px-4 py-2 rounded-xl transition-all shadow-sm group"
+                                >
+                                    <Icon name="flower-2" className="w-5 h-5 group-hover:rotate-45 transition-transform" />
+                                    <span className="font-medium">حالت تمرکز (Zen)</span>
+                                </button>
+                            </div>
+
+                            {/* Content Render */}
+                            {SECTIONS[activeTab].content}
+                        </div>
+                    </main>
+
+                    {/* Zen Mode Overlay */}
+                    {zenMode && <ZenMode onClose={() => setZenMode(false)} />}
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
