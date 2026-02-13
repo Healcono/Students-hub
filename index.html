@@ -67,6 +67,24 @@
         .checkbox-wrapper input:checked + div svg {
             display: block;
         }
+
+        /* Accordion transition */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.open {
+            max-height: 500px; /* Arbitrary large number */
+            opacity: 1;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-btn[aria-expanded="true"] .accordion-icon {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
@@ -110,7 +128,13 @@
             <button onclick="switchTab('proposal')" id="nav-proposal" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 bg-primary-600/10 text-primary-400 border border-primary-600/20">
                 <i data-lucide="shield" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">دفاع از پروپوزال</span>
-                <div class="w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+            </button>
+
+            <button onclick="switchTab('questions')" id="nav-questions" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+                <i data-lucide="message-circle-question" class="w-5 h-5"></i>
+                <span class="flex-1 text-right font-medium">بانک سوالات داوران</span>
+                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
             <button disabled class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-white/5 cursor-not-allowed opacity-60">
@@ -307,6 +331,177 @@
             </div>
         </div>
 
+        <!-- Tab Content: Juror Questions -->
+        <div id="content-questions" class="hidden fade-in max-w-5xl mx-auto space-y-8">
+            
+            <!-- Random Question Challenge -->
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 md:p-8 border border-amber-100 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-300 to-orange-400"></div>
+                <div class="relative z-10 text-center max-w-2xl mx-auto">
+                    <div class="inline-flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-md text-amber-500 mb-4">
+                        <i data-lucide="shuffle" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-amber-900 mb-2">چالش روز: آمادگی برای دفاع</h2>
+                    <p class="text-amber-800 mb-6 text-sm">یک سوال تصادفی را انتخاب کنید و تلاش کنید در ۱ دقیقه به آن پاسخ دهید.</p>
+                    
+                    <div id="random-question-box" class="hidden bg-white/80 backdrop-blur rounded-xl p-6 border border-amber-200 mb-6 shadow-sm transform transition-all duration-300">
+                        <p id="random-question-text" class="text-lg font-bold text-gray-800 mb-2">اینجا سوال نمایش داده می‌شود...</p>
+                        <p id="random-question-tip" class="text-sm text-gray-500 italic">نکته راهنما اینجا نمایش داده می‌شود...</p>
+                    </div>
+
+                    <button onclick="generateRandomQuestion()" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-amber-200 transition-all hover:-translate-y-1 font-bold">
+                        <i data-lucide="dices"></i>
+                        <span>نمایش سوال شانسی</span>
+                    </button>
+                </div>
+                <i data-lucide="help-circle" class="absolute -right-10 -bottom-10 w-64 h-64 text-amber-100/50 rotate-[-12deg]"></i>
+            </div>
+
+            <!-- Questions Accordion -->
+            <div class="grid gap-6">
+                
+                <!-- Category 1 -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-primary-700 mb-2">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                        <h3 class="font-bold text-lg">بخش کلیات و مسئله (The Why)</h3>
+                    </div>
+                    
+                    <!-- Q1 -->
+                    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('q1')" class="accordion-btn w-full flex items-center justify-between p-5 text-right hover:bg-gray-50 transition-colors" aria-expanded="false">
+                            <span class="font-bold text-gray-800">چرا این موضوع را برای پژوهش انتخاب کردید؟</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div id="q1" class="accordion-content bg-gray-50">
+                            <div class="p-5 border-t border-gray-100">
+                                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
+                                        <div>
+                                            <p class="font-bold text-amber-800 text-sm mb-1">راهنمای پاسخ (Expert Tip)</p>
+                                            <p class="text-sm text-gray-700 leading-relaxed">
+                                                از پاسخ‌های کلیشه‌ای مثل "علاقه شخصی" پرهیز کنید. به سه مورد اشاره کنید: ۱. دغدغه و تجربه شخصی/شغلی ۲. وجود خلاء در پژوهش‌های پیشین (کسی تا حالا این زاویه را ندیده) ۳. نیاز فوری جامعه یا صنعت به حل این مشکل.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('q2')" class="accordion-btn w-full flex items-center justify-between p-5 text-right hover:bg-gray-50 transition-colors" aria-expanded="false">
+                            <span class="font-bold text-gray-800">نوآوری پژوهش شما نسبت به مطالعات قبلی چیست؟</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div id="q2" class="accordion-content bg-gray-50">
+                            <div class="p-5 border-t border-gray-100">
+                                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
+                                        <div>
+                                            <p class="font-bold text-amber-800 text-sm mb-1">راهنمای پاسخ (Expert Tip)</p>
+                                            <p class="text-sm text-gray-700 leading-relaxed">
+                                                دقیق باشید. آیا "جامعه آماری" جدید است؟ آیا "ترکیب متغیرها" جدید است؟ یا از یک "روش یا ابزار جدید" استفاده کرده‌اید؟ نوآوری باید ملموس و قابل دفاع باشد.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="space-y-4 mt-4">
+                    <div class="flex items-center gap-2 text-primary-700 mb-2">
+                        <i data-lucide="hammer" class="w-5 h-5"></i>
+                        <h3 class="font-bold text-lg">روش‌شناسی و اجرا (The How)</h3>
+                    </div>
+                    
+                    <!-- Q3 -->
+                    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('q3')" class="accordion-btn w-full flex items-center justify-between p-5 text-right hover:bg-gray-50 transition-colors" aria-expanded="false">
+                            <span class="font-bold text-gray-800">چرا از این روش تحقیق استفاده کردید؟</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div id="q3" class="accordion-content bg-gray-50">
+                            <div class="p-5 border-t border-gray-100">
+                                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
+                                        <div>
+                                            <p class="font-bold text-amber-800 text-sm mb-1">راهنمای پاسخ (Expert Tip)</p>
+                                            <p class="text-sm text-gray-700 leading-relaxed">
+                                                باید نشان دهید روش شما بهترین راه برای پاسخ به سوالات پژوهش بوده است. توضیح دهید که این روش با "ماهیت موضوع" و "امکانات اجرایی" شما سازگاری کامل دارد.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('q4')" class="accordion-btn w-full flex items-center justify-between p-5 text-right hover:bg-gray-50 transition-colors" aria-expanded="false">
+                            <span class="font-bold text-gray-800">حجم نمونه را چگونه محاسبه کردید و آیا کافی است؟</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div id="q4" class="accordion-content bg-gray-50">
+                            <div class="p-5 border-t border-gray-100">
+                                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
+                                        <div>
+                                            <p class="font-bold text-amber-800 text-sm mb-1">راهنمای پاسخ (Expert Tip)</p>
+                                            <p class="text-sm text-gray-700 leading-relaxed">
+                                                به مرجع علمی خود اشاره کنید (فرمول کوکران، جدول مورگان، یا نرم‌افزار G*Power). ذکر کنید که برای اطمینان بیشتر، ۱۰-۲۰ درصد به حجم نمونه اضافه کرده‌اید (برای ریزش احتمالی).
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="space-y-4 mt-4">
+                    <div class="flex items-center gap-2 text-primary-700 mb-2">
+                        <i data-lucide="target" class="w-5 h-5"></i>
+                        <h3 class="font-bold text-lg">نتایج و کاربرد (The Impact)</h3>
+                    </div>
+                    
+                    <!-- Q5 -->
+                    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('q5')" class="accordion-btn w-full flex items-center justify-between p-5 text-right hover:bg-gray-50 transition-colors" aria-expanded="false">
+                            <span class="font-bold text-gray-800">کاربرد عملی این پژوهش چیست و چه کسی از آن سود می‌برد؟</span>
+                            <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                        </button>
+                        <div id="q5" class="accordion-content bg-gray-50">
+                            <div class="p-5 border-t border-gray-100">
+                                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500 shrink-0 mt-0.5"></i>
+                                        <div>
+                                            <p class="font-bold text-amber-800 text-sm mb-1">راهنمای پاسخ (Expert Tip)</p>
+                                            <p class="text-sm text-gray-700 leading-relaxed">
+                                                تحقیق نباید خاک بخورد. دقیقاً نام ببرید: سازمان‌ها، مدیران، سیاست‌گذاران یا گروه خاصی از جامعه. حداقل یک "پیشنهاد کاربردی" مشخص برای آن‌ها داشته باشید.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <!-- Placeholder for other tabs -->
         <div id="content-report" class="hidden fade-in flex items-center justify-center min-h-[60vh]">
             <div class="text-center">
@@ -343,6 +538,30 @@
             { id: 'cl_5', text: 'تکمیل بخش روش‌شناسی' },
             { id: 'cl_6', text: 'طراحی اسلاید زمان‌بندی' },
             { id: 'cl_7', text: 'تمرین ارائه (حداقل ۳ بار)' },
+        ];
+
+        // Question Bank Data
+        const questionsDB = [
+            { 
+                q: "چرا این موضوع را برای پژوهش انتخاب کردید؟", 
+                tip: "از پاسخ‌های کلیشه‌ای مثل 'علاقه شخصی' پرهیز کنید. به سه مورد اشاره کنید: ۱. دغدغه و تجربه شخصی/شغلی ۲. وجود خلاء در پژوهش‌های پیشین ۳. نیاز فوری جامعه یا صنعت."
+            },
+            { 
+                q: "نوآوری پژوهش شما نسبت به مطالعات قبلی چیست؟", 
+                tip: "دقیق باشید. آیا 'جامعه آماری' جدید است؟ آیا 'ترکیب متغیرها' جدید است؟ یا از یک 'روش یا ابزار جدید' استفاده کرده‌اید؟"
+            },
+            { 
+                q: "چرا از این روش تحقیق استفاده کردید؟", 
+                tip: "توضیح دهید که این روش با 'ماهیت موضوع' و 'امکانات اجرایی' شما سازگاری کامل دارد و بهترین راه برای پاسخ به سوالات بوده است."
+            },
+            { 
+                q: "حجم نمونه را چگونه محاسبه کردید؟", 
+                tip: "به مرجع علمی خود اشاره کنید (فرمول کوکران، جدول مورگان، یا نرم‌افزار G*Power). ذکر کنید که ۱۰-۲۰ درصد برای ریزش احتمالی اضافه کرده‌اید."
+            },
+            { 
+                q: "کاربرد عملی این پژوهش چیست؟", 
+                tip: "دقیقاً نام ببرید: سازمان‌ها، مدیران، سیاست‌گذاران. حداقل یک 'پیشنهاد کاربردی' مشخص برای آن‌ها داشته باشید."
+            }
         ];
 
         // Render Checklist
@@ -394,20 +613,75 @@
             }
         }
 
-        // Simple Tab Logic (Expandable)
+        // Tab Logic
         function switchTab(tabId) {
-            // Hide all contents
-            ['content-proposal', 'content-report', 'content-thesis'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
+            // Update Navigation Styles
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('bg-primary-600/10', 'text-primary-400', 'border', 'border-primary-600/20');
+                el.classList.add('text-gray-400');
+                el.querySelector('.indicator').classList.add('hidden');
             });
 
-            // Show active content
+            const activeNav = document.getElementById('nav-' + tabId);
+            if (activeNav) {
+                activeNav.classList.remove('text-gray-400');
+                activeNav.classList.add('bg-primary-600/10', 'text-primary-400', 'border', 'border-primary-600/20');
+                activeNav.querySelector('.indicator').classList.remove('hidden');
+            }
+
+            // Show Content
+            ['content-proposal', 'content-questions', 'content-report', 'content-thesis'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
             document.getElementById('content-' + tabId).classList.remove('hidden');
 
             // On mobile, close sidebar after click
             if(window.innerWidth < 1024) {
                 toggleSidebar();
             }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const btn = content.previousElementSibling;
+            const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+            
+            // Close all others (optional)
+            /*
+            document.querySelectorAll('.accordion-content').forEach(el => {
+                el.classList.remove('open');
+                el.previousElementSibling.setAttribute('aria-expanded', 'false');
+            });
+            */
+
+            if (isExpanded) {
+                content.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                content.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        // Random Question Logic
+        function generateRandomQuestion() {
+            const box = document.getElementById('random-question-box');
+            const qText = document.getElementById('random-question-text');
+            const qTip = document.getElementById('random-question-tip');
+            
+            // Animation reset
+            box.classList.remove('hidden');
+            box.classList.remove('opacity-100');
+            box.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                const random = questionsDB[Math.floor(Math.random() * questionsDB.length)];
+                qText.textContent = random.q;
+                qTip.textContent = random.tip;
+                box.classList.remove('opacity-0');
+                box.classList.add('opacity-100');
+            }, 200);
         }
     </script>
 </body>
