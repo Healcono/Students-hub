@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دفاع‌یار - دستیار هوشمند دانشجویان</title>
+    <title>DefaYar - Academic Dashboard</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,43 +31,23 @@
                             300: '#6ee7b7',
                             400: '#34d399',
                             500: '#10b981',
-                            600: '#059669', // Healthcono Green
+                            600: '#059669', // Healthcono Green Base
                             700: '#047857',
                             800: '#065f46',
                             900: '#064e3b',
                         },
                         dark: {
-                            900: '#0f172a',
-                            800: '#1e293b',
-                            700: '#334155',
+                            900: '#1a202c',
                         },
-                        navy: {
-                            800: '#1e293b',
-                            900: '#0f172a',
-                            950: '#020617',
-                        },
-                        royal: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                        },
-                        gold: {
-                            50: '#fffbeb',
-                            100: '#fef3c7',
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                            600: '#d97706',
-                        },
-                        indigo: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
                         }
                     }
                 },
@@ -76,96 +56,55 @@
     </script>
 
     <style>
-        /* Custom scrollbar */
+        /* Minimal Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
         
-        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        body {
+            background-color: #f8fafc;
+            color: #334155;
         }
 
-        .checkbox-wrapper input:checked + div {
-            background-color: #059669;
-            border-color: #059669;
-        }
-        /* Custom Checkbox for Etiquette Tab (Gold) */
-        .checkbox-wrapper.gold input:checked + div {
-            background-color: #f59e0b;
-            border-color: #f59e0b;
-        }
-
-        .checkbox-wrapper input:checked + div svg {
-            display: block;
-        }
-
-        /* Accordion transition */
-        .accordion-content {
-            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-            max-height: 0;
-            opacity: 0;
+        .nav-item {
+            position: relative;
             overflow: hidden;
         }
-        .accordion-content.open {
-            max-height: 500px; /* Arbitrary large number */
-            opacity: 1;
-        }
-        .accordion-icon {
-            transition: transform 0.3s ease;
-        }
-        .accordion-btn[aria-expanded="true"] .accordion-icon {
-            transform: rotate(180deg);
+        
+        .nav-item.active {
+            background-color: #ecfdf5;
+            color: #059669;
+            font-weight: 700;
         }
         
-        /* Star Animation */
-        .star-icon { transition: all 0.2s ease; }
-        .star-icon.active { fill: #fbbf24; color: #fbbf24; transform: scale(1.1); }
-
-        /* Paper texture for templates */
-        .paper-texture {
-            background-color: #fffdf5;
-            background-image: linear-gradient(#f1f5f9 1px, transparent 1px);
-            background-size: 100% 2rem;
-            line-height: 2rem;
-        }
-        
-        /* Circular Progress */
-        .progress-ring__circle {
-            transition: stroke-dashoffset 0.35s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-        input[type=range] {
-            -webkit-appearance: none; 
-            background: transparent; 
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-        }
-        input[type=range]:focus {
-            outline: none; 
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #059669;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
         }
 
-        /* Breathing Animation */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.5); opacity: 0.4; }
-        }
-        .breathing-circle {
-            animation: breathe 4s infinite ease-in-out;
+        .card-academic {
+            background: white;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-radius: 1rem;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
+<body class="bg-slate-50 font-sans antialiased overflow-x-hidden selection:bg-primary-200 selection:text-primary-900">
 
     <!-- Mobile Header -->
-    <header class="lg:hidden bg-white border-b border-gray-200 p-4 sticky top-0 z-30 flex items-center justify-between shadow-sm">
+    <header class="lg:hidden bg-white/80 backdrop-blur-md border-b border-gray-200 p-4 sticky top-0 z-30 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-primary-50 text-primary-600 rounded-lg flex items-center justify-center">
-                <i data-lucide="shield-check" class="w-5 h-5"></i>
+            <div class="w-8 h-8 bg-primary-100 text-primary-700 rounded-lg flex items-center justify-center">
+                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
             </div>
             <span class="font-bold text-gray-800">DefaYar</span>
         </div>
@@ -175,81 +114,150 @@
     </header>
 
     <!-- Overlay -->
-    <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/30 z-40 hidden lg:hidden transition-opacity opacity-0"></div>
-
-    <!-- Zen Mode Overlay -->
-    <div id="zen-overlay" class="fixed inset-0 bg-navy-950 z-[60] hidden flex-col items-center justify-center transition-opacity duration-500 opacity-0">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-        <div class="relative z-10 text-center">
-            <div class="w-48 h-48 bg-gold-400/20 rounded-full blur-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 breathing-circle"></div>
-            <div class="w-32 h-32 bg-gold-500 rounded-full flex items-center justify-center text-navy-900 mx-auto mb-8 shadow-[0_0_40px_rgba(245,158,11,0.4)] relative">
-                <i data-lucide="wind" class="w-12 h-12"></i>
-            </div>
-            <h2 class="text-3xl font-bold text-white mb-4">نفس عمیق بکشید...</h2>
-            <p class="text-slate-300 text-lg mb-8">دم (۴ ثانیه) ... نگه‌دارید (۲ ثانیه) ... بازدم (۴ ثانیه)</p>
-            <button onclick="stopZenMode()" class="px-8 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm transition-all">
-                بازگشت به برنامه
-            </button>
-        </div>
-    </div>
+    <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 hidden lg:hidden transition-all duration-300 opacity-0"></div>
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed top-0 right-0 h-full bg-dark-900 text-white w-72 z-50 transform translate-x-full lg:translate-x-0 transition-transform duration-300 shadow-2xl lg:shadow-none flex flex-col">
+    <aside id="sidebar" class="fixed top-0 right-0 h-full bg-white border-l border-gray-200 w-72 z-50 transform translate-x-full lg:translate-x-0 transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) shadow-2xl lg:shadow-none flex flex-col">
         <!-- Sidebar Header -->
-        <div class="p-6 border-b border-gray-800 flex items-center justify-between">
+        <div class="p-6 flex items-center justify-between border-b border-gray-50">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-primary-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-primary-900/50">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 text-white rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30 animate-float">
                     <i data-lucide="shield-check" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg tracking-tight">DefaYar</h1>
-                    <p class="text-xs text-gray-400">دستیار هوشمند دفاع</p>
+                    <h1 class="font-bold text-xl text-gray-900 tracking-tight font-sans">DefaYar</h1>
+                    <p class="text-xs text-primary-600 font-medium">@healthcono</p>
                 </div>
             </div>
-            <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-white">
+            <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-red-500 transition-colors">
                 <i data-lucide="x"></i>
             </button>
         </div>
 
         <!-- Navigation -->
         <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
-            <button onclick="switchTab('proposal')" id="nav-proposal" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 bg-primary-600/10 text-primary-400 border border-primary-600/20">
+            <button onclick="switchTab('proposal')" id="nav-proposal" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
                 <i data-lucide="shield" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">دفاع از پروپوزال</span>
-                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
             </button>
 
-            <button onclick="switchTab('report')" id="nav-report" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+            <button onclick="switchTab('report')" id="nav-report" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
                 <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">گزارش شش‌ماهه</span>
-                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
-            <button onclick="switchTab('thesis')" id="nav-thesis" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+            <button onclick="switchTab('thesis')" id="nav-thesis" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
                 <i data-lucide="graduation-cap" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">دفاع از پایان‌نامه</span>
-                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
-            <button onclick="switchTab('questions')" id="nav-questions" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+            <button onclick="switchTab('questions')" id="nav-questions" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
                 <i data-lucide="message-circle-question" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">بانک سوالات داوران</span>
-                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
-            <button onclick="switchTab('glossary')" id="nav-glossary" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+            <button onclick="switchTab('glossary')" id="nav-glossary" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
                 <i data-lucide="book-a" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">فرهنگ لغات تخصصی</span>
-                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
-            <button onclick="switchTab('etiquette')" id="nav-etiquette" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+            <button onclick="switchTab('etiquette')" id="nav-etiquette" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
                 <i data-lucide="user-check" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">آداب و تشریفات دفاع</span>
-                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden"></div>
             </button>
 
-            <button onclick="switchTab('slide-design')" id="nav-slide-design" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-white/5 hover:text-gray-200">
+            <button onclick="switchTab('slide-design')" id="nav-slide-design" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900">
                 <i data-lucide="presentation" class="w-5 h-5"></i>
                 <span class="flex-1 text-right font-medium">طراحی حرفه‌ای اسلاید</span>
-                <div class="indicator w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] hidden
+            </button>
+        </nav>
+
+        <!-- Developer Info Footer -->
+        <div class="p-4 border-t border-gray-100 bg-gray-50/80 backdrop-blur">
+            <div class="bg-gradient-to-tr from-primary-600 to-primary-500 rounded-2xl p-4 text-white shadow-lg shadow-primary-500/20 relative overflow-hidden group">
+                <!-- Iconic decorative effect -->
+                <div class="absolute -right-6 -top-6 w-20 h-20 bg-white/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                <div class="absolute -left-6 -bottom-6 w-20 h-20 bg-primary-800/20 rounded-full blur-2xl"></div>
+                
+                <div class="relative z-10 flex flex-col gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shrink-0">
+                            <i data-lucide="code-2" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-primary-100 uppercase tracking-widest font-semibold mb-0.5">Developer</p>
+                            <p class="text-sm font-bold leading-tight">Dr. Fatemeh Zarei</p>
+                        </div>
+                    </div>
+                    
+                    <div class="h-px w-full bg-white/20"></div>
+                    
+                    <div class="space-y-1.5">
+                        <a href="mailto:healcono@gmal.com" class="flex items-center gap-2 text-xs text-primary-50 hover:text-white transition-colors group/link">
+                            <i data-lucide="mail" class="w-3 h-3 opacity-70 group-hover/link:opacity-100"></i>
+                            <span class="font-mono tracking-tight">healcono@gmal.com</span>
+                        </a>
+                        <div class="flex items-center gap-2 text-xs text-primary-50">
+                             <i data-lucide="instagram" class="w-3 h-3 opacity-70"></i>
+                            <span class="font-mono">@healthcono</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Root -->
+    <main class="lg:mr-72 min-h-screen transition-all duration-300">
+        <div id="root" class="h-full">
+            <!-- React App Mounts Here -->
+            <!-- Static placeholder for immediate visual feedback -->
+            <div class="p-8 h-full flex flex-col items-center justify-center text-center space-y-6 opacity-60 animate-pulse">
+                <div class="w-20 h-20 bg-primary-100 rounded-3xl flex items-center justify-center">
+                    <i data-lucide="layout-grid" class="w-10 h-10 text-primary-600"></i>
+                </div>
+                <h2 class="text-xl font-medium text-gray-500">در حال بارگذاری داشبورد...</h2>
+            </div>
+        </div>
+    </main>
+
+    <!-- Import Main App -->
+    <script type="module" src="/index.tsx"></script>
+
+    <script>
+        // Icons
+        lucide.createIcons();
+
+        // Sidebar Interaction
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const isClosed = sidebar.classList.contains('translate-x-full');
+            
+            if (isClosed) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        // Tab Switching Visualization
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if(activeBtn) activeBtn.classList.add('active');
+            
+            if(window.innerWidth < 1024) toggleSidebar();
+        }
+
+        // Initialize
+        switchTab('proposal');
+    </script>
+</body>
+</html>
