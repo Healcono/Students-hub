@@ -37,6 +37,13 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
+        /* Accordion Animation */
+        .animate-slideDown { animation: slideDown 0.3s ease-out forwards; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -142,7 +149,7 @@
                 </a>
             </header>
 
-            <!-- Phase 1: Structure Table -->
+            <!-- Phase 1: Structure Accordion (Redesigned) -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden mb-8">
                 <div class="p-5 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
                     <h3 class="font-bold text-slate-800 flex items-center gap-2">
@@ -153,61 +160,149 @@
                         <i data-lucide="copy" class="w-4 h-4"></i> کپی چک‌لیست
                     </button>
                 </div>
-                <div class="table-responsive">
-                    <table class="w-full text-sm text-right whitespace-nowrap lg:whitespace-normal">
-                        <thead class="bg-slate-50/80 text-slate-500">
-                            <tr>
-                                <th class="p-4 font-bold">اسلاید</th>
-                                <th class="p-4 font-bold">موضوع</th>
-                                <th class="p-4 font-bold">زمان پیشنهادی</th>
-                                <th class="p-4 font-bold min-w-[200px]">نکات کلیدی</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <tr class="hover:bg-slate-50 transition-colors group">
-                                <td class="p-4 text-slate-500 font-mono">1</td>
-                                <td class="p-4 font-bold text-slate-800">عنوان و تیم تحقیق</td>
-                                <td class="p-4 text-emerald-600 font-bold bg-emerald-50/50 rounded-lg inline-block my-2 mx-4">۱ دقیقه</td>
-                                <td class="p-4 text-slate-600">لوگوی دانشگاه و نام استاد راهنما فراموش نشود.</td>
-                            </tr>
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="p-4 text-slate-500 font-mono">2-4</td>
-                                <td class="p-4 font-bold text-slate-800">بیان مسئله و ضرورت</td>
-                                <td class="p-4 text-emerald-600 font-bold bg-emerald-50/50 rounded-lg inline-block my-2 mx-4">۵ دقیقه</td>
-                                <td class="p-4 text-slate-600">روی "چرا این تحقیق مهم است؟" تمرکز کنید. آمار بدهید.</td>
-                            </tr>
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="p-4 text-slate-500 font-mono">5</td>
-                                <td class="p-4 font-bold text-slate-800">اهداف و فرضیات</td>
-                                <td class="p-4 text-emerald-600 font-bold bg-emerald-50/50 rounded-lg inline-block my-2 mx-4">۳ دقیقه</td>
-                                <td class="p-4 text-slate-600">بسیار تیتروار و شفاف بیان شود.</td>
-                            </tr>
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="p-4 text-slate-500 font-mono">6-7</td>
-                                <td class="p-4 font-bold text-slate-800">مرور ادبیات و نوآوری</td>
-                                <td class="p-4 text-emerald-600 font-bold bg-emerald-50/50 rounded-lg inline-block my-2 mx-4">۳ دقیقه</td>
-                                <td class="p-4 text-slate-600">فقط کارهای مرتبط اخیر. روی "گپ تحقیقاتی" تاکید کنید.</td>
-                            </tr>
-                            <tr class="bg-brand-50/40 hover:bg-brand-50 transition-colors border-r-4 border-brand-500">
-                                <td class="p-4 text-brand-700 font-mono font-bold">8-15</td>
-                                <td class="p-4 font-bold text-brand-800">روش‌شناسی و اجرا</td>
-                                <td class="p-4 text-brand-700 font-bold">۱۲ دقیقه</td>
-                                <td class="p-4 text-slate-700">حیاتی‌ترین بخش. جامعه، نمونه، ابزار و روش تحلیل.</td>
-                            </tr>
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="p-4 text-slate-500 font-mono">16-18</td>
-                                <td class="p-4 font-bold text-slate-800">زمان‌بندی و منابع</td>
-                                <td class="p-4 text-emerald-600 font-bold bg-emerald-50/50 rounded-lg inline-block my-2 mx-4">۱ دقیقه</td>
-                                <td class="p-4 text-slate-600">نمودار گانت چارت زمان‌بندی را نشان دهید.</td>
-                            </tr>
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="p-4 text-slate-500 font-mono">19</td>
-                                <td class="p-4 font-bold text-slate-800">پرسش و پاسخ</td>
-                                <td class="p-4 text-amber-600 font-bold bg-amber-50/50 rounded-lg inline-block my-2 mx-4">۵ دقیقه +</td>
-                                <td class="p-4 text-slate-600">صادقانه و با اعتماد به نفس پاسخ دهید.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                
+                <div class="p-4 space-y-3">
+                    <!-- Item 1 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <button onclick="toggleAccordion('slide-1')" class="w-full bg-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-right">
+                            <div class="flex items-center gap-4">
+                                <span class="bg-slate-100 text-slate-600 font-mono font-bold w-10 h-10 rounded-lg flex items-center justify-center shrink-0">1</span>
+                                <span class="font-bold text-slate-800">عنوان و تیم تحقیق</span>
+                            </div>
+                            <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full">۱ دقیقه</span>
+                                <i id="icon-slide-1" data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="slide-1" class="hidden bg-slate-50/50 border-t border-slate-100 p-4 animate-slideDown">
+                            <p class="text-slate-600 text-sm leading-relaxed flex items-start gap-2">
+                                <i data-lucide="info" class="w-4 h-4 mt-0.5 text-brand-500 shrink-0"></i>
+                                لوگوی دانشگاه و نام استاد راهنما فراموش نشود.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <button onclick="toggleAccordion('slide-2')" class="w-full bg-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-right">
+                            <div class="flex items-center gap-4">
+                                <span class="bg-slate-100 text-slate-600 font-mono font-bold w-10 h-10 rounded-lg flex items-center justify-center shrink-0">2-4</span>
+                                <span class="font-bold text-slate-800">بیان مسئله و ضرورت</span>
+                            </div>
+                            <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full">۵ دقیقه</span>
+                                <i id="icon-slide-2" data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="slide-2" class="hidden bg-slate-50/50 border-t border-slate-100 p-4 animate-slideDown">
+                            <p class="text-slate-600 text-sm leading-relaxed flex items-start gap-2">
+                                <i data-lucide="info" class="w-4 h-4 mt-0.5 text-brand-500 shrink-0"></i>
+                                روی "چرا این تحقیق مهم است؟" تمرکز کنید. آمار بدهید.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <button onclick="toggleAccordion('slide-3')" class="w-full bg-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-right">
+                            <div class="flex items-center gap-4">
+                                <span class="bg-slate-100 text-slate-600 font-mono font-bold w-10 h-10 rounded-lg flex items-center justify-center shrink-0">5</span>
+                                <span class="font-bold text-slate-800">اهداف و فرضیات</span>
+                            </div>
+                            <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full">۳ دقیقه</span>
+                                <i id="icon-slide-3" data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="slide-3" class="hidden bg-slate-50/50 border-t border-slate-100 p-4 animate-slideDown">
+                            <p class="text-slate-600 text-sm leading-relaxed flex items-start gap-2">
+                                <i data-lucide="info" class="w-4 h-4 mt-0.5 text-brand-500 shrink-0"></i>
+                                بسیار تیتروار و شفاف بیان شود.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <button onclick="toggleAccordion('slide-4')" class="w-full bg-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-right">
+                            <div class="flex items-center gap-4">
+                                <span class="bg-slate-100 text-slate-600 font-mono font-bold w-10 h-10 rounded-lg flex items-center justify-center shrink-0">6-7</span>
+                                <span class="font-bold text-slate-800">مرور ادبیات و نوآوری</span>
+                            </div>
+                            <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full">۳ دقیقه</span>
+                                <i id="icon-slide-4" data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="slide-4" class="hidden bg-slate-50/50 border-t border-slate-100 p-4 animate-slideDown">
+                            <p class="text-slate-600 text-sm leading-relaxed flex items-start gap-2">
+                                <i data-lucide="info" class="w-4 h-4 mt-0.5 text-brand-500 shrink-0"></i>
+                                فقط کارهای مرتبط اخیر. روی "گپ تحقیقاتی" تاکید کنید.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 (Highlighted) -->
+                    <div class="border-2 border-brand-500 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-brand-500"></div>
+                        <button onclick="toggleAccordion('slide-5')" class="w-full bg-brand-50/30 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-right">
+                            <div class="flex items-center gap-4">
+                                <span class="bg-brand-600 text-white font-mono font-bold w-10 h-10 rounded-lg flex items-center justify-center shrink-0 shadow-glow">8-15</span>
+                                <span class="font-bold text-brand-900">روش‌شناسی و اجرا</span>
+                            </div>
+                            <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                                <span class="text-xs font-bold text-brand-700 bg-white border border-brand-200 px-3 py-1.5 rounded-full">۱۲ دقیقه</span>
+                                <i id="icon-slide-5" data-lucide="chevron-down" class="text-brand-500 w-5 h-5 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="slide-5" class="hidden bg-white border-t border-brand-100 p-4 animate-slideDown">
+                            <p class="text-slate-700 text-sm leading-relaxed flex items-start gap-2 font-medium">
+                                <i data-lucide="star" class="w-4 h-4 mt-0.5 text-brand-500 fill-brand-500 shrink-0"></i>
+                                حیاتی‌ترین بخش. جامعه، نمونه، ابزار و روش تحلیل.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <button onclick="toggleAccordion('slide-6')" class="w-full bg-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-right">
+                            <div class="flex items-center gap-4">
+                                <span class="bg-slate-100 text-slate-600 font-mono font-bold w-10 h-10 rounded-lg flex items-center justify-center shrink-0">16-18</span>
+                                <span class="font-bold text-slate-800">زمان‌بندی و منابع</span>
+                            </div>
+                            <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full">۱ دقیقه</span>
+                                <i id="icon-slide-6" data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="slide-6" class="hidden bg-slate-50/50 border-t border-slate-100 p-4 animate-slideDown">
+                            <p class="text-slate-600 text-sm leading-relaxed flex items-start gap-2">
+                                <i data-lucide="info" class="w-4 h-4 mt-0.5 text-brand-500 shrink-0"></i>
+                                نمودار گانت چارت زمان‌بندی را نشان دهید.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Item 7 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <button onclick="toggleAccordion('slide-7')" class="w-full bg-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-right">
+                            <div class="flex items-center gap-4">
+                                <span class="bg-slate-100 text-slate-600 font-mono font-bold w-10 h-10 rounded-lg flex items-center justify-center shrink-0">19</span>
+                                <span class="font-bold text-slate-800">پرسش و پاسخ</span>
+                            </div>
+                            <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                                <span class="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-full">۵ دقیقه +</span>
+                                <i id="icon-slide-7" data-lucide="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div id="slide-7" class="hidden bg-slate-50/50 border-t border-slate-100 p-4 animate-slideDown">
+                            <p class="text-slate-600 text-sm leading-relaxed flex items-start gap-2">
+                                <i data-lucide="info" class="w-4 h-4 mt-0.5 text-brand-500 shrink-0"></i>
+                                صادقانه و با اعتماد به نفس پاسخ دهید.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
