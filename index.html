@@ -357,35 +357,177 @@
                 </div>
             </div>
 
-            <!-- Tab: Question Bank -->
+            <!-- Tab: Question Bank (REVISED & STRENGTHENED) -->
             <div id="questions" class="tab-content">
-                <header class="mb-12 flex items-center justify-between">
-                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">بانک سوالات داوران</h2>
-                    <button onclick="showRandomQuestion()" class="bg-primary-600 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-almond-glow">سوال شانسی</button>
+                <header class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">بانک سوالات استراتژیک داوران</h2>
+                        <p class="text-surface-700 mt-2 opacity-80 leading-relaxed">آمادگی برای چالش‌برانگیزترین سوالات جلسه دفاع با راهنمای پاسخ‌دهی حرفه‌ای</p>
+                    </div>
+                    <button onclick="showRandomQuestion()" class="inline-flex items-center gap-2 bg-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-sm shadow-almond-glow hover:bg-primary-700 transition-all shrink-0">
+                        <i data-lucide="shuffle" class="w-4 h-4"></i> شبیه‌ساز سوالات
+                    </button>
                 </header>
-                <div class="max-w-3xl mx-auto space-y-4">
-                    <div id="random-question-area" class="hidden mb-12 transform transition-all">
-                        <div class="bg-primary-50 border-2 border-primary-100 p-8 rounded-3xl text-center shadow-almond-glow">
-                            <h3 id="rq-text" class="text-xl font-bold text-primary-900 mb-4">سوال اینجا ظاهر می‌شود...</h3>
-                            <p id="rq-tip" class="text-sm text-primary-700/70 italic"></p>
+
+                <div id="random-question-area" class="hidden mb-12 transform transition-all duration-500">
+                    <div class="bg-white border-2 border-primary-200 p-8 rounded-[32px] shadow-almond-glow relative overflow-hidden">
+                        <div class="absolute -top-4 -left-4 w-24 h-24 bg-primary-50 rounded-full blur-2xl opacity-50"></div>
+                        <div class="relative z-10">
+                            <span class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">Random Challenge</span>
+                            <h3 id="rq-text" class="text-xl md:text-2xl font-black text-primary-900 mb-6 leading-tight"></h3>
+                            <div class="bg-primary-50 p-6 rounded-2xl border border-primary-100">
+                                <h4 class="text-xs font-black text-primary-600 mb-3 flex items-center gap-2">
+                                    <i data-lucide="lightbulb" class="w-4 h-4"></i> راهنمای پاسخ‌دهی حرفه‌ای:
+                                </h4>
+                                <p id="rq-tip" class="text-sm text-surface-800 leading-relaxed font-medium"></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl border border-surface-200 shadow-modern">
-                        <button onclick="toggleFaq(1)" class="w-full p-6 text-right flex items-center justify-between font-bold text-primary-800">
-                            ۱. چرا این موضوع را انتخاب کردید؟
-                            <i data-lucide="plus" class="w-5 h-5 text-slate-300 transition-transform" id="faq-icon-1"></i>
+                </div>
+
+                <div class="grid gap-6 max-w-4xl mx-auto">
+                    <!-- Q1: Limitations -->
+                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
+                        <button onclick="toggleFaq(1)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
+                                    <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">The Limitations</span>
+                                    <h4 class="text-lg font-black text-primary-800">۱. محدودیت‌های تحقیق</h4>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-1"></i>
                         </button>
-                        <div id="faq-1" class="accordion-content px-6 pb-6 text-sm text-surface-700 opacity-80">
-                            بگویید: "با توجه به خلاء تحقیقاتی در زمینه X و اهمیت آن در صنعت Y، این موضوع پتانسیل بالایی برای حل مشکل Z داشت."
+                        <div id="faq-1" class="accordion-content px-8 pb-8">
+                            <div class="space-y-6 pt-2">
+                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic">
+                                    <p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: محدودیت‌های اصلی پژوهش شما چه بود و فکر می‌کنید چقدر بر نتایج نهایی تاثیر گذاشته‌اند؟</p>
+                                </div>
+                                <div class="space-y-3">
+                                    <h5 class="text-xs font-black text-emerald-600 flex items-center gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:
+                                    </h5>
+                                    <p class="text-sm text-surface-700 leading-relaxed opacity-90">هرگز نگویید تحقیقم محدودیتی نداشت! بگویید: «این پژوهش با دو محدودیت عمده مواجه بود: ۱. [مثلاً دسترسی دشوار به جامعه آماری خاص] و ۲. [محدودیت زمانی یا ابزاری]. با این حال، با استفاده از روش [مثلاً نمونه‌گیری تصادفی یا تحلیل حساسیت]، سعی شد اثر این محدودیت‌ها به حداقل برسد تا روایی و پایایی نتایج حفظ شود.»</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl border border-surface-200 shadow-modern">
-                        <button onclick="toggleFaq(2)" class="w-full p-6 text-right flex items-center justify-between font-bold text-primary-800">
-                            ۲. نوآوری تحقیق شما دقیقا چیست؟
-                            <i data-lucide="plus" class="w-5 h-5 text-slate-300 transition-transform" id="faq-icon-2"></i>
+
+                    <!-- Q2: Generalizability -->
+                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
+                        <button onclick="toggleFaq(2)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
+                                    <i data-lucide="globe" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">Generalizability</span>
+                                    <h4 class="text-lg font-black text-primary-800">۲. تعمیم‌پذیری نتایج</h4>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-2"></i>
                         </button>
-                        <div id="faq-2" class="accordion-content px-6 pb-6 text-sm text-surface-700 opacity-80">
-                            صریح باشید: ترکیب متغیرها، استفاده از متدولوژی جدید یا جامعه آماری متفاوت.
+                        <div id="faq-2" class="accordion-content px-8 pb-8">
+                            <div class="space-y-6 pt-2">
+                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic">
+                                    <p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: آیا نتایج تحقیق شما در جوامع یا شرایط دیگر هم قابل تعمیم است؟</p>
+                                </div>
+                                <div class="space-y-3">
+                                    <h5 class="text-xs font-black text-emerald-600 flex items-center gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:
+                                    </h5>
+                                    <p class="text-sm text-surface-700 leading-relaxed opacity-90">باید واقع‌بین باشید: «از آنجا که این تحقیق بر روی [جامعه خاص X] تمرکز داشته، تعمیم‌دهی مطلق باید با احتیاط صورت گیرد. اما با توجه به اینکه متغیرهای کلیدی بر اساس استانداردهای جهانی سنجیده شده‌اند، چارچوب نظری و متدولوژی این کار می‌تواند به عنوان الگویی موفق در سازمان‌ها/جوامع مشابه مورد استفاده قرار گیرد.»</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q3: Contrast with Literature -->
+                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
+                        <button onclick="toggleFaq(3)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
+                                    <i data-lucide="book-open-check" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">Contrast with Literature</span>
+                                    <h4 class="text-lg font-black text-primary-800">۳. تفاوت با ادبیات پیشین</h4>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-3"></i>
+                        </button>
+                        <div id="faq-3" class="accordion-content px-8 pb-8">
+                            <div class="space-y-6 pt-2">
+                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic">
+                                    <p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: مهم‌ترین تفاوت یا تضاد یافته‌های شما با پژوهش‌های مشابه (مثلاً پژوهش فلان نویسنده) در چیست؟</p>
+                                </div>
+                                <div class="space-y-3">
+                                    <h5 class="text-xs font-black text-emerald-600 flex items-center gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:
+                                    </h5>
+                                    <p class="text-sm text-surface-700 leading-relaxed opacity-90">نشان دهید که بر پیشینه مسلط هستید: «برخلاف پژوهش [نام محقق] که به نتیجه Y رسیده بود، یافته‌های من به نتیجه Z منجر شد. دلیل احتمالی این تفاوت می‌تواند در [تفاوت در ابزار سنجش، بومی‌سازی متغیرها یا بازه زمانی متفاوت] باشد که در فصل چهارم به تفصیل تحلیل شده است.»</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q4: Theoretical Framework -->
+                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
+                        <button onclick="toggleFaq(4)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
+                                    <i data-lucide="database" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">Theoretical Framework</span>
+                                    <h4 class="text-lg font-black text-primary-800">۴. مبانی نظری و مدل مفهومی</h4>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-4"></i>
+                        </button>
+                        <div id="faq-4" class="accordion-content px-8 pb-8">
+                            <div class="space-y-6 pt-2">
+                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic">
+                                    <p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: چرا این نظریه یا مدل خاص را به عنوان پایه اصلی کارتان انتخاب کردید؟ آیا مدل به‌روزتری وجود نداشت؟</p>
+                                </div>
+                                <div class="space-y-3">
+                                    <h5 class="text-xs font-black text-emerald-600 flex items-center gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:
+                                    </h5>
+                                    <p class="text-sm text-surface-700 leading-relaxed opacity-90">از انتخابتان دفاع کنید: «مدل‌های متعددی بررسی شد، اما مدل [نام مدل] به سه دلیل انتخاب شد: ۱. انطباق بالا با شرایط بومی ایران، ۲. جامعیت متغیرها در پوشش دادن فرضیات تحقیق، و ۳. تایید شدن کارآمدی آن در مقالات معتبر دو سال اخیر. مدل‌های جدیدتر هنوز در مرحله آزمون و خطا بودند و اعتبار این مدل برای موضوع ما بالاتر بود.»</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q5: Future Work -->
+                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
+                        <button onclick="toggleFaq(5)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
+                                    <i data-lucide="fast-forward" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">Future Work</span>
+                                    <h4 class="text-lg font-black text-primary-800">۵. پیشنهاد برای آینده</h4>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-5"></i>
+                        </button>
+                        <div id="faq-5" class="accordion-content px-8 pb-8">
+                            <div class="space-y-6 pt-2">
+                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic">
+                                    <p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: اگر بخواهید این تحقیق را ادامه دهید یا به دانشجوی دیگری پیشنهاد دهید، گام بعدی چه خواهد بود؟</p>
+                                </div>
+                                <div class="space-y-3">
+                                    <h5 class="text-xs font-black text-emerald-600 flex items-center gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:
+                                    </h5>
+                                    <p class="text-sm text-surface-700 leading-relaxed opacity-90">این سوال برای سنجش دید کلان شماست: «با توجه به یافته‌های فعلی، پیشنهاد می‌کنم در گام بعدی تاثیر [یک متغیر جدید که در کار شما نبوده] بررسی شود. همچنین استفاده از روش‌های ترکیبی (Mixed Methods) می‌تواند ابعاد کیفی پدیده را که در این تحقیقِ کمی کمتر دیده شده، روشن‌تر کند.»</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -493,7 +635,7 @@
                 </div>
             </div>
 
-            <!-- Tab: Slide Design Toolbox (STANDALONE TAB) -->
+            <!-- Tab: Slide Design Toolbox -->
             <div id="slide-toolbox" class="tab-content">
                 <header class="mb-12">
                     <div class="flex items-center gap-4 mb-4">
@@ -640,6 +782,29 @@
             renderGlossary();
             updateTemplate();
         });
+
+        const questionBank = [
+            {
+                q: "محدودیت‌های اصلی پژوهش شما چه بود و فکر می‌کنید چقدر بر نتایج نهایی تاثیر گذاشته‌اند؟",
+                t: "هرگز نگویید تحقیقم محدودیتی نداشت! بگویید: «این پژوهش با دو محدودیت عمده مواجه بود: ۱. [مثلاً دسترسی دشوار به جامعه آماری خاص] و ۲. [محدودیت زمانی یا ابزاری]. با این حال، با استفاده از روش [مثلاً نمونه‌گیری تصادفی یا تحلیل حساسیت]، سعی شد اثر این محدودیت‌ها به حداقل برسد تا روایی و پایایی نتایج حفظ شود.»"
+            },
+            {
+                q: "آیا نتایج تحقیق شما در جوامع یا شرایط دیگر هم قابل تعمیم است؟",
+                t: "باید واقع‌بین باشید: «از آنجا که این تحقیق بر روی [جامعه خاص X] تمرکز داشته، تعمیم‌دهی مطلق باید با احتیاط صورت گیرد. اما با توجه به اینکه متغیرهای کلیدی بر اساس استانداردهای جهانی سنجیده شده‌اند، چارچوب نظری و متدولوژی این کار می‌تواند به عنوان الگویی موفق در سازمان‌ها/جوامع مشابه مورد استفاده قرار گیرد.»"
+            },
+            {
+                q: "مهم‌ترین تفاوت یا تضاد یافته‌های شما با پژوهش‌های مشابه (مثلاً پژوهش فلان نویسنده) در چیست؟",
+                t: "نشان دهید که بر پیشینه مسلط هستید: «برخلاف پژوهش [نام محقق] که به نتیجه Y رسیده بود، یافته‌های من به نتیجه Z منجر شد. دلیل احتمالی این تفاوت می‌تواند در [تفاوت در ابزار سنجش، بومی‌سازی متغیرها یا بازه زمانی متفاوت] باشد که در فصل چهارم به تفصیل تحلیل شده است.»"
+            },
+            {
+                q: "چرا این نظریه یا مدل خاص را به عنوان پایه اصلی کارتان انتخاب کردید؟ آیا مدل به‌روزتری وجود نداشت؟",
+                t: "از انتخابتان دفاع کنید: «مدل‌های متعددی بررسی شد، اما مدل [نام مدل] به سه دلیل انتخاب شد: ۱. انطباق بالا با شرایط بومی ایران، ۲. جامعیت متغیرها در پوشش دادن فرضیات تحقیق، و ۳. تایید شدن کارآمدی آن در مقالات معتبر دو سال اخیر. مدل‌های جدیدتر هنوز در مرحله آزمون و خطا بودند و اعتبار این مدل برای موضوع ما بالاتر بود.»"
+            },
+            {
+                q: "اگر بخواهید این تحقیق را ادامه دهید یا به دانشجوی دیگری پیشنهاد دهید، گام بعدی چه خواهد بود؟",
+                t: "این سوال برای سنجش دید کلان شماست: «با توجه به یافته‌های فعلی، پیشنهاد می‌کنم در گام بعدی تاثیر [یک متغیر جدید که در کار شما نبوده] بررسی شود. همچنین استفاده از روش‌های ترکیبی (Mixed Methods) می‌تواند ابعاد کیفی پدیده را که در این تحقیقِ کمی کمتر دیده شده، روشن‌تر کند.»"
+            }
+        ];
 
         function initLocalStorage() {
             document.querySelectorAll('input[type="checkbox"][data-save-key]').forEach(cb => {
@@ -806,13 +971,8 @@
             const faq = document.getElementById(`faq-${id}`);
             const icon = document.getElementById(`faq-icon-${id}`);
             if (faq) faq.classList.toggle('open');
-            if (icon) icon.classList.toggle('rotate-45');
+            if (icon) icon.classList.toggle('rotate-180');
         }
-
-        const questionBank = [
-            {q: "۱. چرا این موضوع را انتخاب کردید؟", t: "روی خلاء تحقیقاتی و کاربرد در صنعت تمرکز کنید."},
-            {q: "۲. نوآوری دقیق تحقیق شما کجاست؟", t: "روی متغیرهای جدید، متدولوژی جدید یا جامعه آماری متفاوت تاکید کنید."}
-        ];
 
         function showRandomQuestion() {
             const area = document.getElementById('random-question-area');
@@ -822,8 +982,12 @@
 
             const q = questionBank[Math.floor(Math.random() * questionBank.length)];
             text.innerText = q.q;
-            tip.innerText = `💡 راهنما: ${q.t}`;
+            tip.innerText = q.t;
             area.classList.remove('hidden');
+            area.classList.add('animate-fadeIn');
+            
+            // Scroll to top of the area if mobile
+            area.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function copyChecklist() {
