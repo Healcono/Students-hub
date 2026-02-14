@@ -67,7 +67,7 @@
             transition: max-height 0.3s ease-out, padding 0.3s ease;
         }
         .accordion-content.open {
-            max-height: 1200px;
+            max-height: 1500px;
             padding-top: 1rem;
         }
 
@@ -132,6 +132,9 @@
             </button>
             <button onclick="switchTab('etiquette')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="etiquette">
                 <i data-lucide="users" class="w-5 h-5"></i> <span>آداب دفاع</span>
+            </button>
+            <button onclick="switchTab('slide-toolbox')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="slide-toolbox">
+                <i data-lucide="layers" class="w-5 h-5"></i> <span>جعبه‌ابزار طراحی اسلاید</span>
             </button>
         </nav>
 
@@ -403,7 +406,7 @@
                 <div id="glossary-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
 
-            <!-- Tab: Etiquette & Slide Design -->
+            <!-- Tab: Etiquette -->
             <div id="etiquette" class="tab-content">
                 <header class="mb-12">
                     <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">آداب و زبان بدن در جلسه دفاع</h2>
@@ -411,7 +414,7 @@
                 </header>
                 
                 <div class="space-y-8 max-w-4xl mx-auto">
-                    <!-- Posture -->
+                    <!-- 1. Posture -->
                     <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
                         <div class="flex items-center gap-4 mb-6">
                             <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
@@ -426,7 +429,7 @@
                         </ul>
                     </div>
 
-                    <!-- Eye Contact -->
+                    <!-- 2. Eye Contact -->
                     <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
                         <div class="flex items-center gap-4 mb-6">
                             <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
@@ -440,84 +443,45 @@
                         </ul>
                     </div>
 
-                    <!-- Slide Design Toolbox (NEW SECTION) -->
-                    <div class="mt-16 pt-16 border-t border-primary-200">
-                        <div class="flex items-center gap-4 mb-8">
-                            <div class="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-almond-glow">
-                                <i data-lucide="layers"></i>
+                    <!-- 3. Para-linguistics -->
+                    <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
+                                <i data-lucide="mic"></i>
                             </div>
-                            <div>
-                                <h2 class="text-2xl md:text-3xl font-black text-primary-800 tracking-tight">جعبه‌ابزار طراحی اسلاید</h2>
-                                <p class="text-surface-700 mt-1 opacity-80">اصول استاندارد طراحی اسلاید دفاع (Academic Standards)</p>
-                            </div>
+                            <h3 class="text-xl font-bold text-primary-800">۳. مدیریت صدا و لحن (Para-linguistics)</h3>
                         </div>
+                        <ul class="space-y-4 text-surface-700 leading-relaxed">
+                            <li><strong class="text-primary-700">تغییر ریتم:</strong> یکنواخت صحبت کردن (Monotone) باعث خواب‌آلودگی داوران می‌شود. روی کلمات کلیدی و یافته‌های مهم تحقیق، کمی مکث کنید یا تن صدا را تغییر دهید.</li>
+                            <li><strong class="text-primary-700">قاطعیت در پاسخ:</strong> هنگام پاسخ به سوالات، از واژگان تردیدی مثل «فکر می‌کنم»، «شاید» یا «تا حدودی» پرهیز کنید. به جای آن بگویید: «یافته‌های این تحقیق نشان می‌دهد که...» یا «بر اساس متدولوژی اجرا شده...».</li>
+                        </ul>
+                    </div>
 
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
-                                <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
-                                    <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۱</span>
-                                    قانون ۱۰/۲۰/۳۰
-                                </h4>
-                                <p class="text-sm text-surface-700 leading-relaxed opacity-80">
-                                    <strong>۱۰ اسلاید:</strong> تعداد کل اسلایدهای محتوایی.<br>
-                                    <strong>۲۰ دقیقه:</strong> کل زمان ارائه.<br>
-                                    <strong>فونت ۳۰:</strong> سایز فونت نباید از ۳۰pt کوچکتر باشد.
-                                </p>
+                    <!-- 4. Professionalism -->
+                    <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
+                                <i data-lucide="award"></i>
                             </div>
-                            <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
-                                <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
-                                    <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۲</span>
-                                    اصل «یک ایده در هر اسلاید»
-                                </h4>
-                                <p class="text-sm text-surface-700 leading-relaxed opacity-80">هرگز دو موضوع متفاوت را در یک اسلاید قرار ندهید. موضوعات را در اسلایدهای مجزا بیاورید تا تمرکز داور حفظ شود.</p>
-                            </div>
-                            <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
-                                <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
-                                    <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۳</span>
-                                    قانون ۶×۶ (کاهش متن)
-                                </h4>
-                                <p class="text-sm text-surface-700 leading-relaxed opacity-80">بیشتر از ۶ خط متن ننویسید و در هر خط بیشتر از ۶ کلمه به کار نبرید. از عبارات کلیدی استفاده کنید.</p>
-                            </div>
-                            <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
-                                <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
-                                    <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۴</span>
-                                    پالت رنگی رسمی
-                                </h4>
-                                <p class="text-sm text-surface-700 leading-relaxed opacity-80">کنتراست بالا (متن تیره روی پس‌زمینه روشن). حداکثر از ۳ رنگ استفاده کنید و انیمیشن‌های اضافی را حذف کنید.</p>
-                            </div>
-                            <div class="md:col-span-2 bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
-                                <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
-                                    <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۵</span>
-                                    بصری‌سازی داده‌ها (Data Visualization)
-                                </h4>
-                                <p class="text-sm text-surface-700 leading-relaxed opacity-80">به جای جدول‌های شلوغ از نمودار (Chart) استفاده کنید. سطر یا ستونی که نتیجه اصلی در آن است را با رنگ متفاوت Bold کنید.</p>
-                            </div>
+                            <h3 class="text-xl font-bold text-primary-800">۴. آداب مواجهه با انتقاد (Professionalism)</h3>
                         </div>
+                        <ul class="space-y-4 text-surface-700 leading-relaxed">
+                            <li><strong class="text-primary-700">یادداشت‌برداری:</strong> وقتی داوری در حال نقد کار شماست، حتماً یادداشت کنید. این کار نشان‌دهنده احترام شما به دیدگاه او و جدیت شما در اصلاح کار است.</li>
+                            <li><strong class="text-primary-700">قطع نکردن کلام:</strong> حتی اگر نقد داور را ناعادلانه می‌دانید، صبر کنید صحبتش تمام شود. سپس با آرامش و با جمله‌ای مثل «نکته بسیار ارزشمندی را فرمودید، اما در این پژوهش به این دلیل که...» پاسخ دهید.</li>
+                        </ul>
+                    </div>
 
-                        <div class="mt-10 bg-primary-100/50 p-10 rounded-3xl border border-primary-200">
-                            <h3 class="font-black text-primary-900 text-xl mb-6 flex items-center gap-3">
-                                <i data-lucide="tool" class="text-primary-600"></i>
-                                🛠 منابع و پلتفرم‌های دریافت تمپلیت حرفه‌ای
-                            </h3>
-                            <div class="grid sm:grid-cols-2 gap-6">
-                                <div class="bg-white p-6 rounded-2xl shadow-sm">
-                                    <h5 class="font-bold text-primary-800 mb-2">۱. Canva</h5>
-                                    <p class="text-xs text-surface-700 opacity-70 leading-relaxed">بخش Education/Presentation. جستجوی "Thesis Defense". دارای فونت‌های فارسی مناسب.</p>
-                                </div>
-                                <div class="bg-white p-6 rounded-2xl shadow-sm">
-                                    <h5 class="font-bold text-primary-800 mb-2">۲. Slidesgo</h5>
-                                    <p class="text-xs text-surface-700 opacity-70 leading-relaxed">دسته‌بندی Education > University. تمپلیت‌های ساختاریافته با پیشنهاد ترتیب اسلاید.</p>
-                                </div>
-                                <div class="bg-white p-6 rounded-2xl shadow-sm">
-                                    <h5 class="font-bold text-primary-800 mb-2">۳. SlidesCarnival</h5>
-                                    <p class="text-xs text-surface-700 opacity-70 leading-relaxed">قالب‌های ساده و شیک. تمرکز روی محتوا به جای تزیینات اضافی.</p>
-                                </div>
-                                <div class="bg-white p-6 rounded-2xl shadow-sm">
-                                    <h5 class="font-bold text-primary-800 mb-2">۴. Behance</h5>
-                                    <p class="text-xs text-surface-700 opacity-70 leading-relaxed">جستجوی "Slide Design" برای ایده گرفتن از استانداردهای بصری روز دنیا.</p>
-                                </div>
+                    <!-- 5. Grooming -->
+                    <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0">
+                                <i data-lucide="shirt"></i>
                             </div>
+                            <h3 class="text-xl font-bold text-primary-800">۵. آراستگی ظاهری (Grooming)</h3>
                         </div>
+                        <ul class="space-y-4 text-surface-700 leading-relaxed">
+                            <li><strong class="text-primary-700">پوشش رسمی و مینیمال:</strong> لباس شما نباید «صدا» داشته باشد! از پوشیدن لباس‌هایی با طرح‌های شلوغ یا اکسسوری‌های پر زرق و برق که حواس مخاطب را از محتوای علمی پرت می‌کند، خودداری کنید. پوشش رسمی بخشی از پروتکل احترام به ساحت دانشگاه است.</li>
+                        </ul>
                     </div>
 
                     <!-- Golden Tip -->
@@ -525,6 +489,115 @@
                         <i data-lucide="sparkles" class="absolute -bottom-4 -left-4 w-32 h-32 opacity-20 -rotate-12"></i>
                         <h4 class="font-black text-xl mb-4 flex items-center gap-2">💡 یک نکته طلایی برای دانشجو:</h4>
                         <p class="text-lg leading-relaxed font-medium">لبخند ملایم در ابتدای جلسه و هنگام خوش‌آمدگویی، سطح کورتیزول (هورمون استرس) را در بدن شما کاهش داده و فضای جلسه را از حالت «بازجویی» به یک «گفتمان علمی» تغییر می‌دهد.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Slide Design Toolbox (STANDALONE TAB) -->
+            <div id="slide-toolbox" class="tab-content">
+                <header class="mb-12">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-almond-glow">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">جعبه‌ابزار طراحی اسلاید</h2>
+                            <p class="text-surface-700 mt-1 opacity-80">اصول استاندارد طراحی اسلاید دفاع (Academic Standards)</p>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="space-y-8 max-w-4xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 1. 10/20/30 Rule -->
+                        <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
+                            <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۱</span>
+                                قانون ۱۰/۲۰/۳۰ (قانون طلایی گای کاوازاکی)
+                            </h4>
+                            <div class="text-sm text-surface-700 leading-relaxed opacity-80 space-y-2">
+                                <p>این قانون در تمام دنیا به عنوان یک استاندارد پذیرفته شده است:</p>
+                                <p><strong>۱۰ اسلاید:</strong> تعداد کل اسلایدهای محتوایی (بدون احتساب مراجع) نباید بیش از حد باشد.</p>
+                                <p><strong>۲۰ دقیقه:</strong> کل زمان ارائه.</p>
+                                <p><strong>فونت ۳۰:</strong> سایز فونت نباید از ۳۰pt کوچکتر باشد تا داوران ردیف آخر هم به راحتی بخوانند.</p>
+                            </div>
+                        </div>
+
+                        <!-- 2. One Idea -->
+                        <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
+                            <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۲</span>
+                                اصل «یک ایده در هر اسلاید»
+                            </h4>
+                            <p class="text-sm text-surface-700 leading-relaxed opacity-80">هرگز دو موضوع متفاوت را در یک اسلاید قرار ندهید. اگر می‌خواهید درباره «روش تحقیق» و «ابزار گردآوری» صحبت کنید، آن‌ها را در دو اسلاید مجزا بیاورید تا تمرکز داور حفظ شود.</p>
+                        </div>
+
+                        <!-- 3. 6x6 Rule -->
+                        <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
+                            <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۳</span>
+                                قانون ۶×۶ (کاهش متن)
+                            </h4>
+                            <div class="text-sm text-surface-700 leading-relaxed opacity-80 space-y-2">
+                                <p>اسلاید جای روخوانی نیست. سعی کنید در هر اسلاید:</p>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>بیشتر از ۶ خط متن ننویسید.</li>
+                                    <li>در هر خط بیشتر از ۶ کلمه به کار نبرید.</li>
+                                    <li>به جای جمله، از عبارات کلیدی (Keywords) استفاده کنید.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 4. Palette -->
+                        <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
+                            <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۴</span>
+                                پالت رنگی رسمی (Professional Palette)
+                            </h4>
+                            <div class="text-sm text-surface-700 leading-relaxed opacity-80 space-y-2">
+                                <p><strong>کنتراست بالا:</strong> متن تیره روی پس‌زمینه روشن بهترین حالت برای پروژکتورهای سالن دفاع است.</p>
+                                <p><strong>محدودیت رنگ:</strong> حداکثر از ۳ رنگ استفاده کنید.</p>
+                                <p><strong>حذف انیمیشن‌های اضافی:</strong> فقط از افکت‌های ساده مثل Fade استفاده کنید.</p>
+                            </div>
+                        </div>
+
+                        <!-- 5. Viz -->
+                        <div class="md:col-span-2 bg-white p-8 rounded-3xl border border-surface-200 shadow-modern">
+                            <h4 class="font-black text-primary-700 mb-4 flex items-center gap-2">
+                                <span class="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center text-[10px]">۵</span>
+                                بصری‌سازی داده‌ها (Data Visualization)
+                            </h4>
+                            <div class="text-sm text-surface-700 leading-relaxed opacity-80 space-y-2">
+                                <p>به جای جدول‌های شلوغ و پر از عدد، از نمودار (Chart) استفاده کنید.</p>
+                                <p>اگر مجبور به استفاده از جدول هستید، فقط سطر یا ستونی که نتیجه اصلی در آن است را با رنگی متفاوت Bold کنید.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Toolbox Resources -->
+                    <div class="mt-10 bg-primary-100/50 p-10 rounded-3xl border border-primary-200">
+                        <h3 class="font-black text-primary-900 text-xl mb-8 flex items-center gap-3">
+                            <i data-lucide="wrench" class="text-primary-600"></i>
+                            🛠 منابع و پلتفرم‌های دریافت تمپلیت حرفه‌ای
+                        </h3>
+                        <div class="grid sm:grid-cols-2 gap-8">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-primary-200 hover:shadow-md transition-shadow">
+                                <h5 class="font-bold text-primary-800 mb-3">۱. Canva (بخش Education)</h5>
+                                <p class="text-xs text-surface-700 opacity-70 leading-relaxed">جستجوی کلمات "Thesis Defense" یا "Academic Research". دارای تمپلیت‌های مدرن و فونت‌های فارسی مناسب.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-primary-200 hover:shadow-md transition-shadow">
+                                <h5 class="font-bold text-primary-800 mb-3">۲. Slidesgo</h5>
+                                <p class="text-xs text-surface-700 opacity-70 leading-relaxed">دسته‌بندی Education > University. تمپلیت‌های ساختاریافته که حتی ترتیب اسلایدها را پیشنهاد می‌دهند.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-primary-200 hover:shadow-md transition-shadow">
+                                <h5 class="font-bold text-primary-800 mb-3">۳. SlidesCarnival</h5>
+                                <p class="text-xs text-surface-700 opacity-70 leading-relaxed">قالب‌های بسیار ساده و شیک. تمرکز اصلی روی محتوا است نه تزیینات اضافی.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-primary-200 hover:shadow-md transition-shadow">
+                                <h5 class="font-bold text-primary-800 mb-3">۴. Behance</h5>
+                                <p class="text-xs text-surface-700 opacity-70 leading-relaxed">جستجوی "Slide Design" برای ایده گرفتن از استانداردهای بصری و گرافیکی روز دنیا.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
