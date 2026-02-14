@@ -78,9 +78,41 @@
 
         .min-h-dvh { min-height: 100dvh; }
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+        /* Modal Animation */
+        .modal-enter {
+            animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes modalScaleUp {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body class="flex h-screen min-h-dvh overflow-hidden selection:bg-primary-100 selection:text-primary-800">
+
+    <!-- About Modal (Popup) -->
+    <div id="about-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6 hidden">
+        <div class="absolute inset-0 bg-primary-900/60 backdrop-blur-md transition-opacity" onclick="toggleAboutModal(false)"></div>
+        <div class="bg-white rounded-[32px] max-w-lg w-full p-8 md:p-10 shadow-2xl relative z-10 modal-enter">
+            <button onclick="toggleAboutModal(false)" class="absolute top-6 left-6 text-slate-300 hover:text-primary-600 transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-almond-glow overflow-hidden p-2 border border-primary-100">
+                <img src="https://abrehamrahi.ir/o/public/Zccvafbz/" alt="Logo" class="w-full h-full object-contain">
+            </div>
+            <h3 class="text-2xl font-black text-primary-800 mb-6 leading-tight text-center">مسیر سخت تمام شد، وقت درخشش است!</h3>
+            <p class="text-surface-700 leading-loose text-base mb-8 text-justify opacity-90">
+                خسته نباشی؛ ما می‌دانیم برای رسیدن به این لحظه چقدر بی‌خوابی و سختی کشیده‌ای. دفاع‌یار اینجاست تا خیالت از بابت تمام جزئیاتِ روز دفاع راحت باشد. ما همه‌ی ابزارها، از استانداردهای بصری اسلایدها تا فنون پاسخگویی به داوران را برایت آماده کرده‌ایم. با دفاع‌یار، ارائه تو فقط یک گزارش نیست؛ یک اجرای به‌یادماندنی و مقتدرانه است.
+            </p>
+            <div class="mb-8 text-center">
+                <p class="text-sm font-bold text-primary-700 bg-primary-50 py-2 px-6 rounded-full inline-block border border-primary-100">معاونت پژوهشی دانشکده علوم پزشکی</p>
+            </div>
+            <button onclick="toggleAboutModal(false)" class="w-full py-4 bg-primary-600 text-white rounded-2xl font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-primary-600/20">
+                متوجه شدم، بزن بریم!
+            </button>
+        </div>
+    </div>
 
     <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-primary-800 text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-500 opacity-0 translate-y-10 pointer-events-none">
@@ -90,7 +122,7 @@
 
     <!-- Mobile Top Bar -->
     <div class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-surface-200 z-50 flex items-center justify-between px-4">
-        <h1 class="text-xl font-bold text-primary-600 tracking-tight">DefaYar</h1>
+        <h1 class="text-xl font-bold text-primary-600 tracking-tight cursor-pointer hover:opacity-80 transition-opacity" onclick="toggleAboutModal(true)">DefaYar</h1>
         <button onclick="toggleSidebar()" class="p-2 text-surface-700 hover:bg-surface-100 rounded-xl transition-colors">
             <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
@@ -102,11 +134,11 @@
     <!-- Sidebar Navigation -->
     <aside id="sidebar" class="fixed inset-y-0 right-0 w-72 bg-primary-800 text-white transform translate-x-full lg:translate-x-0 transition-transform duration-500 ease-in-out z-50 flex flex-col shadow-2xl">
         <div class="p-8 border-b border-white/5">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center shadow-almond-glow">
-                    <i data-lucide="graduation-cap" class="text-white w-6 h-6"></i>
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="toggleAboutModal(true)">
+                <div class="w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center shadow-almond-glow group-hover:scale-110 transition-transform overflow-hidden p-1">
+                    <img src="https://abrehamrahi.ir/o/public/Zccvafbz/" alt="Logo" class="w-full h-full object-contain filter invert brightness-200">
                 </div>
-                <h1 class="text-2xl font-black tracking-tighter">DefaYar</h1>
+                <h1 class="text-2xl font-black tracking-tighter group-hover:text-primary-200 transition-colors">DefaYar</h1>
             </div>
             <p class="text-[10px] text-primary-200/60 mt-2 font-medium tracking-widest uppercase">Academic Assistant System</p>
         </div>
@@ -569,7 +601,7 @@
                 </div>
             </div>
 
-            <!-- Tab: Templates (REVISED) -->
+            <!-- Tab: Templates -->
             <div id="templates" class="tab-content">
                 <header class="mb-12">
                     <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">متن‌های رسمی</h2>
@@ -633,6 +665,18 @@
             });
             const savedProgress = localStorage.getItem('defayar_progress_val');
             if (savedProgress) updateProgress(savedProgress);
+        }
+
+        function toggleAboutModal(show) {
+            const modal = document.getElementById('about-modal');
+            if (!modal) return;
+            if (show) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
         }
 
         function toggleSidebar(forceClose = false) {
