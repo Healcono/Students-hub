@@ -126,7 +126,8 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 lg:mr-72 h-full overflow-y-auto p-4 lg:p-8 scroll-smooth">
+    <!-- Added min-w-0 and overflow-x-hidden for mobile responsiveness -->
+    <main class="flex-1 min-w-0 lg:mr-72 h-full overflow-y-auto overflow-x-hidden p-4 lg:p-8 scroll-smooth w-full">
         
         <!-- Tab: Proposal Defense -->
         <div id="proposal" class="tab-content active">
@@ -216,32 +217,32 @@
                     <h3 class="font-bold text-slate-800 flex items-center gap-2 mb-4">
                         <i data-lucide="git-merge" class="text-brand-500"></i> مسیر ارائه
                     </h3>
-                    <div class="bg-white p-6 lg:p-8 rounded-2xl shadow-soft border border-slate-100 relative">
-                        <div class="absolute right-9 top-8 bottom-8 w-0.5 bg-slate-100"></div>
+                    <div class="bg-white p-4 md:p-6 lg:p-8 rounded-2xl shadow-soft border border-slate-100 relative">
+                        <div class="absolute right-7 md:right-9 top-8 bottom-8 w-0.5 bg-slate-100"></div>
                         
-                        <div class="relative flex items-start gap-5 mb-8 group">
-                            <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm relative z-10 group-hover:border-brand-500 group-hover:text-brand-600 transition-colors shadow-sm">1</div>
+                        <div class="relative flex items-start gap-3 md:gap-5 mb-8 group">
+                            <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm relative z-10 group-hover:border-brand-500 group-hover:text-brand-600 transition-colors shadow-sm shrink-0">1</div>
                             <div class="flex-1 bg-slate-50 p-4 rounded-xl group-hover:bg-brand-50/30 transition-colors">
                                 <h4 class="font-bold text-slate-800 mb-1">مقدمه قدرتمند</h4>
                                 <p class="text-sm text-slate-500 leading-relaxed">شروع با یک آمار تکان‌دهنده یا سوال کلیدی برای جذب داوران.</p>
                             </div>
                         </div>
-                        <div class="relative flex items-start gap-5 mb-8 group">
-                             <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm relative z-10 group-hover:border-brand-500 group-hover:text-brand-600 transition-colors shadow-sm">2</div>
+                        <div class="relative flex items-start gap-3 md:gap-5 mb-8 group">
+                             <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm relative z-10 group-hover:border-brand-500 group-hover:text-brand-600 transition-colors shadow-sm shrink-0">2</div>
                             <div class="flex-1 bg-slate-50 p-4 rounded-xl group-hover:bg-brand-50/30 transition-colors">
                                 <h4 class="font-bold text-slate-800 mb-1">شکاف تحقیقاتی (Research Gap)</h4>
                                 <p class="text-sm text-slate-500 leading-relaxed">اثبات کنید که پژوهش‌های قبلی این مشکل را حل نکرده‌اند.</p>
                             </div>
                         </div>
-                        <div class="relative flex items-start gap-5 mb-8 group">
-                             <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm relative z-10 group-hover:border-brand-500 group-hover:text-brand-600 transition-colors shadow-sm">3</div>
+                        <div class="relative flex items-start gap-3 md:gap-5 mb-8 group">
+                             <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm relative z-10 group-hover:border-brand-500 group-hover:text-brand-600 transition-colors shadow-sm shrink-0">3</div>
                             <div class="flex-1 bg-slate-50 p-4 rounded-xl group-hover:bg-brand-50/30 transition-colors">
                                 <h4 class="font-bold text-slate-800 mb-1">متدولوژی دقیق</h4>
                                 <p class="text-sm text-slate-500 leading-relaxed">توضیح دهید "چگونه" می‌خواهید به سوالات پاسخ دهید.</p>
                             </div>
                         </div>
-                        <div class="relative flex items-start gap-5 group">
-                             <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm relative z-10 group-hover:border-brand-500 group-hover:text-brand-600 transition-colors shadow-sm">4</div>
+                        <div class="relative flex items-start gap-3 md:gap-5 group">
+                             <div class="w-8 h-8 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm relative z-10 group-hover:border-brand-500 group-hover:text-brand-600 transition-colors shadow-sm shrink-0">4</div>
                             <div class="flex-1 bg-slate-50 p-4 rounded-xl group-hover:bg-brand-50/30 transition-colors">
                                 <h4 class="font-bold text-slate-800 mb-1">برنامه عملیاتی</h4>
                                 <p class="text-sm text-slate-500 leading-relaxed">نشان دهید که کار در زمان مقرر قابل انجام است.</p>
@@ -752,7 +753,7 @@
 
                 <!-- Preview Side -->
                 <div class="lg:col-span-2 h-full">
-                    <div class="bg-amber-50/30 p-8 rounded-2xl border border-slate-200 shadow-inner min-h-[500px] flex flex-col relative bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+                    <div class="bg-amber-50/30 p-4 md:p-8 rounded-2xl border border-slate-200 shadow-inner min-h-[500px] flex flex-col relative bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
                         <div class="absolute top-4 left-4 z-10">
                             <button onclick="copyTemplate()" class="bg-white border border-slate-200 hover:border-brand-300 hover:text-brand-700 text-slate-600 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-sm hover:shadow-md">
                                 <i data-lucide="copy" class="w-4 h-4"></i> کپی متن
@@ -762,7 +763,7 @@
                             <span class="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span> پیش‌نمایش زنده
                         </h3>
                         
-                        <div id="template-output" class="text-slate-800 leading-9 whitespace-pre-wrap font-serif text-lg bg-white/60 p-6 rounded-xl border border-white/50 shadow-sm backdrop-blur-sm">
+                        <div id="template-output" class="text-slate-800 leading-9 whitespace-pre-wrap font-serif text-base md:text-lg bg-white/60 p-6 rounded-xl border border-white/50 shadow-sm backdrop-blur-sm">
                             <!-- Text generates here -->
                         </div>
                     </div>
