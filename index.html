@@ -14,29 +14,37 @@
                     fontFamily: { sans: ['Vazirmatn', 'sans-serif'] },
                     colors: {
                         primary: {
-                            50: '#FAF7F2',
-                            100: '#F3EFE7',
-                            200: '#EADDCA', // Almond
-                            600: '#A68A64', // Deep Almond/Tan for actions
-                            700: '#8C7352',
-                            800: '#3E362E', // Dark Almond/Coffee for Sidebar
-                            900: '#2D2721'
+                            50: '#F9F6F0',  /* Very Light Almond */
+                            100: '#F2E8DA', /* Light Almond */
+                            200: '#E6D0B3', /* Beige */
+                            300: '#D4B48C', /* Tan */
+                            400: '#C19A6B', /* Camel */
+                            500: '#A38350', /* Gold/Bronze Main */
+                            600: '#947243', /* Darker Bronze */
+                            700: '#6D5231', /* Walnut */
+                            800: '#3E3021', /* Espresso - Sidebar Bg */
+                            900: '#261C12'  /* Black Coffee */
                         },
                         surface: {
-                            50: '#FDFCFB',
-                            100: '#F8F5F0', 
-                            200: '#E9E4DB', 
-                            700: '#5C544B', 
-                            800: '#3E362E'  
+                            50: '#FDFBF9',
+                            100: '#F7F4F0', 
+                            200: '#EBE5DE', 
+                            700: '#5C544D', 
+                            800: '#3D3630'  
+                        },
+                        accent: {
+                            light: '#FDE68A',
+                            DEFAULT: '#D97706' // Amber for highlights
                         }
                     },
                     borderRadius: {
-                        'xl': '12px',
-                        '2xl': '16px'
+                        'xl': '16px',
+                        '2xl': '24px',
+                        '3xl': '32px'
                     },
                     boxShadow: {
-                        'modern': '0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
-                        'almond-glow': '0 0 20px rgba(166, 138, 100, 0.15)'
+                        'modern': '0 10px 40px -10px rgba(163, 131, 80, 0.15), 0 0 10px -5px rgba(0,0,0,0.03)',
+                        'glow': '0 0 20px rgba(163, 131, 80, 0.2)'
                     }
                 }
             }
@@ -44,8 +52,8 @@
     </script>
     <style>
         body { 
-            background-color: #F8F5F0; 
-            color: #5C544B; 
+            background-color: #FDFBF9; 
+            color: #3E3021; 
             scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
         }
@@ -53,78 +61,81 @@
         .tab-content { display: none; opacity: 0; }
         .tab-content.active { 
             display: block; 
-            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; 
+            animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
         }
         
         @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(10px); } 
-            to { opacity: 1; transform: translateY(0); } 
+            from { opacity: 0; transform: translateY(15px) scale(0.98); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
         }
 
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease;
         }
         .accordion-content.open {
             max-height: 1500px;
-            padding-top: 1rem;
+            padding-top: 1.5rem;
         }
 
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #F8F5F0; }
-        ::-webkit-scrollbar-thumb { background: #D2B48C; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #A68A64; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D4B48C; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #A38350; }
 
         .min-h-dvh { min-height: 100dvh; }
-        .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
-        /* Modal Animation */
-        .modal-enter {
-            animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
         }
-        @keyframes modalScaleUp {
-            from { transform: scale(0.9) translateY(20px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(163, 131, 80, 0.2);
+        }
+        
+        /* Custom selection color */
+        ::selection {
+            background-color: #F2E8DA;
+            color: #3E3021;
         }
     </style>
 </head>
-<body class="flex h-screen min-h-dvh overflow-hidden selection:bg-primary-100 selection:text-primary-800">
+<body class="flex h-screen min-h-dvh overflow-hidden font-sans">
 
-    <!-- About Modal (Popup) -->
+    <!-- About Modal -->
     <div id="about-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6 hidden">
-        <div class="absolute inset-0 bg-primary-900/60 backdrop-blur-md transition-opacity" onclick="toggleAboutModal(false)"></div>
-        <div class="bg-white rounded-[32px] max-w-lg w-full p-8 md:p-10 shadow-2xl relative z-10 modal-enter">
-            <button onclick="toggleAboutModal(false)" class="absolute top-6 left-6 text-slate-300 hover:text-primary-600 transition-colors">
+        <div class="absolute inset-0 bg-primary-900/60 backdrop-blur-sm transition-opacity" onclick="toggleAboutModal(false)"></div>
+        <div class="bg-white rounded-3xl max-w-lg w-full p-8 md:p-10 shadow-2xl relative z-10 border border-primary-100">
+            <button onclick="toggleAboutModal(false)" class="absolute top-6 left-6 text-primary-300 hover:text-primary-600 transition-colors">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
-            <div class="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-almond-glow overflow-hidden p-2 border border-primary-100">
-                <img src="https://abrehamrahi.ir/o/public/Zccvafbz/" alt="Logo" class="w-full h-full object-contain">
+            <div class="w-20 h-20 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-glow text-primary-600">
+                <i data-lucide="graduation-cap" class="w-10 h-10"></i>
             </div>
-            <h3 class="text-2xl font-black text-primary-800 mb-6 leading-tight text-center">مسیر سخت تمام شد، وقت درخشش است!</h3>
-            <p class="text-surface-700 leading-loose text-base mb-8 text-justify opacity-90">
+            <h3 class="text-2xl font-black text-primary-800 mb-4 leading-tight text-center">مسیر سخت تمام شد، وقت درخشش است!</h3>
+            <p class="text-surface-700 leading-loose text-sm mb-8 text-justify opacity-80">
                 خسته نباشی؛ ما می‌دانیم برای رسیدن به این لحظه چقدر بی‌خوابی و سختی کشیده‌ای. دفاع‌یار اینجاست تا خیالت از بابت تمام جزئیاتِ روز دفاع راحت باشد. ما همه‌ی ابزارها، از استانداردهای بصری اسلایدها تا فنون پاسخگویی به داوران را برایت آماده کرده‌ایم. با دفاع‌یار، ارائه تو فقط یک گزارش نیست؛ یک اجرای به‌یادماندنی و مقتدرانه است.
             </p>
-            <div class="mb-8 text-center space-y-1 bg-primary-50/50 py-4 px-6 rounded-3xl border border-primary-100">
-                <p class="text-sm font-black text-primary-800">معاونت پژوهشی دانشکده علوم پزشکی</p>
-                <p class="text-xs font-bold text-primary-600">دانشگاه تربیت مدرس</p>
-            </div>
-            <button onclick="toggleAboutModal(false)" class="w-full py-4 bg-primary-600 text-white rounded-2xl font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-primary-600/20">
+            <button onclick="toggleAboutModal(false)" class="w-full py-4 bg-primary-600 text-white rounded-2xl font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-primary-600/30">
                 متوجه شدم، بزن بریم!
             </button>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-primary-800 text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-500 opacity-0 translate-y-10 pointer-events-none">
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-primary-800 text-white px-6 py-3.5 rounded-2xl shadow-glow flex items-center gap-3 transition-all duration-500 opacity-0 translate-y-10 pointer-events-none">
         <div class="w-2 h-2 rounded-full bg-primary-200 animate-pulse"></div>
         <span id="toast-message" class="text-sm font-medium"></span>
     </div>
 
     <!-- Mobile Top Bar -->
-    <div class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-surface-200 z-50 flex items-center justify-between px-4">
-        <h1 class="text-xl font-bold text-primary-600 tracking-tight cursor-pointer hover:opacity-80 transition-opacity" onclick="toggleAboutModal(true)">DefaYar</h1>
-        <button onclick="toggleSidebar()" class="p-2 text-surface-700 hover:bg-surface-100 rounded-xl transition-colors">
+    <div class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md border-b border-surface-200 z-50 flex items-center justify-between px-4 text-primary-800">
+        <div class="flex items-center gap-2" onclick="toggleAboutModal(true)">
+            <i data-lucide="graduation-cap" class="w-6 h-6 text-primary-600"></i>
+            <h1 class="text-xl font-black tracking-tight cursor-pointer">DefaYar</h1>
+        </div>
+        <button onclick="toggleSidebar()" class="p-2 hover:bg-surface-100 rounded-xl transition-colors">
             <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
     </div>
@@ -132,342 +143,331 @@
     <!-- Mobile Overlay -->
     <div id="mobile-overlay" onclick="toggleSidebar(true)" class="fixed inset-0 bg-primary-900/40 backdrop-blur-sm z-40 lg:hidden hidden opacity-0 transition-opacity duration-300"></div>
 
-    <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="fixed inset-y-0 right-0 w-72 bg-primary-800 text-white transform translate-x-full lg:translate-x-0 transition-transform duration-500 ease-in-out z-50 flex flex-col shadow-2xl">
-        <div class="p-8 border-b border-white/5">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 right-0 w-72 bg-primary-800 text-primary-50 transform translate-x-full lg:translate-x-0 transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) z-50 flex flex-col shadow-2xl overflow-hidden border-l border-primary-700">
+        <div class="p-8 relative z-10">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="toggleAboutModal(true)">
-                <div class="w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center shadow-almond-glow group-hover:scale-110 transition-transform overflow-hidden p-1">
-                    <img src="https://abrehamrahi.ir/o/public/Zccvafbz/" alt="Logo" class="w-full h-full object-contain filter invert brightness-200">
+                <div class="w-10 h-10 bg-primary-700/50 rounded-xl flex items-center justify-center border border-primary-600 backdrop-blur-sm group-hover:bg-primary-600 transition-all">
+                    <i data-lucide="graduation-cap" class="w-6 h-6 text-primary-100"></i>
                 </div>
-                <h1 class="text-2xl font-black tracking-tighter group-hover:text-primary-200 transition-colors">DefaYar</h1>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight text-white">DefaYar</h1>
+                    <p class="text-[10px] text-primary-300 font-medium tracking-[0.2em] uppercase">Academic Assistant</p>
+                </div>
             </div>
-            <p class="text-[10px] text-primary-200/60 mt-2 font-medium tracking-widest uppercase">Academic Assistant System</p>
         </div>
         
-        <nav class="p-4 space-y-1 flex-1 overflow-y-auto mt-4">
-            <button onclick="switchTab('proposal')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="proposal">
-                <i data-lucide="shield" class="w-5 h-5"></i> <span>دفاع از پروپوزال</span>
+        <nav class="px-4 pb-4 space-y-1.5 flex-1 overflow-y-auto relative z-10 scrollbar-hide">
+            <button onclick="switchTab('proposal')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="proposal">
+                <i data-lucide="map" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>نقشه راه دفاع (پروپوزال)</span>
             </button>
-            <button onclick="switchTab('progress')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="progress">
-                <i data-lucide="trending-up" class="w-5 h-5"></i> <span>گزارش شش‌ماهه</span>
+            <button onclick="switchTab('progress')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="progress">
+                <i data-lucide="trending-up" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>گزارش شش‌ماهه</span>
             </button>
-            <button onclick="switchTab('thesis')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="thesis">
-                <i data-lucide="award" class="w-5 h-5"></i> <span>دفاع از پایان‌نامه</span>
+            <button onclick="switchTab('thesis')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="thesis">
+                <i data-lucide="award" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>دفاع از پایان‌نامه</span>
             </button>
-            <button onclick="switchTab('questions')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="questions">
-                <i data-lucide="help-circle" class="w-5 h-5"></i> <span>بانک سوالات داوران</span>
+            <button onclick="switchTab('questions')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="questions">
+                <i data-lucide="help-circle" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>بانک سوالات داوران</span>
             </button>
-            <button onclick="switchTab('glossary')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="glossary">
-                <i data-lucide="book-open" class="w-5 h-5"></i> <span>فرهنگ لغات تخصصی</span>
+            <button onclick="switchTab('glossary')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="glossary">
+                <i data-lucide="book" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>فرهنگ لغات تخصصی</span>
             </button>
-            <button onclick="switchTab('templates')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="templates">
-                <i data-lucide="file-text" class="w-5 h-5"></i> <span>متن‌های رسمی</span>
+             <button onclick="switchTab('templates')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="templates">
+                <i data-lucide="file-text" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>متن‌های رسمی</span>
             </button>
-            <button onclick="switchTab('etiquette')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="etiquette">
-                <i data-lucide="users" class="w-5 h-5"></i> <span>آداب دفاع</span>
+            <button onclick="switchTab('etiquette')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="etiquette">
+                <i data-lucide="users" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>آداب دفاع</span>
             </button>
-            <button onclick="switchTab('slide-toolbox')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 text-primary-200/60 hover:text-white hover:bg-white/5" data-tab="slide-toolbox">
-                <i data-lucide="layers" class="w-5 h-5"></i> <span>جعبه‌ابزار طراحی اسلاید</span>
+            <button onclick="switchTab('slide-toolbox')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="slide-toolbox">
+                <i data-lucide="layers" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>جعبه‌ابزار طراحی</span>
             </button>
         </nav>
 
-        <div class="p-6 bg-primary-900 border-t border-white/5 text-center">
-            <div class="mb-3">
-                <p class="text-[10px] text-primary-200/40 mb-1">طراح و توسعه‌دهنده:</p>
-                <h4 class="font-bold text-primary-100 text-sm">دکتر فاطمه زارعی</h4>
+        <div class="p-6 bg-black/20 backdrop-blur-md relative z-10 border-t border-primary-700 space-y-3">
+            <div class="flex items-start gap-3">
+                 <div class="w-8 h-8 rounded-full bg-primary-700 flex items-center justify-center text-primary-200 shrink-0 border border-primary-600">
+                    <i data-lucide="code" class="w-4 h-4"></i>
+                 </div>
+                 <div>
+                    <h4 class="font-bold text-white text-xs">طراح و توسعه‌دهنده</h4>
+                    <p class="text-[11px] text-primary-200 mt-0.5">دکتر فاطمه زارعی</p>
+                    <p class="text-[10px] text-primary-300/70 mt-0.5 font-mono">healcono@gmail.com</p>
+                 </div>
             </div>
-            
-            <div class="w-10 h-[1px] bg-white/10 mx-auto my-3"></div>
-            
-            <div class="bg-white/5 border border-white/10 rounded-2xl p-3.5 mb-5 backdrop-blur-sm text-center">
-                <p class="text-[10px] text-primary-200/40 mb-1.5 font-medium">تهیه شده به سفارش:</p>
-                <p class="text-[11px] text-primary-100 font-bold leading-tight">معاونت پژوهشی دانشکده علوم پزشکی</p>
-                <p class="text-[10px] text-primary-200/70 mt-1 font-medium italic">دانشگاه تربیت مدرس</p>
+            <div class="pt-3 border-t border-primary-700/50 text-justify">
+                <p class="text-[9px] text-primary-300/60 leading-tight">
+                    تهیه شده به سفارش معاونت پژوهشی دانشکده علوم پزشکی دانشگاه تربیت مدرس
+                </p>
             </div>
-
-            <a href="mailto:healcono@gmail.com" class="text-[11px] text-primary-200/60 hover:text-primary-200 transition-colors block font-mono">healcono@gmail.com</a>
         </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 lg:mr-72 h-full overflow-y-auto overflow-x-hidden pt-16 lg:pt-0 scroll-smooth">
-        <div class="max-w-6xl mx-auto p-4 md:p-8 lg:p-12 pb-32">
+    <!-- Main Content -->
+    <main class="flex-1 lg:mr-72 h-full overflow-y-auto overflow-x-hidden pt-16 lg:pt-0 scroll-smooth bg-surface-50">
+        <div class="max-w-6xl mx-auto p-6 md:p-10 lg:p-14 pb-32">
             
-            <!-- Tab: Proposal Defense -->
+            <!-- 1. Proposal Tab (Redesigned) -->
             <div id="proposal" class="tab-content active">
-                <header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <header class="mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
                     <div>
                         <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">نقشه راه دفاع از پروپوزال</h2>
-                        <p class="text-surface-700 mt-3 text-lg opacity-80 leading-relaxed">زمان‌بندی استاندارد: ۲۰ دقیقه ارائه + ۱۰ دقیقه پرسش و پاسخ</p>
+                        <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">زمان‌بندی استاندارد: ۲۰ دقیقه ارائه + ۱۰ دقیقه پرسش و پاسخ</p>
                     </div>
-                    <a href="https://abrehamrahi.ir/o/public/0BMVTIYh/" target="_blank" class="inline-flex items-center gap-3 bg-white border border-surface-200 px-6 py-3 rounded-2xl text-sm font-bold text-surface-700 hover:border-primary-600 hover:text-primary-600 transition-all shadow-modern">
-                        <i data-lucide="download" class="w-4 h-4 text-primary-600"></i> دانلود دفترچه کامل (PDF)
+                    <!-- Updated Button with PDF Link -->
+                    <a href="https://abrehamrahi.ir/o/public/2a8hawSa/" target="_blank" class="bg-white border border-primary-200 text-surface-800 hover:bg-primary-50 px-6 py-3 rounded-2xl font-bold flex items-center gap-3 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md whitespace-nowrap">
+                        <i data-lucide="download" class="w-5 h-5 text-primary-600"></i>
+                        دانلود دفترچه کامل (PDF)
                     </a>
                 </header>
 
-                <section class="bg-white rounded-2xl shadow-modern border border-surface-200 overflow-hidden mb-12">
-                    <div class="px-8 py-6 border-b border-surface-200 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <i data-lucide="layout" class="text-primary-600 w-6 h-6"></i>
-                            <h3 class="text-xl font-bold text-primary-800">ساختار اسلایدهای پیشنهادی</h3>
-                        </div>
-                        <button onclick="copyChecklist()" class="text-primary-600 text-xs font-black uppercase tracking-widest hover:text-primary-700">کپی چک‌لیست</button>
+                <div class="bg-white rounded-3xl shadow-modern border border-primary-100 overflow-hidden">
+                    <div class="px-8 py-6 border-b border-surface-200 bg-surface-50/50 flex items-center justify-between">
+                        <h3 class="font-bold text-primary-800 flex items-center gap-2 text-lg"><i data-lucide="layout" class="w-5 h-5 text-primary-600"></i> ساختار اسلایدهای پیشنهادی</h3>
+                        <span class="text-xs font-bold text-primary-500 cursor-pointer hover:text-primary-700 transition-colors">کپی چک‌لیست</span>
                     </div>
-                    
                     <div class="p-6 space-y-4">
-                        <div class="slide-card bg-primary-50 rounded-2xl border border-surface-200 overflow-hidden group">
-                            <button onclick="toggleSlideAccordion(1)" class="w-full px-6 py-5 flex items-center justify-between group-hover:bg-white transition-colors">
-                                <div class="flex items-center gap-5">
-                                    <span class="text-xs font-black text-primary-600 font-mono">01</span>
-                                    <h4 class="font-bold text-surface-800">عنوان و تیم تحقیق</h4>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-[11px] font-bold bg-white text-emerald-600 px-3 py-1 rounded-full border border-emerald-100">۱ دقیقه</span>
-                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-300 transition-transform" id="slide-arrow-1"></i>
-                                </div>
+                        
+                        <!-- Item 1 -->
+                        <div class="group bg-surface-50 hover:bg-white border border-transparent hover:border-primary-100 rounded-3xl p-6 transition-all duration-300 hover:shadow-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-3xl font-black text-primary-200 group-hover:text-primary-400 transition-colors font-mono tracking-tighter">01</span>
+                                <span class="bg-teal-50 text-teal-700 px-4 py-1.5 rounded-full text-xs font-bold shadow-sm">۱ دقیقه</span>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <h4 class="text-xl font-black text-primary-900">عنوان و تیم تحقیق</h4>
+                                <p class="text-sm text-surface-600 text-left md:text-right md:max-w-md leading-relaxed">لوگوی دانشگاه و نام استاد راهنما فراموش نشود. ظاهر اسلاید اول ویترین کار شماست.</p>
+                            </div>
+                            <div class="accordion-content mt-4 border-t border-primary-100 pt-4 hidden">
+                                <!-- Details can go here -->
+                            </div>
+                            <button onclick="toggleAccordion(this)" class="w-full mt-4 flex justify-center text-primary-300 hover:text-primary-600 transition-colors md:hidden">
+                                <i data-lucide="chevron-down" class="w-5 h-5"></i>
                             </button>
-                            <div id="slide-content-1" class="accordion-content px-6 pb-6">
-                                <p class="text-sm text-surface-700 leading-relaxed opacity-80">لوگوی دانشگاه و نام استاد راهنما فراموش نشود. ظاهر اسلاید اول ویترین کار شماست.</p>
-                            </div>
                         </div>
-
-                        <div class="slide-card bg-primary-50 rounded-2xl border border-surface-200 overflow-hidden group">
-                            <button onclick="toggleSlideAccordion(2)" class="w-full px-6 py-5 flex items-center justify-between group-hover:bg-white transition-colors">
-                                <div class="flex items-center gap-5">
-                                    <span class="text-xs font-black text-primary-600 font-mono">02-04</span>
-                                    <h4 class="font-bold text-surface-800">بیان مسئله و ضرورت</h4>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-[11px] font-bold bg-white text-emerald-600 px-3 py-1 rounded-full border border-emerald-100">۵ دقیقه</span>
-                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-300 transition-transform" id="slide-arrow-2"></i>
-                                </div>
+                        
+                        <!-- Item 2 -->
+                        <div class="group bg-surface-50 hover:bg-white border border-transparent hover:border-primary-100 rounded-3xl p-6 transition-all duration-300 hover:shadow-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-3xl font-black text-primary-200 group-hover:text-primary-400 transition-colors font-mono tracking-tighter">02-04</span>
+                                <span class="bg-teal-50 text-teal-700 px-4 py-1.5 rounded-full text-xs font-bold shadow-sm">۵ دقیقه</span>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <h4 class="text-xl font-black text-primary-900">بیان مسئله و ضرورت</h4>
+                                <p class="text-sm text-surface-600 text-left md:text-right md:max-w-md leading-relaxed">روی "چرا این تحقیق مهم است؟" تمرکز کنید. آمارها و ارقام به‌روز را به چالش بکشید.</p>
+                            </div>
+                             <button onclick="toggleAccordion(this)" class="w-full mt-4 flex justify-center text-primary-300 hover:text-primary-600 transition-colors md:hidden">
+                                <i data-lucide="chevron-down" class="w-5 h-5"></i>
                             </button>
-                            <div id="slide-content-2" class="accordion-content px-6 pb-6">
-                                <p class="text-sm text-surface-700 leading-relaxed opacity-80">روی "چرا این تحقیق مهم است؟" تمرکز کنید. آمارها و ارقام به‌روز را به چالش بکشید.</p>
-                            </div>
                         </div>
 
-                        <div class="slide-card bg-primary-50 rounded-2xl border border-surface-200 overflow-hidden group">
-                            <button onclick="toggleSlideAccordion(4)" class="w-full px-6 py-5 flex items-center justify-between group-hover:bg-white transition-colors">
-                                <div class="flex items-center gap-5">
-                                    <span class="text-xs font-black text-primary-600 font-mono">05</span>
-                                    <h4 class="font-bold text-surface-800">اهداف و فرضیات</h4>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-[11px] font-bold bg-white text-emerald-600 px-3 py-1 rounded-full border border-emerald-100">۳ دقیقه</span>
-                                    <i data-lucide="chevron-down" class="w-5 h-5 text-slate-300 transition-transform" id="slide-arrow-4"></i>
-                                </div>
+                        <!-- Item 3 -->
+                        <div class="group bg-surface-50 hover:bg-white border border-transparent hover:border-primary-100 rounded-3xl p-6 transition-all duration-300 hover:shadow-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-3xl font-black text-primary-200 group-hover:text-primary-400 transition-colors font-mono tracking-tighter">05</span>
+                                <span class="bg-teal-50 text-teal-700 px-4 py-1.5 rounded-full text-xs font-bold shadow-sm">۳ دقیقه</span>
+                            </div>
+                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <h4 class="text-xl font-black text-primary-900">اهداف و فرضیات</h4>
+                                <p class="text-sm text-surface-600 text-left md:text-right md:max-w-md leading-relaxed">بسیار تیتروار و شفاف بیان شود. از زیاده‌گویی بپرهیزید.</p>
+                            </div>
+                             <button onclick="toggleAccordion(this)" class="w-full mt-4 flex justify-center text-primary-300 hover:text-primary-600 transition-colors md:hidden">
+                                <i data-lucide="chevron-down" class="w-5 h-5"></i>
                             </button>
-                            <div id="slide-content-4" class="accordion-content px-6 pb-6">
-                                <p class="text-sm text-surface-700 leading-relaxed opacity-80">بسیار تیتروار و شفاف بیان شود. از زیاده‌گویی بپرهیزید.</p>
+                        </div>
+
+                        <!-- Item 4 (Highlight) -->
+                        <div class="group bg-white border-2 border-primary-500 hover:border-primary-600 rounded-3xl p-6 transition-all duration-300 shadow-xl shadow-primary-500/10 relative overflow-hidden">
+                             <!-- Decorative side bar -->
+                             <div class="absolute top-0 right-0 bottom-0 w-2 bg-primary-500"></div>
+                             
+                             <div class="flex justify-between items-center mb-4 mr-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-3 h-3 rounded-full bg-primary-500 animate-pulse"></span>
+                                    <span class="text-xs font-bold text-primary-500 uppercase tracking-widest">بخش حیاتی</span>
+                                </div>
+                                <span class="bg-primary-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-glow">۱۲ دقیقه</span>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mr-3">
+                                <h4 class="text-xl font-black text-primary-900">روش‌شناسی و اجرا</h4>
+                                <p class="text-sm text-surface-600 text-left md:text-right md:max-w-md leading-relaxed">اینجا قلب تپنده دفاع شماست. روی جامعه آماری، ابزار تحقیق، و روش تحلیل با دقت صحبت کنید.</p>
                             </div>
                         </div>
 
-                        <div class="slide-card ring-2 ring-primary-600 bg-primary-100/30 rounded-2xl overflow-hidden relative shadow-almond-glow">
-                            <button onclick="toggleSlideAccordion(3)" class="w-full px-6 py-6 flex items-center justify-between">
-                                <div class="flex items-center gap-5">
-                                    <div class="w-2 h-2 rounded-full bg-primary-600 animate-pulse"></div>
-                                    <h4 class="font-bold text-primary-800">روش‌شناسی و اجرا (بخش حیاتی)</h4>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-[11px] font-black bg-primary-600 text-white px-4 py-1.5 rounded-full shadow-lg">۱۲ دقیقه</span>
-                                    <i data-lucide="chevron-down" class="w-5 h-5 text-primary-600 transition-transform" id="slide-arrow-3"></i>
-                                </div>
-                            </button>
-                            <div id="slide-content-3" class="accordion-content px-6 pb-6">
-                                <p class="text-sm text-primary-900 leading-relaxed font-medium">اینجا قلب تپنده دفاع شماست. روی جامعه آماری، ابزار تحقیق، و روش تحلیل با دقت صحبت کنید.</p>
+                         <!-- Item 5 -->
+                        <div class="group bg-surface-50 hover:bg-white border border-transparent hover:border-primary-100 rounded-3xl p-6 transition-all duration-300 hover:shadow-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-3xl font-black text-primary-200 group-hover:text-primary-400 transition-colors font-mono tracking-tighter">19</span>
+                                <span class="bg-teal-50 text-teal-700 px-4 py-1.5 rounded-full text-xs font-bold shadow-sm">۱ دقیقه</span>
+                            </div>
+                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <h4 class="text-xl font-black text-primary-900">نتیجه‌گیری و سپاسگزاری</h4>
+                                <p class="text-sm text-surface-600 text-left md:text-right md:max-w-md leading-relaxed">جمع‌بندی نهایی و تشکر از اساتید.</p>
                             </div>
                         </div>
-                    </div>
-                </section>
 
-                <div class="grid lg:grid-cols-2 gap-8">
-                    <div class="space-y-6">
-                        <h3 class="text-xl font-bold text-primary-800 flex items-center gap-3">
-                            <i data-lucide="compass" class="text-primary-600"></i> نقشه عملیاتی
-                        </h3>
-                        <div class="bg-white p-8 rounded-2xl border border-surface-200 shadow-modern relative">
-                            <div class="space-y-10 relative">
-                                <div class="absolute right-3.5 top-0 bottom-0 w-[1px] bg-primary-200"></div>
-                                <div class="flex items-start gap-6 relative">
-                                    <div class="w-7 h-7 bg-primary-600 rounded-full flex items-center justify-center text-[10px] text-white font-bold ring-4 ring-primary-50 relative z-10">1</div>
-                                    <div>
-                                        <h4 class="font-bold text-primary-800">مقدمه قدرتمند</h4>
-                                        <p class="text-sm text-surface-700 mt-2 leading-relaxed opacity-70">شروع با یک آمار تکان‌دهنده یا سوال کلیدی برای جذب داوران.</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-6 relative">
-                                    <div class="w-7 h-7 bg-white border border-primary-200 rounded-full flex items-center justify-center text-[10px] text-primary-600 font-bold relative z-10">2</div>
-                                    <div>
-                                        <h4 class="font-bold text-primary-800">شکاف تحقیقاتی (Research Gap)</h4>
-                                        <p class="text-sm text-surface-700 mt-2 leading-relaxed opacity-70">اثبات کنید که پژوهش‌های قبلی این مشکل را کاملاً حل نکرده‌اند.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                         <h3 class="text-xl font-bold text-primary-800 flex items-center gap-3">
-                            <i data-lucide="check-square" class="text-primary-600"></i> چک‌لیست نهایی
-                        </h3>
-                        <div class="bg-primary-800 text-white p-8 rounded-2xl shadow-modern relative overflow-hidden">
-                            <i data-lucide="zap" class="absolute -bottom-4 -left-4 w-32 h-32 opacity-10 -rotate-12 text-primary-200"></i>
-                            <div class="space-y-4">
-                                <label class="flex items-center gap-4 cursor-pointer group">
-                                    <input type="checkbox" data-save-key="prop_check_1" class="w-5 h-5 rounded-lg border-white/20 bg-white/5 text-primary-600 focus:ring-primary-600 transition-all">
-                                    <span class="text-sm font-medium group-hover:text-primary-100 transition-colors">فایل پاورپوینت نهایی شد</span>
-                                </label>
-                                <label class="flex items-center gap-4 cursor-pointer group">
-                                    <input type="checkbox" data-save-key="prop_check_2" class="w-5 h-5 rounded-lg border-white/20 bg-white/5 text-primary-600 focus:ring-primary-600 transition-all">
-                                    <span class="text-sm font-medium group-hover:text-primary-100 transition-colors">نسخه PDF پشتیبان</span>
-                                </label>
-                                <label class="flex items-center gap-4 cursor-pointer group">
-                                    <input type="checkbox" data-save-key="prop_check_3" class="w-5 h-5 rounded-lg border-white/20 bg-white/5 text-primary-600 focus:ring-primary-600 transition-all">
-                                    <span class="text-sm font-medium group-hover:text-primary-100 transition-colors">تمرین با تایمر (۲۰ دقیقه)</span>
-                                </label>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tab: Progress Report -->
+            <!-- 2. Progress Tab -->
             <div id="progress" class="tab-content">
-                <header class="mb-12">
-                    <div class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase mb-4">Doctoral Students Only</div>
+                <header class="mb-8">
+                    <div class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase mb-4 tracking-wider border border-primary-200">Doctoral Journey</div>
                     <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">گزارش پیشرفت شش‌ماهه (ویژه دکتری)</h2>
-                    <p class="text-surface-700 mt-3 text-lg opacity-80 leading-relaxed font-medium">هدف: اثبات «زنده بودن» تحقیق و مدیریت زمان (Time Management)</p>
+                    <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">هدف: اثبات «زنده بودن» تحقیق و مدیریت زمان (Time Management).</p>
                 </header>
 
-                <!-- Strategy Banner -->
-                <div class="bg-primary-600 p-8 rounded-[32px] text-white shadow-almond-glow mb-12 relative overflow-hidden">
-                    <i data-lucide="zap" class="absolute -bottom-6 -left-6 w-40 h-40 opacity-10 -rotate-12"></i>
-                    <div class="relative z-10">
-                        <h3 class="text-xl font-black mb-4 flex items-center gap-2">
-                            <i data-lucide="star" class="w-5 h-5"></i> استراتژی طلایی: قانون "Show, Don't Just Tell"
-                        </h3>
-                        <p class="text-lg opacity-90 leading-relaxed">در دکتری، داوران از شنیدن کلمه «در حال انجام است» خسته می‌شوند. آن‌ها می‌خواهند خروجی ملموس ببینند. حتی اگر نتایج قطعی ندارید، ساختار دیتابیس، کدنویسی‌های اولیه یا فیش‌برداری‌های طبقه‌بندی شده را نشان دهید.</p>
+                <!-- Strategy Box -->
+                <div class="bg-gradient-to-r from-primary-600 to-primary-800 rounded-3xl p-6 md:p-8 text-white shadow-glow mb-10 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -translate-x-10 -translate-y-10"></div>
+                    <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shrink-0 border border-white/30">
+                            <i data-lucide="lightbulb" class="w-8 h-8 text-yellow-300"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">استراتژی طلایی: قانون "Show, Don't Just Tell"</h3>
+                            <p class="text-primary-100 text-sm leading-relaxed text-justify">
+                                در دکتری، داوران از شنیدن کلمه «در حال انجام است» خسته می‌شوند. آن‌ها می‌خواهند خروجی ملموس ببینند. حتی اگر نتایج قطعی ندارید، ساختار دیتابیس، کدنویسی‌های اولیه یا فیش‌برداری‌های طبقه‌بندی شده را نشان دهید.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid lg:grid-cols-12 gap-8 mb-12">
-                    <div class="lg:col-span-4 space-y-6">
-                        <div class="bg-white p-8 rounded-[32px] shadow-modern text-center border border-surface-200">
-                            <h4 class="text-sm font-bold text-surface-700 mb-8">درصد تکمیل کل رساله</h4>
-                            <div class="relative w-48 h-48 mx-auto flex items-center justify-center">
-                                <svg class="w-full h-full -rotate-90">
-                                    <circle cx="96" cy="96" r="84" stroke="#F3EFE7" stroke-width="12" fill="none" />
-                                    <circle id="progress-circle" cx="96" cy="96" r="84" stroke="#A68A64" stroke-width="12" fill="none" stroke-dasharray="527" stroke-dashoffset="342" stroke-linecap="round" class="transition-all duration-1000 ease-out" />
-                                </svg>
-                                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                    <span id="progress-text" class="text-4xl font-black text-primary-800 font-mono">35%</span>
-                                </div>
+                <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                    <!-- Progress Circle -->
+                    <div class="bg-white p-8 rounded-3xl shadow-modern text-center border border-primary-100 hover-lift">
+                        <h4 class="text-xs font-bold text-surface-700 uppercase tracking-widest mb-8">درصد پیشرفت فیزیکی</h4>
+                        <div class="relative w-48 h-48 mx-auto flex items-center justify-center">
+                            <svg class="w-full h-full -rotate-90">
+                                <circle cx="96" cy="96" r="84" stroke="#F2E8DA" stroke-width="12" fill="none" />
+                                <circle id="progress-circle" cx="96" cy="96" r="84" stroke="#A38350" stroke-width="12" fill="none" stroke-dasharray="527" stroke-dashoffset="342" stroke-linecap="round" class="transition-all duration-1000 ease-out shadow-glow" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span id="progress-text" class="text-4xl font-black text-primary-800 font-mono tracking-tighter">35%</span>
                             </div>
-                            <input type="range" id="progress-input" data-save-key="progress_val" min="0" max="100" value="35" oninput="updateProgress(this.value)" class="w-full mt-10 h-1.5 bg-primary-100 rounded-full appearance-none cursor-pointer accent-primary-600">
                         </div>
+                        <input type="range" id="progress-input" data-save-key="progress_val" min="0" max="100" value="35" oninput="updateProgress(this.value)" class="w-full mt-10 h-2 bg-primary-100 rounded-full appearance-none cursor-pointer accent-primary-600">
+                    </div>
 
-                        <div class="bg-primary-800 text-white p-8 rounded-[32px] shadow-modern">
-                            <h3 class="font-black text-lg mb-6 flex items-center gap-3">
-                                <i data-lucide="award" class="text-primary-200 w-5 h-5"></i> دستاوردهای کلیدی (Milestones)
-                            </h3>
-                            <div class="space-y-4">
-                                <label class="flex items-center gap-4 cursor-pointer group">
-                                    <input type="checkbox" data-save-key="doc_mile_1" class="w-5 h-5 rounded-lg border-white/20 bg-white/5 text-primary-600 focus:ring-primary-600 transition-all">
-                                    <span class="text-sm font-medium group-hover:text-primary-100 transition-colors">تاییدیه اخلاق در پژوهش</span>
-                                </label>
-                                <label class="flex items-center gap-4 cursor-pointer group">
-                                    <input type="checkbox" data-save-key="doc_mile_2" class="w-5 h-5 rounded-lg border-white/20 bg-white/5 text-primary-600 focus:ring-primary-600 transition-all">
-                                    <span class="text-sm font-medium group-hover:text-primary-100 transition-colors">اخذ پذیرش یا چاپ مقاله مستخرج</span>
-                                </label>
-                                <label class="flex items-center gap-4 cursor-pointer group">
-                                    <input type="checkbox" data-save-key="doc_mile_3" class="w-5 h-5 rounded-lg border-white/20 bg-white/5 text-primary-600 focus:ring-primary-600 transition-all">
-                                    <span class="text-sm font-medium group-hover:text-primary-100 transition-colors">تاییدیه تحلیل آماری یا صحت‌سنجی</span>
-                                </label>
-                                <label class="flex items-center gap-4 cursor-pointer group">
-                                    <input type="checkbox" data-save-key="doc_mile_4" class="w-5 h-5 rounded-lg border-white/20 bg-white/5 text-primary-600 focus:ring-primary-600 transition-all">
-                                    <span class="text-sm font-medium group-hover:text-primary-100 transition-colors">اتمام نگارش حداقل ۶۰٪ کل بدنه رساله</span>
-                                </label>
+                    <!-- Updated Milestones -->
+                    <div class="bg-surface-800 text-surface-50 p-8 rounded-3xl shadow-modern hover-lift border border-surface-700">
+                        <h3 class="font-black text-lg mb-6 flex items-center gap-3">
+                            <i data-lucide="check-square" class="text-primary-300 w-5 h-5"></i> چک‌لیست ارتقا یافته (Milestones)
+                        </h3>
+                        <div class="space-y-4">
+                            <label class="flex items-center gap-4 cursor-pointer group">
+                                <input type="checkbox" data-save-key="mile_phd_1" class="w-5 h-5 rounded-md border-primary-500 bg-surface-700 text-primary-500 focus:ring-primary-500 transition-all">
+                                <span class="text-sm font-medium group-hover:text-primary-200 transition-colors">تاییدیه اخلاق در پژوهش (در صورت نیاز)</span>
+                            </label>
+                            <label class="flex items-center gap-4 cursor-pointer group">
+                                <input type="checkbox" data-save-key="mile_phd_2" class="w-5 h-5 rounded-md border-primary-500 bg-surface-700 text-primary-500 focus:ring-primary-500 transition-all">
+                                <span class="text-sm font-medium group-hover:text-primary-200 transition-colors">اخذ پذیرش یا چاپ مقاله مستخرج</span>
+                            </label>
+                            <label class="flex items-center gap-4 cursor-pointer group">
+                                <input type="checkbox" data-save-key="mile_phd_3" class="w-5 h-5 rounded-md border-primary-500 bg-surface-700 text-primary-500 focus:ring-primary-500 transition-all">
+                                <span class="text-sm font-medium group-hover:text-primary-200 transition-colors">تاییدیه تحلیل آماری یا صحت‌سنجی مدل</span>
+                            </label>
+                            <label class="flex items-center gap-4 cursor-pointer group">
+                                <input type="checkbox" data-save-key="mile_phd_4" class="w-5 h-5 rounded-md border-primary-500 bg-surface-700 text-primary-500 focus:ring-primary-500 transition-all">
+                                <span class="text-sm font-medium group-hover:text-primary-200 transition-colors">اتمام نگارش حداقل ۶۰٪ کل بدنه رساله</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Content Sections -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    
+                    <!-- 1. Activities -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-lg transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center border border-primary-100 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <span class="font-black text-lg">1</span>
                             </div>
+                            <h3 class="font-bold text-primary-900">فعالیت‌های انجام شده</h3>
+                        </div>
+                        <ul class="space-y-3 text-sm text-surface-600">
+                            <li class="flex gap-2 items-start"><span class="text-primary-500 mt-1">•</span> <span class="text-justify"><strong>مرور سیستماتیک:</strong> بررسی X مقاله و تدوین ماتریس مقایسه‌ای.</span></li>
+                            <li class="flex gap-2 items-start"><span class="text-primary-500 mt-1">•</span> <span class="text-justify"><strong>فاز عملیاتی:</strong> طراحی پرسشنامه/کدنویسی ماژول اصلی/تست پایلوت.</span></li>
+                            <li class="flex gap-2 items-start"><span class="text-primary-500 mt-1">•</span> <span class="text-justify"><strong>خروجی متنی:</strong> نگارش فصل اول و دوم (تعداد کلمات تقریبی).</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- 2. Outputs -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-lg transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center border border-primary-100 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <span class="font-black text-lg">2</span>
+                            </div>
+                            <h3 class="font-bold text-primary-900">خروجی‌های علمی و اعتباربخشی</h3>
+                        </div>
+                        <ul class="space-y-3 text-sm text-surface-600">
+                            <li class="flex gap-2 items-start"><span class="text-primary-500 mt-1">•</span> <span><strong>وضعیت مقالات:</strong> در حال نگارش / سابمیت شده / دارای کد پیگیری.</span></li>
+                            <li class="flex gap-2 items-start"><span class="text-primary-500 mt-1">•</span> <span><strong>کارگاه‌ها:</strong> گذراندن دوره‌های تخصصی روش تحقیق.</span></li>
+                            <li class="flex gap-2 items-start"><span class="text-primary-500 mt-1">•</span> <span><strong>ارتباطات:</strong> مکاتبه با اساتید بین‌المللی برای تایید مدل.</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. Obstacles -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-lg transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center border border-primary-100 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <span class="font-black text-lg">3</span>
+                            </div>
+                            <h3 class="font-bold text-primary-900">تحلیل موانع (با راهکار)</h3>
+                        </div>
+                        <div class="text-sm text-surface-600 space-y-2 text-justify">
+                            <p class="bg-red-50 text-red-800 p-2 rounded-lg border border-red-100"><strong class="ml-1">مانع:</strong> عدم دسترسی به آزمایشگاه/داده به دلیل X.</p>
+                            <p class="bg-green-50 text-green-800 p-2 rounded-lg border border-green-100"><strong class="ml-1">راهکار:</strong> استفاده از شبیه‌سازی نرم‌افزاری یا داده‌های ثانویه.</p>
                         </div>
                     </div>
 
-                    <div class="lg:col-span-8 grid md:grid-cols-2 gap-6">
-                        <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern group hover:border-primary-600 transition-colors">
-                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 mb-6 shrink-0">
-                                <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+                    <!-- 4. Roadmap -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-lg transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center border border-primary-100 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <span class="font-black text-lg">4</span>
                             </div>
-                            <h4 class="text-lg font-black text-primary-800 mb-4">۱. فعالیت‌های انجام شده (جزئیات فنی)</h4>
-                            <ul class="space-y-4 text-sm text-surface-700 leading-relaxed">
-                                <li class="flex gap-2"><span class="text-primary-600 font-bold">•</span><span><strong class="text-primary-800">مرور سیستماتیک:</strong> بررسی X مقاله در پایگاه‌های داده و تدوین ماتریس مقایسه‌ای.</span></li>
-                                <li class="flex gap-2"><span class="text-primary-600 font-bold">•</span><span><strong class="text-primary-800">پیش‌برد فاز عملیاتی:</strong> طراحی پرسشنامه / کدنویسی ماژول اصلی / انجام تست‌های پایلوت.</span></li>
-                                <li class="flex gap-2"><span class="text-primary-600 font-bold">•</span><span><strong class="text-primary-800">خروجی متنی:</strong> نگارش فصل اول و دوم به صورت کامل (تعداد صفحات تقریبی).</span></li>
-                            </ul>
+                            <h3 class="font-bold text-primary-900">برنامه عملیاتی ۶ ماه آینده</h3>
                         </div>
-
-                        <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern group hover:border-primary-600 transition-colors">
-                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 mb-6 shrink-0">
-                                <i data-lucide="shield-check" class="w-6 h-6"></i>
-                            </div>
-                            <h4 class="text-lg font-black text-primary-800 mb-4">۲. خروجی‌های علمی و اعتباربخشی</h4>
-                            <ul class="space-y-4 text-sm text-surface-700 leading-relaxed">
-                                <li class="flex gap-2"><span class="text-primary-600 font-bold">•</span><span><strong class="text-primary-800">وضعیت مقالات:</strong> سابمیت شده، در حال نگارش یا دارای کد پیگیری.</span></li>
-                                <li class="flex gap-2"><span class="text-primary-600 font-bold">•</span><span><strong class="text-primary-800">شرکت در کارگاه‌ها:</strong> گذراندن دوره‌های تخصصی مرتبط با روش تحقیق یا نرم‌افزارها.</span></li>
-                                <li class="flex gap-2"><span class="text-primary-600 font-bold">•</span><span><strong class="text-primary-800">ارتباطات علمی:</strong> مکاتبه با اساتید بین‌المللی برای تایید مدل.</span></li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern group hover:border-primary-600 transition-colors">
-                            <div class="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mb-6 shrink-0">
-                                <i data-lucide="shield-alert" class="w-6 h-6"></i>
-                            </div>
-                            <h4 class="text-lg font-black text-primary-800 mb-4">۳. تحلیل موانع (با ارائه راهکار)</h4>
-                            <p class="text-xs text-surface-500 mb-4 italic">فقط ناله نکنید! اگر مانعی وجود داشته، بگویید چگونه برای حل آن تلاش کردید:</p>
-                            <div class="space-y-3">
-                                <div class="bg-surface-50 p-4 rounded-xl border-r-4 border-amber-600"><p class="text-xs font-bold text-amber-800">مانع: عدم دسترسی به آزمایشگاه به دلیل X.</p></div>
-                                <div class="bg-emerald-50 p-4 rounded-xl border-r-4 border-emerald-600"><p class="text-xs font-bold text-emerald-800">راهکار: استفاده از شبیه‌سازی نرم‌افزاری یا داده‌های ثانویه.</p></div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern group hover:border-primary-600 transition-colors">
-                            <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 shrink-0">
-                                <i data-lucide="map" class="w-6 h-6"></i>
-                            </div>
-                            <h4 class="text-lg font-black text-primary-800 mb-4">۴. برنامه عملیاتی ۶ ماه آینده (Roadmap)</h4>
-                            <div class="space-y-3">
-                                <div class="flex items-center gap-3"><span class="w-8 py-1 rounded-lg bg-indigo-100 text-indigo-700 text-[10px] font-black flex items-center justify-center shrink-0">۱-۲</span><p class="text-xs text-surface-700 font-medium">اتمام جمع‌آوری داده‌ها</p></div>
-                                <div class="flex items-center gap-3"><span class="w-8 py-1 rounded-lg bg-indigo-100 text-indigo-700 text-[10px] font-black flex items-center justify-center shrink-0">۳</span><p class="text-xs text-surface-700 font-medium">تحلیل آماری و استخراج نمودارها</p></div>
-                                <div class="flex items-center gap-3"><span class="w-8 py-1 rounded-lg bg-indigo-100 text-indigo-700 text-[10px] font-black flex items-center justify-center shrink-0">۴-۵</span><p class="text-xs text-surface-700 font-medium">نگارش مقاله استخراجی دوم</p></div>
-                                <div class="flex items-center gap-3"><span class="w-8 py-1 rounded-lg bg-indigo-100 text-indigo-700 text-[10px] font-black flex items-center justify-center shrink-0">۶</span><p class="text-xs text-surface-700 font-medium">ارسال پیش‌نویس اولیه به استاد راهنما</p></div>
-                            </div>
-                        </div>
+                        <ul class="space-y-2 text-sm text-surface-600 border-r-2 border-primary-100 pr-3 mr-1">
+                            <li class="relative pb-2"><span class="absolute -right-[19px] top-1.5 w-3 h-3 bg-primary-300 rounded-full border-2 border-white"></span><strong>ماه ۱-۲:</strong> اتمام جمع‌آوری داده‌ها.</li>
+                            <li class="relative pb-2"><span class="absolute -right-[19px] top-1.5 w-3 h-3 bg-primary-300 rounded-full border-2 border-white"></span><strong>ماه ۳:</strong> تحلیل آماری و استخراج نمودارها.</li>
+                            <li class="relative pb-2"><span class="absolute -right-[19px] top-1.5 w-3 h-3 bg-primary-300 rounded-full border-2 border-white"></span><strong>ماه ۴-۵:</strong> نگارش مقاله استخراجی دوم.</li>
+                            <li class="relative"><span class="absolute -right-[19px] top-1.5 w-3 h-3 bg-primary-500 rounded-full border-2 border-white"></span><strong class="text-primary-700">ماه ۶:</strong> ارسال پیش‌نویس اولیه به استاد راهنما.</li>
+                        </ul>
                     </div>
+
                 </div>
             </div>
 
-            <!-- Tab: Final Thesis Defense -->
+            <!-- 3. Thesis Defense Tab -->
             <div id="thesis" class="tab-content">
-                <header class="mb-12">
-                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">دفاع از پایان‌نامه</h2>
-                    <p class="text-surface-700 mt-3 opacity-80">مرحله نهایی: ارائه کامل نتایج و دستاوردها</p>
+                <header class="mb-10">
+                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">دفاع از پایان‌نامه (نهایی)</h2>
+                    <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">مرحله نهایی: ارائه کامل نتایج</p>
                 </header>
-                <div class="bg-white rounded-2xl shadow-modern border border-surface-200 overflow-hidden mb-12">
-                    <div class="p-8">
-                        <h3 class="text-xl font-bold text-primary-800 mb-6">ساختار زمان‌بندی پیشنهادی (۴۰ دقیقه)</h3>
-                        <div class="table-responsive">
+                <div class="bg-white rounded-3xl shadow-modern border border-primary-100 overflow-hidden mb-12 hover-lift">
+                    <div class="p-8 md:p-10">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-lg font-bold text-primary-900">زمان‌بندی پیشنهادی (۴۰ دقیقه)</h3>
+                            <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                        </div>
+                        <div class="overflow-x-auto">
                             <table class="w-full text-sm text-right">
-                                <thead class="bg-primary-50 text-primary-800">
+                                <thead class="bg-primary-50 text-primary-700 uppercase text-xs tracking-wider font-bold">
                                     <tr>
-                                        <th class="p-4 font-bold border-b border-surface-200">بخش</th>
-                                        <th class="p-4 font-bold border-b border-surface-200">زمان (دقیقه)</th>
-                                        <th class="p-4 font-bold border-b border-surface-200">توضیح</th>
+                                        <th class="p-5 rounded-r-xl">بخش</th>
+                                        <th class="p-5">زمان (دقیقه)</th>
+                                        <th class="p-5 rounded-l-xl">توضیح</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-surface-100">
-                                    <tr><td class="p-4">مقدمه و بیان مسئله</td><td class="p-4">۵</td><td class="p-4 opacity-70">سریع و هدفمند</td></tr>
-                                    <tr class="bg-primary-50/50"><td class="p-4 font-bold text-primary-700">یافته‌ها و نتایج</td><td class="p-4 font-bold text-primary-700">۲۰</td><td class="p-4 opacity-70">بخش اصلی ارائه</td></tr>
-                                    <tr><td class="p-4">بحث و نتیجه‌گیری</td><td class="p-4">۱۰</td><td class="p-4 opacity-70">مقایسه با کارهای قبلی</td></tr>
-                                    <tr><td class="p-4">سپاسگزاری</td><td class="p-4">۵</td><td class="p-4 opacity-70">اسلاید پایانی</td></tr>
+                                <tbody class="divide-y divide-primary-100">
+                                    <tr><td class="p-5 font-medium text-surface-800">مقدمه و بیان مسئله</td><td class="p-5 font-mono text-primary-600 font-bold">۵</td><td class="p-5 text-surface-600">سریع و هدفمند</td></tr>
+                                    <tr class="bg-primary-50/40"><td class="p-5 font-bold text-primary-800">یافته‌ها و نتایج</td><td class="p-5 font-bold text-primary-800 font-mono">۲۰</td><td class="p-5 text-primary-800">بخش اصلی ارائه (تمرکز ۸۰٪)</td></tr>
+                                    <tr><td class="p-5 font-medium text-surface-800">بحث و نتیجه‌گیری</td><td class="p-5 font-mono text-primary-600 font-bold">۱۰</td><td class="p-5 text-surface-600">مقایسه با کارهای قبلی</td></tr>
+                                    <tr><td class="p-5 font-medium text-surface-800">سپاسگزاری</td><td class="p-5 font-mono text-primary-600 font-bold">۵</td><td class="p-5 text-surface-600">اسلاید پایانی</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -475,27 +475,29 @@
                 </div>
             </div>
 
-            <!-- Tab: Question Bank -->
+            <!-- 4. Questions Bank Tab -->
             <div id="questions" class="tab-content">
                 <header class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
-                        <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">بانک سوالات استراتژیک داوران</h2>
-                        <p class="text-surface-700 mt-2 opacity-80 leading-relaxed">آمادگی برای چالش‌برانگیزترین سوالات جلسه دفاع با راهنمای پاسخ‌دهی حرفه‌ای</p>
+                        <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">بانک سوالات استراتژیک</h2>
+                        <p class="text-surface-700 mt-2 opacity-80 font-light">آمادگی برای چالش‌برانگیزترین سوالات</p>
                     </div>
-                    <button onclick="showRandomQuestion()" class="inline-flex items-center gap-2 bg-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-sm shadow-almond-glow hover:bg-primary-700 transition-all shrink-0">
+                    <button onclick="showRandomQuestion()" class="inline-flex items-center gap-2 bg-primary-600 text-white px-8 py-4 rounded-2xl font-bold text-sm shadow-glow hover:bg-primary-700 transition-all hover:scale-105 shrink-0">
                         <i data-lucide="shuffle" class="w-4 h-4"></i> شبیه‌ساز سوالات
                     </button>
                 </header>
 
                 <div id="random-question-area" class="hidden mb-12 transform transition-all duration-500">
-                    <div class="bg-white border-2 border-primary-200 p-8 rounded-[32px] shadow-almond-glow relative overflow-hidden">
-                        <div class="absolute -top-4 -left-4 w-24 h-24 bg-primary-50 rounded-full blur-2xl opacity-50"></div>
+                    <div class="bg-white border-2 border-primary-200 p-8 md:p-10 rounded-[40px] shadow-glow relative overflow-hidden">
+                        <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary-100 rounded-full blur-3xl opacity-60"></div>
                         <div class="relative z-10">
-                            <span class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">Random Challenge</span>
-                            <h3 id="rq-text" class="text-xl md:text-2xl font-black text-primary-900 mb-6 leading-tight"></h3>
-                            <div class="bg-primary-50 p-6 rounded-2xl border border-primary-100">
-                                <h4 class="text-xs font-black text-primary-600 mb-3 flex items-center gap-2">
-                                    <i data-lucide="lightbulb" class="w-4 h-4"></i> راهنمای پاسخ‌دهی حرفه‌ای:
+                            <span class="inline-flex items-center gap-1.5 bg-primary-50 text-primary-700 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-6">
+                                <i data-lucide="zap" class="w-3 h-3"></i> Random Challenge
+                            </span>
+                            <h3 id="rq-text" class="text-xl md:text-2xl font-black text-primary-900 mb-8 leading-tight"></h3>
+                            <div class="bg-primary-50 p-6 rounded-3xl border border-primary-100">
+                                <h4 class="text-xs font-black text-primary-600 mb-3 flex items-center gap-2 uppercase tracking-wide">
+                                    <i data-lucide="lightbulb" class="w-4 h-4"></i> راهنمای پاسخ‌دهی:
                                 </h4>
                                 <p id="rq-tip" class="text-sm text-surface-800 leading-relaxed font-medium"></p>
                             </div>
@@ -503,184 +505,404 @@
                     </div>
                 </div>
 
-                <div class="grid gap-6 max-w-4xl mx-auto">
-                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
-                        <button onclick="toggleFaq(1)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
-                            <div class="flex items-center gap-6">
-                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0"><i data-lucide="alert-circle" class="w-6 h-6"></i></div>
-                                <div><span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">The Limitations</span><h4 class="text-lg font-black text-primary-800">۱. محدودیت‌های تحقیق</h4></div>
+                <div class="grid gap-5">
+                    <!-- Q1 -->
+                    <div class="bg-white rounded-2xl border border-primary-100 shadow-sm overflow-hidden hover-lift transition-all group">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-primary-100 text-primary-700 w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm">1</span>
+                                <h4 class="font-bold text-primary-900">محدودیت‌های تحقیق (The Limitations)</h4>
                             </div>
-                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-1"></i>
-                        </button>
-                        <div id="faq-1" class="accordion-content px-8 pb-8">
-                            <div class="space-y-6 pt-2">
-                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic"><p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: محدودیت‌های اصلی پژوهش شما چه بود و فکر می‌کنید چقدر بر نتایج نهایی تاثیر گذاشته‌اند؟</p></div>
-                                <div class="space-y-3"><h5 class="text-xs font-black text-emerald-600 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:</h5><p class="text-sm text-surface-700 leading-relaxed opacity-90">هرگز نگویید تحقیقم محدودیتی نداشت! بگویید: «این پژوهش با دو محدودیت عمده مواجه بود: ۱. [مثلاً دسترسی دشوار به جامعه آماری خاص] و ۲. [محدودیت زمانی یا ابزاری]. با این حال، با استفاده از روش [مثلاً نمونه‌گیری تصادفی یا تحلیل حساسیت]، سعی شد اثر این محدودیت‌ها به حداقل برسد تا روایی و پایایی نتایج حفظ شود.»</p></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
-                        <button onclick="toggleFaq(2)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
-                            <div class="flex items-center gap-6">
-                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0"><i data-lucide="globe" class="w-6 h-6"></i></div>
-                                <div><span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">Generalizability</span><h4 class="text-lg font-black text-primary-800">۲. تعمیم‌پذیری نتایج</h4></div>
-                            </div>
-                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-2"></i>
-                        </button>
-                        <div id="faq-2" class="accordion-content px-8 pb-8">
-                            <div class="space-y-6 pt-2">
-                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic"><p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: آیا نتایج تحقیق شما در جوامع یا شرایط دیگر هم قابل تعمیم است؟</p></div>
-                                <div class="space-y-3"><h5 class="text-xs font-black text-emerald-600 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:</h5><p class="text-sm text-surface-700 leading-relaxed opacity-90">باید واقع‌بین باشید: «از آنجا که این تحقیق بر روی [جامعه خاص X] تمرکز داشته، تعمیم‌دهی مطلق باید با احتیاط صورت گیرد. اما با توجه به اینکه متغیرهای کلیدی بر اساس استانداردهای جهانی سنجیده شده‌اند، چارچوب نظری و متدولوژی این کار می‌تواند به عنوان الگویی موفق در سازمان‌ها/جوامع مشابه مورد استفاده قرار گیرد.»</p></div>
+                            <p class="text-sm text-surface-800 font-bold mb-3 pr-11">سوال داور: محدودیت‌های اصلی پژوهش شما چه بود و فکر می‌کنید چقدر بر نتایج نهایی تاثیر گذاشته‌اند؟</p>
+                            <div class="bg-surface-50 p-4 rounded-xl border border-surface-200 mr-11 relative">
+                                <p class="text-sm text-surface-600 leading-relaxed text-justify">
+                                    <span class="text-primary-600 font-bold">راهنمای پاسخ:</span> هرگز نگویید تحقیقم محدودیتی نداشت! بگویید: «این پژوهش با دو محدودیت عمده مواجه بود: ۱. [مثلاً دسترسی دشوار به جامعه آماری خاص] و ۲. [محدودیت زمانی یا ابزاری]. با این حال، با استفاده از روش [مثلاً نمونه‌گیری تصادفی یا تحلیل حساسیت]، سعی شد اثر این محدودیت‌ها به حداقل برسد تا روایی و پایایی نتایج حفظ شود.»
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
-                        <button onclick="toggleFaq(3)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
-                            <div class="flex items-center gap-6">
-                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0"><i data-lucide="book-open-check" class="w-6 h-6"></i></div>
-                                <div><span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">Contrast with Literature</span><h4 class="text-lg font-black text-primary-800">۳. تفاوت با ادبیات پیشین</h4></div>
+                    <!-- Q2 -->
+                    <div class="bg-white rounded-2xl border border-primary-100 shadow-sm overflow-hidden hover-lift transition-all group">
+                        <div class="p-6">
+                             <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-primary-100 text-primary-700 w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm">2</span>
+                                <h4 class="font-bold text-primary-900">تعمیم‌پذیری نتایج (Generalizability)</h4>
                             </div>
-                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-3"></i>
-                        </button>
-                        <div id="faq-3" class="accordion-content px-8 pb-8">
-                            <div class="space-y-6 pt-2">
-                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic"><p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: مهم‌ترین تفاوت یا تضاد یافته‌های شما با پژوهش‌های مشابه (مثلاً پژوهش فلان نویسنده) در چیست؟</p></div>
-                                <div class="space-y-3"><h5 class="text-xs font-black text-emerald-600 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:</h5><p class="text-sm text-surface-700 leading-relaxed opacity-90">نشان دهید که بر پیشینه مسلط هستید: «برخلاف پژوهش [نام محقق] که به نتیجه Y رسیده بود، یافته‌های من به نتیجه Z منجر شد. دلیل احتمالی این تفاوت می‌تواند در [تفاوت در ابزار سنجش، بومی‌سازی متغیرها یا بازه زمانی متفاوت] باشد که در فصل چهارم به تفصیل تحلیل شده است.»</p></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
-                        <button onclick="toggleFaq(4)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
-                            <div class="flex items-center gap-6">
-                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0"><i data-lucide="database" class="w-6 h-6"></i></div>
-                                <div><span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">Theoretical Framework</span><h4 class="text-lg font-black text-primary-800">۴. مبانی نظری و مدل مفهومی</h4></div>
-                            </div>
-                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-4"></i>
-                        </button>
-                        <div id="faq-4" class="accordion-content px-8 pb-8">
-                            <div class="space-y-6 pt-2">
-                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic"><p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: چرا این نظریه یا مدل خاص را به عنوان پایه اصلی کارتان انتخاب کردید؟ آیا مدل به‌روزتری وجود نداشت؟</p></div>
-                                <div class="space-y-3"><h5 class="text-xs font-black text-emerald-600 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:</h5><p class="text-sm text-surface-700 leading-relaxed opacity-90">از انتخابتان دفاع کنید: «مدل‌های متعددی بررسی شد، اما مدل [نام مدل] به سه دلیل انتخاب شد: ۱. انطباق بالا با شرایط بومی ایران، ۲. جامعیت متغیرها در پوشش دادن فرضیات تحقیق، و ۳. تایید شدن کارآمدی آن در مقالات معتبر دو سال اخیر. مدل‌های جدیدتر هنوز در مرحله آزمون و خطا بودند و اعتبار این مدل برای موضوع ما بالاتر بود.»</p></div>
+                            <p class="text-sm text-surface-800 font-bold mb-3 pr-11">سوال داور: آیا نتایج تحقیق شما در جوامع یا شرایط دیگر هم قابل تعمیم است؟</p>
+                             <div class="bg-surface-50 p-4 rounded-xl border border-surface-200 mr-11 relative">
+                                <p class="text-sm text-surface-600 leading-relaxed text-justify">
+                                    <span class="text-primary-600 font-bold">راهنمای پاسخ:</span> باید واقع‌بین باشید: «از آنجا که این تحقیق بر روی [جامعه خاص X] تمرکز داشته، تعمیم‌دهی مطلق باید با احتیاط صورت گیرد. اما با توجه به اینکه متغیرهای کلیدی بر اساس استانداردهای جهانی سنجیده شده‌اند، چارچوب نظری و متدولوژی این کار می‌تواند به عنوان الگویی موفق در سازمان‌ها/جوامع مشابه مورد استفاده قرار گیرد.»
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-[24px] border border-surface-200 shadow-modern overflow-hidden group">
-                        <button onclick="toggleFaq(5)" class="w-full p-8 text-right flex items-center justify-between transition-colors hover:bg-primary-50/50">
-                            <div class="flex items-center gap-6">
-                                <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0"><i data-lucide="fast-forward" class="w-6 h-6"></i></div>
-                                <div><span class="text-[10px] font-black text-primary-600/60 uppercase tracking-widest mb-1 block">Future Work</span><h4 class="text-lg font-black text-primary-800">۵. پیشنهاد برای آینده</h4></div>
+                    <!-- Q3 -->
+                    <div class="bg-white rounded-2xl border border-primary-100 shadow-sm overflow-hidden hover-lift transition-all group">
+                        <div class="p-6">
+                             <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-primary-100 text-primary-700 w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm">3</span>
+                                <h4 class="font-bold text-primary-900">تفاوت با ادبیات پیشین (Contrast with Literature)</h4>
                             </div>
-                            <i data-lucide="chevron-down" class="w-6 h-6 text-slate-300 transition-transform duration-300" id="faq-icon-5"></i>
-                        </button>
-                        <div id="faq-5" class="accordion-content px-8 pb-8">
-                            <div class="space-y-6 pt-2">
-                                <div class="bg-surface-50 p-5 rounded-2xl border border-surface-200 italic"><p class="text-sm text-primary-900 font-bold leading-relaxed">سوال داور: اگر بخواهید این تحقیق را ادامه دهید یا به دانشجوی دیگری پیشنهاد دهید، گام بعدی چه خواهد بود؟</p></div>
-                                <div class="space-y-3"><h5 class="text-xs font-black text-emerald-600 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4"></i> راهنمای پاسخ حرفه‌ای:</h5><p class="text-sm text-surface-700 leading-relaxed opacity-90">این سوال برای سنجش دید کلان شماست: «با توجه به یافته‌های فعلی، پیشنهاد می‌کنم در گام بعدی تاثیر [یک متغیر جدید که در کار شما نبوده] بررسی شود. همچنین استفاده از روش‌های ترکیبی (Mixed Methods) می‌تواند ابعاد کیفی پدیده را که در این تحقیقِ کمی کمتر دیده شده، روشن‌تر کند.»</p></div>
+                            <p class="text-sm text-surface-800 font-bold mb-3 pr-11">سوال داور: مهم‌ترین تفاوت یا تضاد یافته‌های شما با پژوهش‌های مشابه (مثلاً پژوهش فلان نویسنده) در چیست؟</p>
+                             <div class="bg-surface-50 p-4 rounded-xl border border-surface-200 mr-11 relative">
+                                <p class="text-sm text-surface-600 leading-relaxed text-justify">
+                                    <span class="text-primary-600 font-bold">راهنمای پاسخ:</span> نشان دهید که بر پیشینه مسلط هستید: «برخلاف پژوهش [نام محقق] که به نتیجه Y رسیده بود، یافته‌های من به نتیجه Z منجر شد. دلیل احتمالی این تفاوت می‌تواند در [تفاوت در ابزار سنجش، بومی‌سازی متغیرها یا بازه زمانی متفاوت] باشد که در فصل چهارم به تفصیل تحلیل شده است.»
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="bg-white rounded-2xl border border-primary-100 shadow-sm overflow-hidden hover-lift transition-all group">
+                        <div class="p-6">
+                             <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-primary-100 text-primary-700 w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm">4</span>
+                                <h4 class="font-bold text-primary-900">مبانی نظری و مدل مفهومی (Theoretical Framework)</h4>
+                            </div>
+                            <p class="text-sm text-surface-800 font-bold mb-3 pr-11">سوال داور: چرا این نظریه یا مدل خاص را به عنوان پایه اصلی کارتان انتخاب کردید؟ آیا مدل به‌روزتری وجود نداشت؟</p>
+                             <div class="bg-surface-50 p-4 rounded-xl border border-surface-200 mr-11 relative">
+                                <p class="text-sm text-surface-600 leading-relaxed text-justify">
+                                    <span class="text-primary-600 font-bold">راهنمای پاسخ:</span> از انتخابتان دفاع کنید: «مدل‌های متعددی بررسی شد، اما مدل [نام مدل] به سه دلیل انتخاب شد: ۱. انطباق بالا با شرایط بومی ایران، ۲. جامعیت متغیرها در پوشش دادن فرضیات تحقیق، و ۳. تایید شدن کارآمدی آن در مقالات معتبر دو سال اخیر. مدل‌های جدیدتر هنوز در مرحله آزمون و خطا بودند و اعتبار این مدل برای موضوع ما بالاتر بود.»
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="bg-white rounded-2xl border border-primary-100 shadow-sm overflow-hidden hover-lift transition-all group">
+                        <div class="p-6">
+                             <div class="flex items-center gap-3 mb-3">
+                                <span class="bg-primary-100 text-primary-700 w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm">5</span>
+                                <h4 class="font-bold text-primary-900">پیشنهاد برای آینده (Future Work)</h4>
+                            </div>
+                            <p class="text-sm text-surface-800 font-bold mb-3 pr-11">سوال داور: اگر بخواهید این تحقیق را ادامه دهید یا به دانشجوی دیگری پیشنهاد دهید، گام بعدی چه خواهد بود؟</p>
+                             <div class="bg-surface-50 p-4 rounded-xl border border-surface-200 mr-11 relative">
+                                <p class="text-sm text-surface-600 leading-relaxed text-justify">
+                                    <span class="text-primary-600 font-bold">راهنمای پاسخ:</span> این سوال برای سنجش دید کلان شماست: «با توجه به یافته‌های فعلی، پیشنهاد می‌کنم در گام بعدی تاثیر [یک متغیر جدید که در کار شما نبوده] بررسی شود. همچنین استفاده از روش‌های ترکیبی (Mixed Methods) می‌تواند ابعاد کیفی پدیده را که در این تحقیقِ کمی کمتر دیده شده، روشن‌تر کند.»
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tab: Glossary -->
+            <!-- 5. Glossary Tab -->
             <div id="glossary" class="tab-content">
-                <header class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div><h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">فرهنگ لغات علمی</h2><p class="text-surface-700 mt-2 opacity-80">واژگان کلیدی برای یک دفاع علمی</p></div>
-                    <div class="relative w-full md:w-80 group"><input type="text" id="glossary-search" oninput="filterGlossary()" placeholder="جستجو..." class="w-full px-6 py-3.5 bg-white border border-surface-200 rounded-2xl outline-none focus:ring-4 focus:ring-primary-50 focus:border-primary-600 shadow-modern"><i data-lucide="search" class="absolute left-4 top-4 text-slate-300 w-5 h-5"></i></div>
+                <header class="mb-8">
+                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">فرهنگ لغات تخصصی</h2>
+                    <p class="text-surface-700 mt-2 opacity-80 font-light">واژگان کلیدی برای اثرگذاری بر داوران</p>
                 </header>
-                <div id="glossary-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+                <!-- Quote Box -->
+                <div class="bg-gradient-to-br from-primary-50 to-white border border-primary-200 p-6 rounded-3xl mb-8 relative overflow-hidden shadow-sm">
+                    <div class="absolute top-0 left-0 text-primary-200 opacity-20 transform -translate-x-4 -translate-y-4">
+                        <i data-lucide="quote" class="w-24 h-24"></i>
+                    </div>
+                    <div class="relative z-10 flex gap-4">
+                        <div class="w-1 bg-primary-500 rounded-full shrink-0"></div>
+                        <p class="text-surface-700 leading-loose text-justify text-sm md:text-base italic">
+                            «استفاده به‌جا از واژگان تخصصی، نشان‌دهنده تسلط شما بر متدولوژی تحقیق است. داوران با شنیدن این کلمات، متوجه می‌شوند که شما به زبان استاندارد علمی سخن می‌گویید.»
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="relative mb-8 group">
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none">
+                        <i data-lucide="search" class="w-5 h-5 text-primary-400 group-focus-within:text-primary-600 transition-colors"></i>
+                    </div>
+                    <input type="text" id="glossary-search" onkeyup="filterGlossary()" placeholder="جستجو در واژگان (مثلاً: متغیر، Methodology...)" class="w-full pl-4 pr-14 py-4 bg-white border border-primary-100 rounded-2xl focus:ring-2 focus:ring-primary-200 focus:border-primary-400 outline-none transition-all shadow-sm text-surface-800 placeholder-primary-300">
+                </div>
+
+                <!-- Grid -->
+                <div id="glossary-grid" class="grid md:grid-cols-2 gap-5 pb-10">
+                    <!-- Item 1 -->
+                    <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="روش‌شناسی" data-en="methodology">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">روش‌شناسی</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Methodology</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">نقشه راه کلی پژوهش؛ مسیری که از سوال تا جواب طی کرده‌اید.</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="تعریف عملیاتی" data-en="operational definition">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">تعریف عملیاتی</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Operational Definition</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">دقیقاً بگویید هر متغیر در تحقیق شما چگونه اندازه‌گیری می‌شود.</p>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="سطح معناداری" data-en="significance level p-value">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">سطح معناداری (P-Value)</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Significance Level</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">عددی که نشان می‌دهد نتایج شما چقدر واقعی است و چقدر بر حسب اتفاق نیست.</p>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="واحد تحلیل" data-en="unit of analysis">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">واحد تحلیل</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Unit of Analysis</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">چه کسی یا چه چیزی را بررسی می‌کنید؟ (فرد، گروه، یا سازمان)</p>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="مدل مفهومی" data-en="conceptual model">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">مدل مفهومی</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Conceptual Model</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">تصویر هندسی که روابط بین متغیرهای تحقیق شما را نشان می‌دهد.</p>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="تورش نمونه‌گیری سوگیری" data-en="sampling bias">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">تورش (سوگیری) نمونه‌گیری</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Sampling Bias</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">خطایی که باعث می‌شود نمونه شما نماینده واقعی کل جامعه نباشد.</p>
+                    </div>
+
+                     <!-- Item 7 -->
+                     <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="داده‌های دست‌اول" data-en="primary data">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">داده‌های دست‌اول</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Primary Data</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">اطلاعاتی که خودتان مستقیماً (با پرسشنامه یا آزمایش) جمع کرده‌اید.</p>
+                    </div>
+
+                     <!-- Item 8 -->
+                     <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="روش ترکیبی" data-en="mixed methods">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">روش ترکیبی</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Mixed Methods</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">وقتی از هر دو روش کیفی (مصاحبه) و کمی (آمار) همزمان استفاده می‌کنید.</p>
+                    </div>
+
+                     <!-- Item 9 -->
+                     <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="مرزبندی تحقیق" data-en="delimitation">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">مرزبندی تحقیق</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Delimitation</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">محدوده‌هایی که خودِ شما آگاهانه برای تحقیق تعیین کرده‌اید.</p>
+                    </div>
+
+                     <!-- Item 10 -->
+                     <div class="glossary-card group bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-modern transition-all duration-300 hover:-translate-y-1 relative overflow-hidden" data-fa="مطالعه مقدماتی پایلوت" data-en="pilot study">
+                        <div class="absolute top-0 right-0 w-1.5 h-full bg-primary-200 group-hover:bg-primary-500 transition-colors"></div>
+                        <div class="flex justify-between items-center mb-3 mr-4">
+                            <h3 class="text-lg font-black text-primary-900">مطالعه مقدماتی (پایلوت)</h3>
+                            <span class="bg-primary-50 text-primary-700 text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider border border-primary-100 font-mono">Pilot Study</span>
+                        </div>
+                        <p class="text-surface-600 text-sm leading-relaxed mr-4 text-justify">اجرای آزمایشی تحقیق در مقیاس کوچک برای پیدا کردن ایرادات احتمالی.</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Tab: Etiquette -->
-            <div id="etiquette" class="tab-content">
-                <header class="mb-12">
-                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">آداب و زبان بدن در جلسه دفاع</h2>
-                    <p class="text-surface-700 mt-2 opacity-80 leading-relaxed">اصول رفتاری، حضور فیزیکی و مدیریت حرفه‌ای فضای جلسه</p>
+            <!-- 6. Templates Tab -->
+            <div id="templates" class="tab-content">
+                <header class="mb-10">
+                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">متن‌های رسمی</h2>
+                    <p class="text-surface-700 mt-2 opacity-80 text-lg font-light">الگوهای آماده برای مکاتبات و ارائه‌های حرفه‌ای</p>
                 </header>
-                
-                <div class="space-y-8 max-w-4xl mx-auto pb-20">
-                    <!-- Posture -->
-                    <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern group hover:border-primary-600 transition-all">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0 group-hover:bg-primary-600 group-hover:text-white transition-colors">
-                                <i data-lucide="user-check"></i>
+
+                <div class="grid gap-8">
+                    <!-- Template 1 -->
+                    <div class="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden hover:shadow-modern transition-all duration-300">
+                        <div class="p-6 md:p-8 border-b border-primary-50 bg-primary-50/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <h3 class="text-xl font-black text-primary-900 flex items-center gap-2">
+                                    <i data-lucide="mail-check" class="w-5 h-5 text-primary-600"></i>
+                                    پیگیری اصلاحات (بعد از دفاع)
+                                </h3>
+                                <p class="text-surface-600 text-sm mt-2">زمانی که دانشجو اصلاحات داوران را انجام داده و می‌خواهد برای تایید نهایی پیام بدهد.</p>
                             </div>
-                            <h3 class="text-xl font-bold text-primary-800">۱. استقرار و حضور در فضا (Posture)</h3>
+                            <button onclick="copyToClipboard('tpl-1')" class="flex items-center gap-2 bg-white border border-primary-200 text-primary-700 px-4 py-2 rounded-xl text-sm font-bold hover:bg-primary-50 transition-colors shadow-sm shrink-0">
+                                <i data-lucide="copy" class="w-4 h-4"></i> کپی متن
+                            </button>
                         </div>
-                        <ul class="space-y-4 text-surface-700 leading-loose">
-                            <li><strong class="text-primary-700 font-black">قامت استوار:</strong> همیشه صاف بایستید. خمیده بودن شانه‌ها نشانه خستگی یا عدم اعتماد به نفس است. پاها را به عرض شانه باز کنید تا تعادل فیزیکی و روانی شما حفظ شود.</li>
-                            <li><strong class="text-primary-700 font-black">مثلث قدرت:</strong> دستان خود را در محدوده بین کمر تا قفسه سینه نگه دارید. باز بودن دستان (Open Gestures) نشان‌دهنده صداقت و تسلط شما بر موضوع است.</li>
-                            <li><strong class="text-primary-700 font-black">پرهیز از گارد دفاعی:</strong> هرگز دست‌به‌سینه نایستید یا دست‌ها را پشت کمر گره نکنید. این حالات سدی بین شما و داوران ایجاد می‌کند.</li>
+                        <div class="p-6 md:p-8 bg-surface-50">
+                            <div class="bg-white border-l-4 border-primary-400 p-6 rounded-r-xl shadow-inner font-mono text-sm leading-loose text-surface-800 whitespace-pre-line" id="tpl-1">موضوع: ارسال اصلاحات نهایی پایان‌نامه - [نام شما]
+
+استاد ارجمند جناب آقای/سرکار خانم دکتر [نام داور/راهنما]؛
+با سلام و عرض ادب،
+
+پیرو جلسه دفاع مورخ [تاریخ]، بدین‌وسیله نسخه اصلاح‌شده پایان‌نامه به همراه «جدول پاسخ به نظرات داوران» تقدیم حضورتان می‌گردد. تمامی موارد مورد نظر جنابعالی با دقت اعمال شده و در متن با رنگ متفاوت مشخص گردیده است.
+
+پیشاپیش از وقتی که برای بررسی نهایی و تایید این اصلاحات اختصاص می‌دهید، کمال تشکر را دارم.
+
+با احترام،
+[نام شما]</div>
+                        </div>
+                    </div>
+
+                    <!-- Template 3 (Placed before 2 as it is pre-defense) -->
+                     <div class="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden hover:shadow-modern transition-all duration-300">
+                        <div class="p-6 md:p-8 border-b border-primary-50 bg-primary-50/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <h3 class="text-xl font-black text-primary-900 flex items-center gap-2">
+                                    <i data-lucide="send" class="w-5 h-5 text-primary-600"></i>
+                                    ارسال نسخه پیش‌نویس (قبل از دفاع)
+                                </h3>
+                                <p class="text-surface-600 text-sm mt-2">برای زمانی که دانشجو می‌خواهد فایل نهایی را برای مطالعه داوران ارسال کند.</p>
+                            </div>
+                            <button onclick="copyToClipboard('tpl-3')" class="flex items-center gap-2 bg-white border border-primary-200 text-primary-700 px-4 py-2 rounded-xl text-sm font-bold hover:bg-primary-50 transition-colors shadow-sm shrink-0">
+                                <i data-lucide="copy" class="w-4 h-4"></i> کپی متن
+                            </button>
+                        </div>
+                        <div class="p-6 md:p-8 bg-surface-50">
+                            <div class="bg-white border-l-4 border-primary-400 p-6 rounded-r-xl shadow-inner font-mono text-sm leading-loose text-surface-800 whitespace-pre-line" id="tpl-3">موضوع: ارسال فایل پیش‌نویس جهت مطالعه قبل از جلسه دفاع - [نام شما]
+
+استاد فرهیخته جناب آقای/سرکار خانم دکتر [نام استاد]؛
+با سلام و احترام،
+
+ضمن تشکر مجدد از پذیرش داوری این پژوهش، به پیوست فایل پیش‌نویس (Draft) رساله/پروپوزال اینجانب جهت استحضار و مطالعه حضرتعالی ارسال می‌گردد.
+
+جلسه دفاع در تاریخ [ذکر تاریخ] برگزار خواهد شد. باعث افتخار است که از نقطه نظرات ارزشمند شما پیش از جلسه یا در حین آن بهره‌مند شوم.
+
+با سپاس فراوان،
+[نام دانشجو]</div>
+                        </div>
+                    </div>
+
+                    <!-- Template 2 -->
+                    <div class="bg-white rounded-3xl border border-primary-100 shadow-sm overflow-hidden hover:shadow-modern transition-all duration-300">
+                        <div class="p-6 md:p-8 border-b border-primary-50 bg-primary-50/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <h3 class="text-xl font-black text-primary-900 flex items-center gap-2">
+                                    <i data-lucide="mic" class="w-5 h-5 text-primary-600"></i>
+                                    متن اسلاید سپاسگزاری (انتهای دفاع)
+                                </h3>
+                                <p class="text-surface-600 text-sm mt-2">متن پیشنهادی برای قرائت در آخرین لحظه ارائه جهت قدردانی.</p>
+                            </div>
+                            <button onclick="copyToClipboard('tpl-2')" class="flex items-center gap-2 bg-white border border-primary-200 text-primary-700 px-4 py-2 rounded-xl text-sm font-bold hover:bg-primary-50 transition-colors shadow-sm shrink-0">
+                                <i data-lucide="copy" class="w-4 h-4"></i> کپی متن
+                            </button>
+                        </div>
+                        <div class="p-6 md:p-8 bg-surface-50">
+                            <div class="bg-white border-l-4 border-primary-400 p-6 rounded-r-xl shadow-inner font-mono text-sm leading-loose text-surface-800 whitespace-pre-line" id="tpl-2">«در پایان، برخود لازم می‌دانم از اساتید بزرگوارم، جناب آقای دکتر [نام راهنما] و سرکار خانم دکتر [نام مشاور] که در تمامی مراحل این پژوهش با سعه‌ی صدر راهنمای من بودند، صمیمانه سپاسگزاری کنم.
+
+همچنین از اساتید محترم داور که با نقدها و دیدگاه‌های ارزشمندشان مسیر این تحقیق را روشن‌تر کردند، قدردانی می‌نمایم.
+
+از حضور همه‌ی دوستان و همکاران گرامی در این جلسه سپاسگزارم و آماده شنیدن سوالات و نظرات شما هستم.»</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 7. Etiquette Tab -->
+            <div id="etiquette" class="tab-content">
+                <header class="mb-10">
+                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">آداب و زبان بدن در جلسه دفاع</h2>
+                    <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">اصول رفتاری، حضور فیزیکی و مدیریت حرفه‌ای فضای جلسه</p>
+                </header>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <!-- 1. Posture -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover-lift group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <i data-lucide="user-check" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-primary-900 text-lg">۱. استقرار و حضور در فضا (Posture)</h3>
+                        </div>
+                        <ul class="space-y-3 text-sm text-surface-600 leading-relaxed">
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>قامت استوار:</strong> همیشه صاف بایستید. خمیده بودن شانه‌ها نشانه خستگی است. پاها را به عرض شانه باز کنید.</span></li>
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>مثلث قدرت:</strong> دستان خود را در محدوده بین کمر تا قفسه سینه نگه دارید (Open Gestures).</span></li>
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>پرهیز از گارد دفاعی:</strong> هرگز دست‌به‌سینه نایستید یا دست‌ها را پشت کمر گره نکنید.</span></li>
                         </ul>
                     </div>
 
-                    <!-- Eye Contact -->
-                    <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern group hover:border-primary-600 transition-all">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0 group-hover:bg-primary-600 group-hover:text-white transition-colors">
-                                <i data-lucide="eye"></i>
+                    <!-- 2. Eye Contact -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover-lift group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-primary-800">۲. جادوی ارتباط چشمی (Eye Contact)</h3>
+                            <h3 class="font-bold text-primary-900 text-lg">۲. جادوی ارتباط چشمی (Eye Contact)</h3>
                         </div>
-                        <ul class="space-y-4 text-surface-700 leading-loose">
-                            <li><strong class="text-primary-700 font-black">توزیع عادلانه نگاه:</strong> نگاهتان را فقط روی استاد راهنما یا یک داور خاص متمرکز نکنید. به صورت «W» یا «Z» بین همه داوران و حضار بچرخید تا همه احساس کنند مخاطب شما هستند.</li>
-                            <li><strong class="text-primary-700 font-black">نگاه به اسلاید ممنوع:</strong> اسلایدها برای مخاطب است، نه شما! هرگز پشت به داوران به پرده نمایش خیره نشوید. فقط برای اشاره کوتاه به یک نمودار برگردید و دوباره رو به داوران صحبت کنید.</li>
+                        <ul class="space-y-3 text-sm text-surface-600 leading-relaxed">
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>توزیع عادلانه نگاه:</strong> نگاهتان را بین همه داوران به صورت «W» یا «Z» بچرخانید.</span></li>
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>نگاه به اسلاید ممنوع:</strong> اسلایدها برای مخاطب است، نه شما! هرگز پشت به داوران نایستید.</span></li>
                         </ul>
                     </div>
 
-                    <!-- Para-linguistics -->
-                    <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern group hover:border-primary-600 transition-all">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0 group-hover:bg-primary-600 group-hover:text-white transition-colors">
-                                <i data-lucide="mic-2"></i>
+                    <!-- 3. Voice -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover-lift group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <i data-lucide="mic-2" class="w-5 h-5"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-primary-800">۳. مدیریت صدا و لحن (Para-linguistics)</h3>
+                            <h3 class="font-bold text-primary-900 text-lg">۳. مدیریت صدا و لحن</h3>
                         </div>
-                        <ul class="space-y-4 text-surface-700 leading-loose">
-                            <li><strong class="text-primary-700 font-black">تغییر ریتم:</strong> یکنواخت صحبت کردن (Monotone) باعث خواب‌آلودگی داوران می‌شود. روی کلمات کلیدی و یافته‌های مهم تحقیق، کمی مکث کنید یا تن صدا را تغییر دهید.</li>
-                            <li><strong class="text-primary-700 font-black">قاطعیت در پاسخ:</strong> هنگام پاسخ به سوالات، از واژگان تردیدی مثل «فکر می‌کنم»، «شاید» یا «تا حدودی» پرهیز کنید. به جای آن بگویید: «یافته‌های این تحقیق نشان می‌دهد که...» یا «بر اساس متدولوژی اجرا شده...».</li>
+                        <ul class="space-y-3 text-sm text-surface-600 leading-relaxed">
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>تغییر ریتم:</strong> یکنواخت صحبت نکنید (Monotone). روی کلمات کلیدی مکث کنید.</span></li>
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>قاطعیت در پاسخ:</strong> از واژگان تردیدی مثل «شاید» پرهیز کنید. بگویید: «یافته‌ها نشان می‌دهد...».</span></li>
                         </ul>
                     </div>
 
-                    <!-- Professionalism -->
-                    <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern group hover:border-primary-600 transition-all">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0 group-hover:bg-primary-600 group-hover:text-white transition-colors">
-                                <i data-lucide="message-square"></i>
+                    <!-- 4. Criticism -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover-lift group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <i data-lucide="shield-check" class="w-5 h-5"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-primary-800">۴. آداب مواجهه با انتقاد (Professionalism)</h3>
+                            <h3 class="font-bold text-primary-900 text-lg">۴. آداب مواجهه با انتقاد</h3>
                         </div>
-                        <ul class="space-y-4 text-surface-700 leading-loose">
-                            <li><strong class="text-primary-700 font-black">یادداشت‌برداری:</strong> وقتی داوری در حال نقد کار شماست، حتماً یادداشت کنید. این کار نشان‌دهنده احترام شما به دیدگاه او و جدیت شما در اصلاح کار است.</li>
-                            <li><strong class="text-primary-700 font-black">قطع نکردن کلام:</strong> حتی اگر نقد داور را ناعادلانه می‌دانید، صبر کنید صحبتش تمام شود. سپس با آرامش و با جمله‌ای مثل «نکته بسیار ارزشمندی را فرمودید، اما در این پژوهش به این دلیل که...» پاسخ دهید.</li>
+                        <ul class="space-y-3 text-sm text-surface-600 leading-relaxed">
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>یادداشت‌برداری:</strong> وقتی داور نقد می‌کند، حتماً یادداشت کنید تا احترام خود را نشان دهید.</span></li>
+                            <li class="flex gap-2"><span class="text-primary-500 font-bold">•</span> <span><strong>قطع نکردن کلام:</strong> صبر کنید صحبت تمام شود، سپس با آرامش پاسخ دهید.</span></li>
                         </ul>
                     </div>
 
-                    <!-- Grooming -->
-                    <div class="bg-white p-8 rounded-3xl border border-surface-200 shadow-modern group hover:border-primary-600 transition-all">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shrink-0 group-hover:bg-primary-600 group-hover:text-white transition-colors">
-                                <i data-lucide="shirt"></i>
+                     <!-- 5. Grooming -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover-lift md:col-span-2 group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                <i data-lucide="shirt" class="w-5 h-5"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-primary-800">۵. آراستگی ظاهری (Grooming)</h3>
+                            <h3 class="font-bold text-primary-900 text-lg">۵. آراستگی ظاهری (Grooming)</h3>
                         </div>
-                        <ul class="space-y-4 text-surface-700 leading-loose">
-                            <li><strong class="text-primary-700 font-black">پوشش رسمی و مینیمال:</strong> لباس شما نباید «صدا» داشته باشد! از پوشیدن لباس‌هایی با طرح‌های شلوغ یا اکسسوری‌های پر زرق و برق که حواس مخاطب را از محتوای علمی پرت می‌کند، خودداری کنید. پوشش رسمی بخشی از پروتکل احترام به ساحت دانشگاه است.</li>
-                        </ul>
+                        <p class="text-sm text-surface-600 leading-relaxed">
+                            <strong>پوشش رسمی و مینیمال:</strong> لباس شما نباید «صدا» داشته باشد! از پوشیدن لباس‌هایی با طرح‌های شلوغ یا اکسسوری‌های پر زرق و برق که حواس مخاطب را از محتوای علمی پرت می‌کند، خودداری کنید. پوشش رسمی بخشی از پروتکل احترام به ساحت دانشگاه است.
+                        </p>
                     </div>
+                </div>
 
-                    <!-- Golden Tip -->
-                    <div class="bg-primary-600 p-10 rounded-[40px] text-white shadow-almond-glow relative overflow-hidden mt-12">
-                        <i data-lucide="sparkles" class="absolute -bottom-8 -left-8 w-48 h-48 opacity-10 -rotate-12"></i>
-                        <div class="relative z-10">
-                            <h4 class="text-2xl font-black mb-4 flex items-center gap-3">
-                                <i data-lucide="lightbulb" class="w-6 h-6"></i> نکته طلایی برای دانشجو:
-                            </h4>
-                            <p class="text-xl opacity-90 leading-loose font-medium">
+                <!-- Golden Tip -->
+                <div class="bg-primary-800 rounded-3xl p-8 text-primary-50 relative overflow-hidden shadow-glow">
+                     <!-- Decor -->
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full blur-[60px] opacity-40 pointer-events-none"></div>
+                    
+                    <div class="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                        <div class="w-16 h-16 bg-primary-600/50 rounded-2xl flex items-center justify-center shrink-0 border border-primary-500">
+                            <i data-lucide="star" class="w-8 h-8 text-yellow-400 fill-yellow-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black mb-2 text-white">نکته طلایی برای دانشجو</h3>
+                            <p class="text-primary-100 text-sm leading-loose">
                                 لبخند ملایم در ابتدای جلسه و هنگام خوش‌آمدگویی، سطح کورتیزول (هورمون استرس) را در بدن شما کاهش داده و فضای جلسه را از حالت «بازجویی» به یک «گفتمان علمی» تغییر می‌دهد.
                             </p>
                         </div>
@@ -688,147 +910,153 @@
                 </div>
             </div>
 
-            <!-- Tab: Slide Design Toolbox -->
+            <!-- 8. Slide Toolbox Tab -->
             <div id="slide-toolbox" class="tab-content">
-                <header class="mb-12">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-almond-glow">
-                            <i data-lucide="layers"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">جعبه‌ابزار طراحی اسلاید</h2>
-                            <p class="text-surface-700 mt-1 opacity-80">اصول استاندارد طراحی اسلاید دفاع (Academic Standards)</p>
-                        </div>
-                    </div>
+                <header class="mb-10">
+                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">جعبه‌ابزار طراحی اسلاید</h2>
+                    <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">اصول استاندارد طراحی اسلاید دفاع (Academic Standards)</p>
                 </header>
 
-                <!-- Section: Standards -->
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-                    <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern hover:border-primary-600 transition-all">
-                        <div class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 mb-6">
-                            <i data-lucide="ruler"></i>
+                <!-- Principles Section -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                    <!-- Rule 1 -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover-lift relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="monitor" class="w-24 h-24 text-primary-500"></i>
                         </div>
-                        <h4 class="font-black text-primary-800 mb-4">۱. قانون ۱۰/۲۰/۳۰</h4>
-                        <p class="text-sm text-surface-700 leading-relaxed opacity-80">
-                            <span class="block mb-2 font-bold text-primary-700">۱۰ اسلاید: تعداد اسلایدهای محتوایی.</span>
-                            <span class="block mb-2 font-bold text-primary-700">۲۰ دقیقه: زمان ارائه شما.</span>
-                            <span class="block font-bold text-primary-700">فونت ۳۰: برای خوانایی ردیف‌های آخر.</span>
-                        </p>
+                        <div class="relative z-10">
+                            <div class="w-12 h-12 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4">
+                                <span class="font-black text-lg">1</span>
+                            </div>
+                            <h4 class="font-bold text-primary-900 mb-2">قانون ۱۰/۲۰/۳۰</h4>
+                            <p class="text-xs font-bold text-primary-500 mb-3">قانون طلایی گای کاوازاکی</p>
+                            <ul class="text-sm text-surface-600 space-y-2 list-disc list-inside">
+                                <li><strong>۱۰ اسلاید:</strong> حداکثر تعداد اسلایدهای محتوایی.</li>
+                                <li><strong>۲۰ دقیقه:</strong> کل زمان ارائه.</li>
+                                <li><strong>فونت ۳۰:</strong> حداقل سایز فونت برای خوانایی.</li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern hover:border-primary-600 transition-all">
-                        <div class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 mb-6">
-                            <i data-lucide="lightbulb"></i>
+                    <!-- Rule 2 -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-lift relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="focus" class="w-24 h-24 text-primary-500"></i>
                         </div>
-                        <h4 class="font-black text-primary-800 mb-4">۲. اصل «یک ایده در هر اسلاید»</h4>
-                        <p class="text-sm text-surface-700 leading-relaxed opacity-80">
-                            هرگز دو موضوع متفاوت را در یک اسلاید قرار ندهید. برای «روش تحقیق» و «ابزار گردآوری» اسلایدهای مجزا بیاورید تا تمرکز داور حفظ شود.
-                        </p>
+                        <div class="relative z-10">
+                            <div class="w-12 h-12 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4">
+                                <span class="font-black text-lg">2</span>
+                            </div>
+                            <h4 class="font-bold text-primary-900 mb-2">یک ایده در هر اسلاید</h4>
+                            <p class="text-sm text-surface-600 leading-relaxed">
+                                هرگز دو موضوع متفاوت را در یک اسلاید قرار ندهید. تمرکز داور را با جدا کردن موضوعات (مثلاً روش تحقیق و ابزار) حفظ کنید.
+                            </p>
+                        </div>
                     </div>
 
-                    <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern hover:border-primary-600 transition-all">
-                        <div class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 mb-6">
-                            <i data-lucide="list-checks"></i>
+                    <!-- Rule 3 -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-lift relative overflow-hidden group">
+                         <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="layout-grid" class="w-24 h-24 text-primary-500"></i>
                         </div>
-                        <h4 class="font-black text-primary-800 mb-4">۳. قانون ۶×۶ (کاهش متن)</h4>
-                        <p class="text-sm text-surface-700 leading-relaxed opacity-80">
-                            بیشتر از ۶ خط متن ننویسید و در هر خط بیشتر از ۶ کلمه به کار نبرید. به جای جمله، از عبارات کلیدی استفاده کنید.
-                        </p>
+                        <div class="relative z-10">
+                             <div class="w-12 h-12 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4">
+                                <span class="font-black text-lg">3</span>
+                            </div>
+                            <h4 class="font-bold text-primary-900 mb-2">قانون ۶×۶</h4>
+                            <p class="text-xs font-bold text-primary-500 mb-3">کاهش متن</p>
+                            <ul class="text-sm text-surface-600 space-y-2 list-disc list-inside">
+                                <li>حداکثر ۶ خط متن در هر اسلاید.</li>
+                                <li>حداکثر ۶ کلمه در هر خط.</li>
+                                <li>استفاده از عبارات کلیدی (Keywords) به جای جمله.</li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern hover:border-primary-600 transition-all">
-                        <div class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 mb-6">
-                            <i data-lucide="palette"></i>
+                     <!-- Rule 4 -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-lift relative overflow-hidden group">
+                         <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="palette" class="w-24 h-24 text-primary-500"></i>
                         </div>
-                        <h4 class="font-black text-primary-800 mb-4">۴. پالت رنگی رسمی</h4>
-                        <p class="text-sm text-surface-700 leading-relaxed opacity-80">
-                            کنتراست بالا (متن تیره روی روشن) الزامی است. حداکثر از ۳ رنگ استفاده کنید و انیمیشن‌های اضافی را کاملاً حذف کنید.
-                        </p>
+                        <div class="relative z-10">
+                             <div class="w-12 h-12 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4">
+                                <span class="font-black text-lg">4</span>
+                            </div>
+                            <h4 class="font-bold text-primary-900 mb-2">پالت رنگی رسمی</h4>
+                            <ul class="text-sm text-surface-600 space-y-2 list-disc list-inside">
+                                <li><strong>کنتراست بالا:</strong> متن تیره روی پس‌زمینه روشن.</li>
+                                <li><strong>محدودیت:</strong> حداکثر ۳ رنگ (اصلی، تاکید، خنثی).</li>
+                                <li><strong>انیمیشن:</strong> حذف افکت‌های چرخشی؛ فقط Fade یا Push.</li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-white p-8 rounded-[32px] border border-surface-200 shadow-modern hover:border-primary-600 transition-all">
-                        <div class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 mb-6">
-                            <i data-lucide="bar-chart-3"></i>
+                     <!-- Rule 5 -->
+                    <div class="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm hover:shadow-lift md:col-span-2 lg:col-span-2 relative overflow-hidden group">
+                         <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="bar-chart-2" class="w-24 h-24 text-primary-500"></i>
                         </div>
-                        <h4 class="font-black text-primary-800 mb-4">۵. بصری‌سازی داده‌ها</h4>
-                        <p class="text-sm text-surface-700 leading-relaxed opacity-80">
-                            به جای جدول‌های شلوغ، از نمودار استفاده کنید. اگر مجبور به استفاده از جدول هستید، فقط نتیجه اصلی را Bold کنید.
-                        </p>
+                        <div class="relative z-10">
+                             <div class="w-12 h-12 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600 mb-4">
+                                <span class="font-black text-lg">5</span>
+                            </div>
+                            <h4 class="font-bold text-primary-900 mb-2">بصری‌سازی داده‌ها (Data Visualization)</h4>
+                            <p class="text-sm text-surface-600 leading-relaxed mb-3">
+                                به جای جدول‌های شلوغ و پر از عدد، از نمودار (Chart) استفاده کنید.
+                                اگر مجبور به استفاده از جدول هستید، فقط سطر یا ستونی که نتیجه اصلی در آن است را با رنگی متفاوت Bold کنید.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Section: Resources -->
-                <div class="max-w-4xl mx-auto">
-                    <h3 class="text-2xl font-black text-primary-800 mb-8 flex items-center gap-3">
-                        <i data-lucide="link" class="text-primary-600 w-6 h-6"></i> منابع و پلتفرم‌های دریافت تمپلیت حرفه‌ای
+                <!-- Tools Section -->
+                <div class="bg-primary-800 rounded-3xl p-8 text-primary-50 relative overflow-hidden">
+                     <!-- Decor -->
+                    <div class="absolute top-0 left-0 w-64 h-64 bg-primary-600 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+
+                    <h3 class="text-2xl font-black mb-6 flex items-center gap-3 relative z-10">
+                        <i data-lucide="tool" class="w-6 h-6 text-primary-300"></i>
+                        منابع و پلتفرم‌های دریافت تمپلیت حرفه‌ای
                     </h3>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <a href="https://www.canva.com" target="_blank" class="flex items-center gap-6 p-6 bg-white border border-surface-200 rounded-[24px] hover:shadow-almond-glow hover:border-primary-600 transition-all group">
-                            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                <i data-lucide="edit-3" class="w-8 h-8"></i>
-                            </div>
-                            <div>
-                                <h5 class="font-black text-primary-800">Canva</h5>
-                                <p class="text-xs text-surface-700 mt-1 opacity-70 leading-relaxed">بخش Presentation/Education را برای تمپلیت‌های مینیمال جستجو کنید.</p>
-                            </div>
-                        </a>
+                    <p class="text-primary-200 mb-8 relative z-10 max-w-2xl">
+                        برای اینکه از فضای اسلایدهای «رنگی‌رنگی» و غیررسمی فاصله بگیرید، این پلتفرم‌ها بهترین گزینه‌ها هستند:
+                    </p>
 
-                        <a href="https://slidesgo.com" target="_blank" class="flex items-center gap-6 p-6 bg-white border border-surface-200 rounded-[24px] hover:shadow-almond-glow hover:border-primary-600 transition-all group">
-                            <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                <i data-lucide="file-presentation" class="w-8 h-8"></i>
-                            </div>
-                            <div>
-                                <h5 class="font-black text-primary-800">Slidesgo</h5>
-                                <p class="text-xs text-surface-700 mt-1 opacity-70 leading-relaxed">دسته‌بندی Education > University گزینه‌های بسیار ساختاریافته‌ای دارد.</p>
-                            </div>
-                        </a>
-
-                        <a href="https://www.slidescarnival.com" target="_blank" class="flex items-center gap-6 p-6 bg-white border border-surface-200 rounded-[24px] hover:shadow-almond-glow hover:border-primary-600 transition-all group">
-                            <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                                <i data-lucide="layout" class="w-8 h-8"></i>
-                            </div>
-                            <div>
-                                <h5 class="font-black text-primary-800">SlidesCarnival</h5>
-                                <p class="text-xs text-surface-700 mt-1 opacity-70 leading-relaxed">تمپلیت‌های این سایت بر سادگی و انتقال درست محتوا تمرکز دارند.</p>
-                            </div>
-                        </a>
-
-                        <a href="https://www.behance.net" target="_blank" class="flex items-center gap-6 p-6 bg-white border border-surface-200 rounded-[24px] hover:shadow-almond-glow hover:border-primary-600 transition-all group">
-                            <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                                <i data-lucide="eye" class="w-8 h-8"></i>
-                            </div>
-                            <div>
-                                <h5 class="font-black text-primary-800">Behance</h5>
-                                <p class="text-xs text-surface-700 mt-1 opacity-70 leading-relaxed">جستجوی کلمه Slide Design برای ایده گرفتن از استانداردهای بصری روز دنیا.</p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab: Templates -->
-            <div id="templates" class="tab-content">
-                <header class="mb-12">
-                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">متن‌های رسمی</h2>
-                    <p class="text-surface-700 mt-2 opacity-80">قالب‌های آماده برای مکاتبات رسمی</p>
-                </header>
-                <div class="grid lg:grid-cols-12 gap-8">
-                    <div class="lg:col-span-4 space-y-4">
-                        <div class="bg-white p-6 rounded-2xl border border-surface-200 shadow-modern">
-                            <input type="text" id="profName" data-save-key="input_prof" oninput="updateTemplate()" placeholder="نام استاد" class="w-full mb-3 px-4 py-3 bg-primary-50/50 border border-surface-200 rounded-xl text-sm outline-none focus:border-primary-600">
-                            <input type="text" id="studentName" data-save-key="input_student" oninput="updateTemplate()" placeholder="نام شما" class="w-full mb-3 px-4 py-3 bg-primary-50/50 border border-surface-200 rounded-xl text-sm outline-none focus:border-primary-600">
-                            <input type="text" id="thesisTopic" data-save-key="input_topic" oninput="updateTemplate()" placeholder="عنوان" class="w-full px-4 py-3 bg-primary-50/50 border border-surface-200 rounded-xl text-sm outline-none focus:border-primary-600">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                        <!-- Tool 1 -->
+                        <div class="bg-primary-700/50 backdrop-blur-sm p-5 rounded-2xl border border-primary-600 hover:bg-primary-600 transition-colors">
+                            <h4 class="font-bold text-white mb-2 flex items-center gap-2">Canva <i data-lucide="external-link" class="w-3 h-3 text-primary-300"></i></h4>
+                            <p class="text-xs text-primary-200 mb-2">بخش Education/Presentation</p>
+                            <p class="text-xs text-primary-300 leading-relaxed">
+                                سرچ کلمات "Thesis Defense" یا "Academic Research". قابلیت ویرایش آنلاین و فونت فارسی.
+                            </p>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <button onclick="setTemplate('email')" class="template-btn w-full p-4 rounded-xl text-right text-sm font-bold border border-surface-200 hover:bg-white bg-primary-50 transition-all" id="btn-email">ایمیل دعوت داور</button>
-                            <button onclick="setTemplate('followup')" class="template-btn w-full p-4 rounded-xl text-right text-sm font-bold border border-surface-200 hover:bg-white bg-primary-50 transition-all" id="btn-followup">پیگیری اصلاحات</button>
-                            <button onclick="setTemplate('slide')" class="template-btn w-full p-4 rounded-xl text-right text-sm font-bold border border-surface-200 hover:bg-white bg-primary-50 transition-all" id="btn-slide">اسلاید سپاسگزاری</button>
+
+                        <!-- Tool 2 -->
+                        <div class="bg-primary-700/50 backdrop-blur-sm p-5 rounded-2xl border border-primary-600 hover:bg-primary-600 transition-colors">
+                            <h4 class="font-bold text-white mb-2 flex items-center gap-2">Slidesgo <i data-lucide="external-link" class="w-3 h-3 text-primary-300"></i></h4>
+                            <p class="text-xs text-primary-200 mb-2">دسته Education > University</p>
+                            <p class="text-xs text-primary-300 leading-relaxed">
+                                تمپلیت‌های ساختاریافته که حتی ترتیب اسلایدها را پیشنهاد می‌دهند.
+                            </p>
                         </div>
-                    </div>
-                    <div class="lg:col-span-8">
-                        <div class="bg-white p-10 rounded-3xl border border-surface-200 shadow-modern min-h-[400px] relative group">
-                            <button onclick="copyTemplate()" class="absolute top-6 left-6 text-primary-600 font-bold text-xs uppercase hover:scale-110 transition-transform">کپی متن</button>
-                            <div id="template-preview" class="text-surface-800 leading-relaxed whitespace-pre-wrap font-medium text-sm md:text-base"></div>
+
+                         <!-- Tool 3 -->
+                        <div class="bg-primary-700/50 backdrop-blur-sm p-5 rounded-2xl border border-primary-600 hover:bg-primary-600 transition-colors">
+                            <h4 class="font-bold text-white mb-2 flex items-center gap-2">SlidesCarnival <i data-lucide="external-link" class="w-3 h-3 text-primary-300"></i></h4>
+                            <p class="text-xs text-primary-200 mb-2">ساده و شیک</p>
+                            <p class="text-xs text-primary-300 leading-relaxed">
+                                تمرکز روی محتوا به جای تزیینات. مناسب برای ارائه‌های مینیمال.
+                            </p>
+                        </div>
+
+                         <!-- Tool 4 -->
+                        <div class="bg-primary-700/50 backdrop-blur-sm p-5 rounded-2xl border border-primary-600 hover:bg-primary-600 transition-colors">
+                            <h4 class="font-bold text-white mb-2 flex items-center gap-2">Behance <i data-lucide="external-link" class="w-3 h-3 text-primary-300"></i></h4>
+                            <p class="text-xs text-primary-200 mb-2">برای ایده گرفتن</p>
+                            <p class="text-xs text-primary-300 leading-relaxed">
+                                سرچ "Slide Design". مناسب دانشجویان هنر و معماری برای دیدن استانداردهای روز.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -838,179 +1066,177 @@
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-            initLocalStorage();
-            switchTab('proposal');
-            renderGlossary();
-            updateTemplate();
-        });
+        // --- Global Logic ---
+        // Explicitly attaching to window to avoid ReferenceError in inline handlers
+        
+        window.switchTab = function(tabId) {
+            // Update Tab Content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById(tabId);
+            if(target) target.classList.add('active');
 
-        const questionBank = [
-            { q: "محدودیت‌های اصلی پژوهش شما چه بود و فکر می‌کنید چقدر بر نتایج نهایی تاثیر گذاشته‌اند؟", t: "هرگز نگویید تحقیقم محدودیتی نداشت! بگویید: «این پژوهش با دو محدودیت عمده مواجه بود: ۱. [مثلاً دسترسی دشوار به جامعه آماری خاص] و ۲. [محدودیت زمانی یا ابزاری].»" },
-            { q: "آیا نتایج تحقیق شما در جوامع یا شرایط دیگر هم قابل تعمیم است؟", t: "باید واقع‌بین باشید: «از آنجا که این تحقیق بر روی [جامعه خاص X] تمرکز داشته، تعمیم‌دهی مطلق باید با احتیاط صورت گیرد.»" },
-            { q: "مهم‌ترین تفاوت یا تضاد یافته‌های شما با پژوهش‌های مشابه در چیست؟", t: "نشان دهید که بر پیشینه مسلط هستید: «برخلاف پژوهش [نام محقق] که به نتیجه Y رسیده بود، یافته‌های من به نتیجه Z منجر شد.»" },
-            { q: "چرا این نظریه یا مدل خاص را به عنوان پایه اصلی کارتان انتخاب کردید؟", t: "از انتخابتان دفاع کنید: «مدل‌های متعددی بررسی شد، اما مدل [نام مدل] به دلیل انطباق بالا با شرایط بومی ایران انتخاب شد.»" },
-            { q: "اگر بخواهید این تحقیق را ادامه دهید، گام بعدی چه خواهد بود؟", t: "این سوال برای سنجش دید کلان شماست: «پیشنهاد می‌کنم در گام بعدی تاثیر [یک متغیر جدید] بررسی شود.»" }
-        ];
-
-        function initLocalStorage() {
-            document.querySelectorAll('input[type="checkbox"][data-save-key], input[type="range"][data-save-key], input[type="text"][data-save-key]').forEach(el => {
-                const key = 'defayar_' + el.dataset.saveKey;
-                const saved = localStorage.getItem(key);
-                if (saved !== null) {
-                    if (el.type === 'checkbox') el.checked = saved === 'true';
-                    else el.value = saved;
-                }
-                el.addEventListener('input', (e) => {
-                    const val = el.type === 'checkbox' ? e.target.checked : e.target.value;
-                    localStorage.setItem(key, val);
-                    if (el.id === 'progress-input') updateProgress(val);
-                });
+            // Update Sidebar Active State
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('bg-primary-700/50', 'text-white', 'shadow-inner', 'border-r-4', 'border-primary-400');
+                el.classList.add('text-primary-200');
+                el.classList.remove('pl-3'); // Reset padding shift
+                
+                const icon = el.querySelector('i');
+                if(icon) icon.classList.remove('scale-110', 'text-primary-300');
             });
-            const savedProgress = localStorage.getItem('defayar_progress_val');
-            if (savedProgress) updateProgress(savedProgress);
-        }
-
-        function toggleAboutModal(show) {
-            const modal = document.getElementById('about-modal');
-            if (!modal) return;
-            if (show) {
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            } else {
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
+            
+            const activeBtn = document.querySelector(`button[data-tab="${tabId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-primary-700/50', 'text-white', 'shadow-inner', 'border-r-4', 'border-primary-400');
+                activeBtn.classList.remove('text-primary-200');
+                activeBtn.classList.add('pl-3'); // Add padding shift
+                const icon = activeBtn.querySelector('i');
+                if(icon) icon.classList.add('scale-110', 'text-primary-300');
             }
-        }
 
-        function toggleSidebar(forceClose = false) {
+            if(window.innerWidth < 1024) toggleSidebar(false);
+            localStorage.setItem('activeTab', tabId);
+        };
+
+        window.toggleSidebar = function(forceState) {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('mobile-overlay');
-            if (!sidebar) return;
-            const isHidden = sidebar.classList.contains('translate-x-full');
-            if (forceClose && isHidden) return;
-            sidebar.classList.toggle('translate-x-full');
-            if (overlay) {
-                if (sidebar.classList.contains('translate-x-full')) {
-                    overlay.classList.add('opacity-0');
-                    setTimeout(() => overlay.classList.add('hidden'), 300);
+            const isClosed = sidebar.classList.contains('translate-x-full');
+            
+            const newState = forceState !== undefined ? !forceState : !isClosed;
+            
+            if (newState) {
+                sidebar.classList.add('translate-x-full', 'lg:translate-x-0');
+                overlay.classList.add('hidden', 'opacity-0');
+            } else {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden', 'opacity-0');
+            }
+        };
+
+        window.toggleAboutModal = function(show) {
+            const modal = document.getElementById('about-modal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        };
+        
+        window.toggleAccordion = function(btn) {
+            const content = btn.previousElementSibling;
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                btn.innerHTML = '<i data-lucide="chevron-up" class="w-5 h-5"></i>';
+            } else {
+                content.classList.add('hidden');
+                btn.innerHTML = '<i data-lucide="chevron-down" class="w-5 h-5"></i>';
+            }
+            lucide.createIcons();
+        };
+
+        window.showToast = function(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.textContent = message;
+            toast.classList.remove('opacity-0', 'translate-y-10');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-10');
+            }, 3000);
+        };
+
+        window.updateProgress = function(val) {
+            const circle = document.getElementById('progress-circle');
+            const text = document.getElementById('progress-text');
+            if(circle && text) {
+                const radius = circle.r.baseVal.value;
+                const circumference = radius * 2 * Math.PI;
+                const offset = circumference - (val / 100) * circumference;
+                circle.style.strokeDashoffset = offset;
+                text.textContent = `${val}%`;
+                
+                if(val > 75) circle.setAttribute('stroke', '#10B981'); 
+                else if(val > 40) circle.setAttribute('stroke', '#A38350'); 
+                else circle.setAttribute('stroke', '#D97706'); 
+            }
+        };
+
+        const questionsDB = [
+            { q: "نوآوری تحقیق شما دقیقا چیست؟", tip: "تفاوت روش، داده‌ها، یا کاربرد را مشخص کنید." },
+            { q: "چرا این روش را انتخاب کردید؟", tip: "مزایای این روش نسبت به روش‌های جایگزین را بگویید." },
+            { q: "اگر داده‌ها تغییر کنند، نتایج چه می‌شود؟", tip: "به تحلیل حساسیت اشاره کنید." },
+            { q: "کاربرد عملی این پژوهش کجاست؟", tip: "یک ذینفع واقعی را نام ببرید." },
+            { q: "محدودیت اصلی پژوهش چه بود؟", tip: "صادق باشید و راهکار مدیریت آن را بگویید." }
+        ];
+
+        window.showRandomQuestion = function() {
+            const area = document.getElementById('random-question-area');
+            const text = document.getElementById('rq-text');
+            const tip = document.getElementById('rq-tip');
+            
+            area.classList.remove('hidden');
+            area.classList.remove('opacity-100');
+            void area.offsetWidth; 
+            area.classList.add('opacity-100');
+
+            const rand = questionsDB[Math.floor(Math.random() * questionsDB.length)];
+            text.textContent = rand.q;
+            tip.textContent = rand.tip;
+        };
+        
+        window.filterGlossary = function() {
+            const input = document.getElementById('glossary-search');
+            const filter = input.value.toLowerCase();
+            const grid = document.getElementById('glossary-grid');
+            const cards = grid.getElementsByClassName('glossary-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                const fa = cards[i].getAttribute('data-fa');
+                const en = cards[i].getAttribute('data-en');
+                if (fa.includes(filter) || en.toLowerCase().includes(filter)) {
+                    cards[i].classList.remove('hidden');
                 } else {
-                    overlay.classList.remove('hidden');
-                    setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                    cards[i].classList.add('hidden');
+                }
+            }
+        };
+        
+        window.copyToClipboard = function(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('متن با موفقیت کپی شد');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        };
+
+        function initPersistance() {
+            const savedTab = localStorage.getItem('activeTab');
+            if(savedTab) switchTab(savedTab);
+            else switchTab('proposal');
+
+            document.querySelectorAll('input[type="checkbox"][data-save-key]').forEach(input => {
+                const key = input.dataset.saveKey;
+                const saved = localStorage.getItem(key);
+                if(saved === 'true') input.checked = true;
+
+                input.addEventListener('change', (e) => {
+                    localStorage.setItem(key, e.target.checked);
+                    if(e.target.checked) showToast('وضعیت ذخیره شد');
+                });
+            });
+
+            const savedProgress = localStorage.getItem('progress_val');
+            if(savedProgress) {
+                const input = document.getElementById('progress-input');
+                if(input) {
+                    input.value = savedProgress;
+                    updateProgress(savedProgress);
                 }
             }
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            const target = document.getElementById(tabId);
-            if (target) target.classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(item => {
-                const isActive = item.dataset.tab === tabId;
-                item.className = `nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-bold transition-all duration-200 ${isActive ? 'bg-primary-600 text-white shadow-almond-glow' : 'text-primary-200/60 hover:text-white hover:bg-white/5'}`;
-            });
-            if (window.innerWidth < 1024) toggleSidebar(true);
-            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            const msgSpan = document.getElementById('toast-message');
-            if (!toast || !msgSpan) return;
-            msgSpan.innerText = msg;
-            toast.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
-            setTimeout(() => toast.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none'), 3000);
-        }
-
-        function toggleSlideAccordion(id) {
-            document.getElementById(`slide-content-${id}`).classList.toggle('open');
-            document.getElementById(`slide-arrow-${id}`).classList.toggle('rotate-180');
-        }
-
-        function updateProgress(val) {
-            const circle = document.getElementById('progress-circle');
-            const text = document.getElementById('progress-text');
-            if (!circle || !text) return;
-            const circumference = 527;
-            circle.style.strokeDashoffset = circumference - (val / 100) * circumference;
-            text.innerText = val + '%';
-        }
-
-        const glossaryData = [
-            { term: "Validity", fa: "روایی (اعتبار)", def: "آیا ابزار ما واقعاً همان چیزی را می‌سنجد که باید بسنجد؟" },
-            { term: "Reliability", fa: "پایایی (قابلیت اعتماد)", def: "ثبات نتایج در تکرار آزمون با همان ابزار." },
-            { term: "Generalizability", fa: "تعمیم‌پذیری", def: "آیا نتایج را می‌توان به کل جامعه بسط داد؟" },
-            { term: "Research Gap", fa: "خلاء تحقیقاتی", def: "آنچه پژوهش‌های قبلی انجام نداده‌اند و شما انجام می‌دهید." }
-        ];
-
-        function renderGlossary(filter = '') {
-            const grid = document.getElementById('glossary-grid');
-            if (!grid) return;
-            grid.innerHTML = glossaryData
-                .filter(i => i.term.toLowerCase().includes(filter.toLowerCase()) || i.fa.includes(filter))
-                .map(item => `
-                    <div class="bg-white p-6 rounded-2xl border border-surface-200 shadow-modern hover:border-primary-600 transition-all group relative">
-                        <div class="absolute top-0 right-0 w-1.5 h-0 bg-primary-600 group-hover:h-full transition-all duration-300"></div>
-                        <span class="text-[10px] font-black text-primary-600 uppercase mb-2 block tracking-widest">${item.term}</span>
-                        <h4 class="text-lg font-bold text-primary-800 mb-2">${item.fa}</h4>
-                        <p class="text-sm text-surface-700 opacity-70 leading-relaxed">${item.def}</p>
-                    </div>
-                `).join('');
-        }
-
-        function filterGlossary() {
-            renderGlossary(document.getElementById('glossary-search').value);
-        }
-
-        let selectedTemplate = 'email';
-        function setTemplate(type) {
-            selectedTemplate = type;
-            document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('bg-white', 'border-primary-600', 'shadow-sm'));
-            document.getElementById(`btn-${type}`).classList.add('bg-white', 'border-primary-600', 'shadow-sm');
-            updateTemplate();
-        }
-
-        function updateTemplate() {
-            const prof = document.getElementById('profName').value || '[نام استاد]';
-            const student = document.getElementById('studentName').value || '[نام شما]';
-            const topic = document.getElementById('thesisTopic').value || '[عنوان پایان‌نامه]';
-            const preview = document.getElementById('template-preview');
-            
-            let text = "";
-            if (selectedTemplate === 'email') {
-                text = `استاد ارجمند جناب آقای/سرکار خانم دکتر ${prof}؛\nبا سلام و احترام، بدین‌وسیله از جنابعالی دعوت می‌شود به عنوان داور در جلسه دفاع پروپوزال اینجانب ${student} با عنوان «${topic}» حضور بهم رسانید.\nنظرات ارزشمند شما موجب غنای علمی این پژوهش خواهد بود.\nارادتمند، ${student}`;
-            } else if (selectedTemplate === 'followup') {
-                text = `با سلام و عرض ادب؛\nاستاد ارجمند ${prof}،\n\nاحتراماً به پیوست نسخه اصلاح‌شده پایان‌نامه با عنوان «${topic}» که بر اساس نظرات اصلاحی جلسه دفاع مورخ ... بازنگری شده است، تقدیم می‌گردد.\nموارد اصلاحی در متن با رنگ متفاوت مشخص شده‌اند.\n\nمنتظر تایید نهایی جنابعالی جهت انجام امور فارغ‌التحصیلی هستم.\nبا تشکر،\n${student}`;
-            } else {
-                text = `با سپاس بیکران از خداوند متعال که توفیق این پژوهش را عطا فرمود.\nاز استاد راهنمای گرانقدر جناب دکتر ${prof} که با صبوری و دانش خود مسیر را روشن نمودند، صمیمانه سپاسگزارم.\nموضوع تحقیق: ${topic}\nارادتمند، ${student}`;
-            }
-            preview.innerText = text;
-        }
-
-        function copyTemplate() {
-            navigator.clipboard.writeText(document.getElementById('template-preview').innerText);
-            showToast('کپی شد!');
-        }
-
-        function toggleFaq(id) {
-            document.getElementById(`faq-${id}`).classList.toggle('open');
-            document.getElementById(`faq-icon-${id}`).classList.toggle('rotate-180');
-        }
-
-        function showRandomQuestion() {
-            const area = document.getElementById('random-question-area');
-            const q = questionBank[Math.floor(Math.random() * questionBank.length)];
-            document.getElementById('rq-text').innerText = q.q;
-            document.getElementById('rq-tip').innerText = q.t;
-            area.classList.remove('hidden');
-            area.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function copyChecklist() {
-            navigator.clipboard.writeText("چک‌لیست دفاع: پاورپوینت، PDF بک‌آپ، تمرین با تایمر، فونت‌ها.");
-            showToast('کپی شد!');
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initPersistance();
+        });
     </script>
 </body>
 </html>
