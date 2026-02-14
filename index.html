@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DefaYar Dashboard | دستیار دانشجو</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -56,9 +56,12 @@
         /* Toast Animation */
         .toast-enter { transform: translate(-50%, 20px); opacity: 0; }
         .toast-active { transform: translate(-50%, 0); opacity: 1; }
+
+        /* Handle Dynamic Viewport Height for mobile browsers */
+        .h-dvh { height: 100dvh; }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden text-slate-700 bg-slate-50 selection:bg-brand-100 selection:text-brand-900">
+<body class="flex h-screen h-dvh overflow-hidden text-slate-700 bg-slate-50 selection:bg-brand-100 selection:text-brand-900">
 
     <!-- Toast Notification Container -->
     <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] bg-slate-800 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-3 transition-all duration-300 toast-enter pointer-events-none">
@@ -133,8 +136,8 @@
     </aside>
 
     <!-- Main Content -->
-    <!-- Added min-w-0 and overflow-x-hidden for mobile responsiveness -->
-    <main class="flex-1 min-w-0 lg:mr-72 h-full overflow-y-auto overflow-x-hidden p-4 lg:p-8 scroll-smooth w-full">
+    <!-- h-full ensures it takes body height, pb-24 ensures bottom content is scrollable past UI overlays -->
+    <main class="flex-1 min-w-0 lg:mr-72 h-full overflow-y-auto overflow-x-hidden p-4 pb-24 lg:p-8 lg:pb-12 scroll-smooth w-full">
         
         <!-- Tab: Proposal Defense -->
         <div id="proposal" class="tab-content active">
@@ -149,7 +152,7 @@
                 </a>
             </header>
 
-            <!-- Phase 1: Structure Accordion (Redesigned) -->
+            <!-- Phase 1: Structure Accordion -->
             <div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden mb-8">
                 <div class="p-5 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
                     <h3 class="font-bold text-slate-800 flex items-center gap-2">
@@ -302,7 +305,6 @@
                             </p>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -348,7 +350,6 @@
 
                 <!-- Phase 3: Pro Tips & Checklist -->
                 <div class="space-y-6">
-                    <!-- Checklist -->
                     <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100">
                         <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
                             <i data-lucide="check-square" class="text-emerald-500"></i> چک‌لیست آمادگی
@@ -373,7 +374,6 @@
                         </div>
                     </div>
 
-                    <!-- Golden Rule Card -->
                     <div class="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
                         <div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-bl-full"></div>
                         <div class="flex items-start gap-4 relative z-10">
@@ -403,11 +403,9 @@
             </header>
 
             <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Visual Tracker Sidebar -->
                 <div class="space-y-6">
                     <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 text-center">
                         <h3 class="font-bold text-slate-700 mb-6">وضعیت کلی پایان‌نامه</h3>
-                        <!-- Circular Progress Simulator -->
                         <div class="relative w-40 h-40 mx-auto mb-6 flex items-center justify-center">
                              <svg class="transform -rotate-90 w-full h-full drop-shadow-md">
                                 <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="12" fill="transparent" class="text-slate-100" />
@@ -432,10 +430,8 @@
                     </div>
                 </div>
 
-                <!-- Main Content Cards -->
                 <div class="lg:col-span-2 space-y-6">
                     <div class="grid md:grid-cols-2 gap-4">
-                        <!-- Card 1 -->
                         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-200 transition-all group">
                             <div class="bg-green-100/50 text-green-600 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                                 <i data-lucide="check-circle-2"></i>
@@ -443,7 +439,6 @@
                             <h4 class="font-bold text-slate-800 mb-2">فعالیت‌های انجام شده</h4>
                             <p class="text-sm text-slate-500 leading-relaxed">لیست دقیق کارهایی که در ۶ ماه گذشته تکمیل شده است (مطالعه، آزمایش، کدنویسی).</p>
                         </div>
-                        <!-- Card 2 -->
                         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-200 transition-all group">
                             <div class="bg-blue-100/50 text-blue-600 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                                 <i data-lucide="flask-conical"></i>
@@ -451,7 +446,6 @@
                             <h4 class="font-bold text-slate-800 mb-2">خروجی‌های علمی</h4>
                             <p class="text-sm text-slate-500 leading-relaxed">مقالات سابمیت شده، کنفرانس‌ها، یا دیتاست‌های جمع‌آوری شده.</p>
                         </div>
-                        <!-- Card 3 -->
                         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-200 transition-all group">
                             <div class="bg-red-100/50 text-red-600 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                                 <i data-lucide="alert-triangle"></i>
@@ -459,7 +453,6 @@
                             <h4 class="font-bold text-slate-800 mb-2">موانع و چالش‌ها</h4>
                             <p class="text-sm text-slate-500 leading-relaxed">مشکلات فنی، مالی یا اداری که سرعت کار را کم کرده‌اند (صادق باشید).</p>
                         </div>
-                        <!-- Card 4 -->
                         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-200 transition-all group">
                             <div class="bg-purple-100/50 text-purple-600 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                                 <i data-lucide="calendar-days"></i>
@@ -469,7 +462,6 @@
                         </div>
                     </div>
 
-                    <!-- Milestone Checklist -->
                     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-soft">
                         <div class="bg-slate-50/80 p-5 border-b border-slate-100 backdrop-blur-sm">
                             <h3 class="font-bold text-slate-700">چک‌لیست نقاط عطف (Milestones)</h3>
@@ -514,9 +506,7 @@
             </header>
 
             <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Left Column: Checklist & Summary -->
                 <div class="space-y-6 lg:col-span-1 lg:order-2">
-                    <!-- Contribution Card -->
                     <div class="bg-gradient-to-br from-emerald-600 to-teal-700 p-6 rounded-2xl shadow-xl text-white relative overflow-hidden">
                         <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
                         <div class="flex items-center gap-2 mb-4 relative z-10">
@@ -527,7 +517,6 @@
                         <textarea data-save-key="thesis_contribution" class="w-full bg-black/20 border border-white/20 rounded-xl p-3 text-sm text-white placeholder-emerald-200/50 focus:outline-none focus:bg-black/30 h-32 resize-none relative z-10 transition-colors" placeholder="مثلاً: من نشان دادم که روش X در شرایط Y باعث بهبود Z می‌شود..."></textarea>
                     </div>
 
-                    <!-- Golden Checklist -->
                     <div class="bg-amber-50 border border-amber-100 rounded-2xl p-6 shadow-sm">
                         <h3 class="font-bold text-amber-700 mb-5 flex items-center gap-2">
                             <i data-lucide="list-checks" class="w-5 h-5"></i>
@@ -554,7 +543,6 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Architecture Table -->
                 <div class="lg:col-span-2 space-y-6 lg:order-1">
                      <div class="bg-white rounded-2xl shadow-soft border border-slate-200 overflow-hidden">
                         <div class="p-5 bg-slate-50/50 border-b border-slate-200">
@@ -605,7 +593,6 @@
                         </div>
                     </div>
 
-                    <!-- Tip Box -->
                     <div class="flex items-start gap-4 p-5 bg-sky-50/50 border border-sky-100 rounded-2xl">
                         <div class="bg-sky-100 text-sky-600 p-2.5 rounded-xl shrink-0">
                             <i data-lucide="info" class="w-5 h-5"></i>
@@ -634,7 +621,6 @@
                 </button>
             </header>
 
-            <!-- Random Question Display Area -->
             <div id="random-question-box" class="hidden mb-8 transform transition-all duration-500 ease-out translate-y-4 opacity-0">
                 <div class="bg-gradient-to-r from-brand-600 to-indigo-700 p-1 rounded-2xl shadow-xl">
                     <div class="bg-white p-6 lg:p-8 rounded-xl text-center relative overflow-hidden">
@@ -652,14 +638,12 @@
             </div>
 
             <div class="space-y-4 max-w-4xl mx-auto lg:mx-0">
-                <!-- Category 1 -->
                 <div class="space-y-3">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-1 h-6 bg-blue-500 rounded-full"></div>
                         <h3 class="text-lg font-bold text-slate-700">بخش کلیات و مسئله (The Why)</h3>
                     </div>
                     
-                    <!-- Q1 -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all hover:shadow-md group">
                         <button onclick="toggleAccordion('q1')" class="w-full text-right p-5 flex justify-between items-center bg-white hover:bg-slate-50 transition-colors">
                             <span class="font-bold text-slate-800 group-hover:text-brand-700 transition-colors">چرا این موضوع را انتخاب کردید؟</span>
@@ -677,7 +661,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Q2 -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all hover:shadow-md group">
                         <button onclick="toggleAccordion('q2')" class="w-full text-right p-5 flex justify-between items-center bg-white hover:bg-slate-50 transition-colors">
                             <span class="font-bold text-slate-800 group-hover:text-brand-700 transition-colors">نوآوری تحقیق شما دقیقا چیست؟</span>
@@ -697,13 +680,11 @@
                     </div>
                 </div>
 
-                <!-- Category 2 -->
                 <div class="space-y-3 pt-6">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-1 h-6 bg-emerald-500 rounded-full"></div>
                         <h3 class="text-lg font-bold text-slate-700">روش‌شناسی و اجرا (The How)</h3>
                     </div>
-                    <!-- Q3 -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all hover:shadow-md group">
                         <button onclick="toggleAccordion('q3')" class="w-full text-right p-5 flex justify-between items-center bg-white hover:bg-slate-50 transition-colors">
                             <span class="font-bold text-slate-800 group-hover:text-brand-700 transition-colors">چرا از این روش/ابزار استفاده کردید؟</span>
@@ -721,7 +702,6 @@
                             </div>
                         </div>
                     </div>
-                     <!-- Q4 -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all hover:shadow-md group">
                         <button onclick="toggleAccordion('q4')" class="w-full text-right p-5 flex justify-between items-center bg-white hover:bg-slate-50 transition-colors">
                             <span class="font-bold text-slate-800 group-hover:text-brand-700 transition-colors">حجم نمونه را چطور تعیین کردید؟</span>
@@ -741,13 +721,11 @@
                     </div>
                 </div>
 
-                <!-- Category 3 -->
                 <div class="space-y-3 pt-6">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-1 h-6 bg-purple-500 rounded-full"></div>
                         <h3 class="text-lg font-bold text-slate-700">نتایج و کاربرد (The Impact)</h3>
                     </div>
-                    <!-- Q5 -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all hover:shadow-md group">
                         <button onclick="toggleAccordion('q5')" class="w-full text-right p-5 flex justify-between items-center bg-white hover:bg-slate-50 transition-colors">
                             <span class="font-bold text-slate-800 group-hover:text-brand-700 transition-colors">کاربرد عملی این تحقیق چیست؟</span>
@@ -800,7 +778,6 @@
             </header>
 
             <div class="grid lg:grid-cols-3 gap-8 items-start h-full">
-                <!-- Inputs Side -->
                 <div class="space-y-6 lg:sticky lg:top-8">
                     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-soft">
                         <h3 class="font-bold text-slate-700 mb-5 flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -846,7 +823,6 @@
                     </div>
                 </div>
 
-                <!-- Preview Side -->
                 <div class="lg:col-span-2 h-full">
                     <div class="bg-amber-50/30 p-4 md:p-8 rounded-2xl border border-slate-200 shadow-inner min-h-[500px] flex flex-col relative bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
                         <div class="absolute top-4 left-4 z-10">
@@ -865,20 +841,15 @@
                 </div>
             </div>
         </div>
-
     </main>
 
     <script>
-        // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             initLocalStorage();
             updateTemplate();
             
-            // Set initial active tab button style
             const activeTabElement = document.querySelector('.tab-content.active');
-            
-            // Safety check: if no tab is active by default in HTML, default to 'proposal'
             if (!activeTabElement) {
                 switchTab('proposal');
             } else {
@@ -886,9 +857,7 @@
             }
         });
         
-        // --- LocalStorage Manager ---
         function initLocalStorage() {
-            // Load Checkboxes
             document.querySelectorAll('input[type="checkbox"][data-save-key]').forEach(cb => {
                 const key = 'defayar_' + cb.dataset.saveKey;
                 const saved = localStorage.getItem(key);
@@ -900,7 +869,6 @@
                 });
             });
 
-            // Load Inputs
             document.querySelectorAll('input[type="text"][data-save-key], textarea[data-save-key]').forEach(input => {
                 const key = 'defayar_' + input.dataset.saveKey;
                 const saved = localStorage.getItem(key);
@@ -911,7 +879,6 @@
                 });
             });
 
-            // Load Progress
             const progressInput = document.getElementById('progress-input');
             const savedProgress = localStorage.getItem('defayar_progress_val');
             if (savedProgress) {
@@ -920,7 +887,6 @@
             }
         }
 
-        // --- Toast System ---
         let toastTimeout;
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -937,11 +903,8 @@
             }, 3000);
         }
 
-        // --- Tab Switching ---
         function switchTab(tabId) {
-            // Hide all contents
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            // Show target with small delay for animation reset
             setTimeout(() => {
                 const target = document.getElementById(tabId);
                 if (target) target.classList.add('active');
@@ -949,26 +912,22 @@
             
             updateSidebarActiveState(tabId);
             
-            // Close mobile sidebar
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('mobile-overlay');
             if (!sidebar.classList.contains('translate-x-full') && window.innerWidth < 1024) {
                 toggleSidebar();
             }
             
-            // Scroll to top
             const main = document.querySelector('main');
             if (main) main.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function updateSidebarActiveState(tabId) {
             document.querySelectorAll('.nav-item').forEach(el => {
-                // Reset styles
                 el.className = 'nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-slate-800 border-r-4 border-transparent text-slate-400';
                 const icon = el.querySelector('i');
                 if (icon) icon.className = 'group-hover:text-brand-400 transition-colors';
 
-                // Apply Active Style
                 if (el.dataset.tab === tabId) {
                     el.className = 'nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 bg-brand-900/40 border-r-4 border-brand-500 text-white shadow-inner';
                     if (icon) icon.className = 'text-brand-400';
@@ -977,7 +936,6 @@
             lucide.createIcons();
         }
 
-        // --- Sidebar Toggle ---
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('mobile-overlay');
@@ -993,7 +951,6 @@
             }
         }
 
-        // --- Interactive Features ---
         function copyChecklist() {
             const text = `چک‌لیست دفاع:
 - [ ] اسلاید ۱: عنوان و تیم (۱ دقیقه)
@@ -1007,7 +964,6 @@
             showToast('چک‌لیست در حافظه کپی شد');
         }
 
-        // --- Questions Logic ---
         function toggleAccordion(id) {
             const content = document.getElementById(id);
             const icon = document.getElementById('icon-' + id);
@@ -1050,7 +1006,6 @@
             }, 500);
         }
 
-        // --- Glossary Logic ---
         const glossaryData = [
             { term: "Validity", fa: "روایی (اعتبار)", def: "آیا ابزار ما واقعاً همان چیزی را می‌سنجد که باید بسنجد؟", tip: "کاربرد: روایی صوری توسط ۵ متخصص تایید شد." },
             { term: "Reliability", fa: "پایایی (قابلیت اعتماد)", def: "ثبات نتایج در تکرار آزمون.", tip: "کاربرد: آلفای کرونباخ ۰.۸۵ نشان‌دهنده پایایی است." },
@@ -1111,12 +1066,10 @@
             lucide.createIcons();
         }
 
-        // --- Templates Logic ---
         let currentTemplate = 'email';
 
         function setTemplateType(type) {
             currentTemplate = type;
-            // Update active button state
             document.querySelectorAll('.template-btn').forEach(btn => {
                 btn.classList.remove('bg-brand-50', 'border-brand-300', 'text-brand-800', 'shadow-sm');
                 if(btn.getAttribute('onclick').includes(type)) {
@@ -1150,20 +1103,17 @@
             showToast('متن کپی شد');
         }
         
-        // --- Progress Tracker Logic ---
         function updateProgress(val) {
              const circle = document.getElementById('progress-circle');
              const percentText = document.getElementById('progress-text');
-             const circumference = 440; // 2 * pi * 70
+             const circumference = 440;
              const offset = circumference - (val / 100) * circumference;
              
              circle.style.strokeDashoffset = offset;
              percentText.innerText = val + '%';
              
-             // Save immediately
              localStorage.setItem('defayar_progress_val', val);
         }
-
     </script>
 </body>
 </html>
