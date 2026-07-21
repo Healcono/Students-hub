@@ -99,6 +99,14 @@
             background-color: #F2E8DA;
             color: #3E3021;
         }
+
+        /* Hide Google Translate Banner and Widget completely */
+        .skiptranslate > iframe.VIpgJd-ZVi9od-aZ2wEe-wOHMyf { display: none !important; }
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0px !important; }
+        .goog-tooltip { display: none !important; }
+        .goog-tooltip:hover { display: none !important; }
+        .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
     </style>
 <link rel="stylesheet" href="/index.css">
 </head>
@@ -146,8 +154,8 @@
 
     <!-- Sidebar -->
     <aside id="sidebar" class="fixed inset-y-0 right-0 w-72 bg-primary-800 text-primary-50 transform translate-x-full lg:translate-x-0 transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) z-50 flex flex-col shadow-2xl overflow-hidden border-l border-primary-700">
-        <div class="p-8 relative z-10">
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="toggleAboutModal(true)">
+        <div class="p-8 relative z-10 pb-4">
+            <div class="flex items-center gap-3 cursor-pointer group mb-6" onclick="toggleAboutModal(true)">
                 <div class="w-12 h-12 bg-primary-700/50 rounded-xl flex items-center justify-center border border-primary-600 backdrop-blur-sm group-hover:bg-primary-600 transition-all p-1.5">
                     <img src="https://abrehamrahi.ir/o/public/9CzovJTW/" alt="Logo" class="w-full h-full object-contain">
                 </div>
@@ -156,6 +164,14 @@
                     <p class="text-[10px] text-primary-300 font-medium tracking-[0.2em] uppercase">Academic Assistant</p>
                 </div>
             </div>
+
+            <!-- Language Switcher -->
+            <div class="bg-primary-900/40 rounded-xl p-1 flex items-center border border-primary-700/50" dir="ltr">
+                <button onclick="setLanguage('en')" id="lang-btn-en" class="flex-1 text-center py-1.5 rounded-lg text-xs font-bold text-primary-300 hover:text-white transition-all">EN</button>
+                <button onclick="setLanguage('ar')" id="lang-btn-ar" class="flex-1 text-center py-1.5 rounded-lg text-xs font-bold text-primary-300 hover:text-white transition-all">AR</button>
+                <button onclick="setLanguage('fa')" id="lang-btn-fa" class="flex-1 text-center py-1.5 rounded-lg text-xs font-bold bg-primary-600 text-white shadow-sm transition-all">FA</button>
+            </div>
+            <div id="google_translate_element" class="hidden"></div>
         </div>
         
         <nav class="px-4 pb-4 space-y-1.5 flex-1 overflow-y-auto relative z-10 scrollbar-hide">
@@ -816,9 +832,15 @@
 
             <!-- 7. Etiquette Tab -->
             <div id="etiquette" class="tab-content">
-                <header class="mb-10">
-                    <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">آداب و زبان بدن در جلسه دفاع</h2>
-                    <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">اصول رفتاری، حضور فیزیکی و مدیریت حرفه‌ای فضای جلسه</p>
+                <header class="mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">آداب و زبان بدن در جلسه دفاع</h2>
+                        <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">اصول رفتاری، حضور فیزیکی و مدیریت حرفه‌ای فضای جلسه</p>
+                    </div>
+                    <a href="https://abrehamrahi.ir/o/public/NXlIJH8E/" target="_blank" class="bg-white border border-primary-200 text-surface-800 hover:bg-primary-50 px-6 py-3 rounded-2xl font-bold flex items-center gap-3 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md whitespace-nowrap">
+                        <i data-lucide="download" class="w-5 h-5 text-primary-600"></i>
+                        دانلود اینفوگرافی آداب دفاع
+                    </a>
                 </header>
 
                 <div class="grid md:grid-cols-2 gap-6 mb-8">
@@ -1238,8 +1260,62 @@
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             initPersistance();
+            
+            // Check current lang from cookie
+            const match = document.cookie.match(/googtrans=\/fa\/([a-z]{2})/);
+            let currentLang = match ? match[1] : 'fa';
+            
+            // Layout Adjustments based on language
+            if (currentLang === 'en') {
+                document.documentElement.dir = 'ltr';
+                document.documentElement.lang = 'en';
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('right-0', 'border-l');
+                    sidebar.classList.add('left-0', 'border-r');
+                }
+                const main = document.querySelector('main');
+                if (main) {
+                    main.classList.remove('lg:mr-72');
+                    main.classList.add('lg:ml-72');
+                }
+            } else if (currentLang === 'ar') {
+                document.documentElement.lang = 'ar';
+            }
+
+            // Update UI Buttons
+            ['fa', 'en', 'ar'].forEach(l => {
+                const btn = document.getElementById('lang-btn-' + l);
+                if (btn) {
+                    if (l === currentLang) {
+                        btn.className = "flex-1 text-center py-1.5 rounded-lg text-xs font-bold bg-primary-600 text-white shadow-sm transition-all";
+                    } else {
+                        btn.className = "flex-1 text-center py-1.5 rounded-lg text-xs font-bold text-primary-300 hover:text-white transition-all";
+                    }
+                }
+            });
         });
+
+        function setLanguage(lang) {
+            // Delete old cookies if exist to prevent conflict
+            document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            
+            if (lang !== 'fa') {
+                document.cookie = `googtrans=/fa/${lang}; path=/`;
+                document.cookie = `googtrans=/fa/${lang}; path=/; domain=${location.hostname}`;
+            }
+            window.location.reload();
+        }
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'fa',
+                includedLanguages: 'en,ar,fa',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
     </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script type="module" src="/index.tsx"></script>
 </body>
 </html>
