@@ -1297,14 +1297,62 @@
         });
 
         function setLanguage(lang) {
-            // Delete old cookies if exist to prevent conflict
-            document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            
-            if (lang !== 'fa') {
-                document.cookie = `googtrans=/fa/${lang}; path=/`;
-                document.cookie = `googtrans=/fa/${lang}; path=/; domain=${location.hostname}`;
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = lang === 'fa' ? '' : lang;
+                select.dispatchEvent(new Event('change'));
+                
+                // Update UI Buttons manually since we aren't reloading
+                ['fa', 'en', 'ar'].forEach(l => {
+                    const btn = document.getElementById('lang-btn-' + l);
+                    if (btn) {
+                        if (l === lang) {
+                            btn.className = "flex-1 text-center py-1.5 rounded-lg text-xs font-bold bg-primary-600 text-white shadow-sm transition-all";
+                        } else {
+                            btn.className = "flex-1 text-center py-1.5 rounded-lg text-xs font-bold text-primary-300 hover:text-white transition-all";
+                        }
+                    }
+                });
+                
+                // Handle RTL/LTR toggle dynamically
+                if (lang === 'en') {
+                    document.documentElement.dir = 'ltr';
+                    document.documentElement.lang = 'en';
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) {
+                        sidebar.classList.remove('right-0', 'border-l');
+                        sidebar.classList.add('left-0', 'border-r');
+                    }
+                    const main = document.querySelector('main');
+                    if (main) {
+                        main.classList.remove('lg:mr-72');
+                        main.classList.add('lg:ml-72');
+                    }
+                } else {
+                    document.documentElement.dir = 'rtl';
+                    document.documentElement.lang = lang;
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) {
+                        sidebar.classList.remove('left-0', 'border-r');
+                        sidebar.classList.add('right-0', 'border-l');
+                    }
+                    const main = document.querySelector('main');
+                    if (main) {
+                        main.classList.remove('lg:ml-72');
+                        main.classList.add('lg:mr-72');
+                    }
+                }
+            } else {
+                // Fallback to cookies if widget isn't loaded yet
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure";
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + location.hostname + "; SameSite=None; Secure";
+                
+                if (lang !== 'fa') {
+                    document.cookie = `googtrans=/fa/${lang}; path=/; SameSite=None; Secure`;
+                    document.cookie = `googtrans=/fa/${lang}; path=/; domain=${location.hostname}; SameSite=None; Secure`;
+                }
+                window.location.reload();
             }
-            window.location.reload();
         }
 
         function googleTranslateElementInit() {
