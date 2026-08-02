@@ -184,6 +184,9 @@
             <button onclick="switchTab('slide-toolbox')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="slide-toolbox">
                 <i data-lucide="layers" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>جعبه‌ابزار طراحی</span>
             </button>
+            <button onclick="switchTab('defense-day-checklist')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="defense-day-checklist">
+                <i data-lucide="check-square" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>چک‌لیست روز دفاع</span>
+            </button>
             <button onclick="switchTab('infographics')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="infographics">
                 <i data-lucide="pie-chart" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>اینفوگرافیک‌ها</span>
             </button>
@@ -1537,6 +1540,213 @@
                                 در اسلایدهای دفاع، هر اینفوگرافیک باید تنها <strong>یک پیام کلیدی</strong> را منتقل کند. از قرار دادن متن‌های طولانی در کنار نمودارها خودداری کنید و اجازه دهید تصویر، روایتگر اصلی نتایج شما باشد.
                             </p>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. Interactive Defense Day Checklist Tab -->
+            <div id="defense-day-checklist" class="tab-content">
+                <header class="mb-10">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight flex items-center gap-3">
+                                <i data-lucide="check-square" class="w-8 h-8 text-primary-600"></i>
+                                <span>چک‌لیست تعاملی روز دفاع و اقدامات حیاتی قبل از آن</span>
+                            </h2>
+                            <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">مدیریت گام‌به‌گام اقدامات قبل از دفاع (پروپوزال و رساله نهایی)، شب قبل و روز جلسه دفاع</p>
+                        </div>
+                        <div class="inline-flex items-center gap-2 bg-primary-50 border border-primary-200 px-4 py-2 rounded-2xl text-primary-800 text-sm font-bold self-start md:self-auto">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-primary-600"></i>
+                            <span>آمادگی ۱۰۰٪ و بدون استرس</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Crucial Golden Rule Alert: 10 Days Prior Requirement -->
+                <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-2 border-amber-500/40 rounded-3xl p-6 md:p-8 mb-10 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-32 h-32 bg-amber-400 rounded-full blur-[60px] opacity-20 pointer-events-none"></div>
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-5 relative z-10">
+                        <div class="w-14 h-14 bg-amber-500 text-white rounded-2xl flex items-center justify-center shrink-0 shadow-md">
+                            <i data-lucide="alert-triangle" class="w-7 h-7"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-black text-amber-900 flex items-center gap-2">
+                                <span>قانون طلایی ۱۰ روز قبل از دفاع (پروپوزال / پایان‌نامه)</span>
+                            </h3>
+                            <p class="text-surface-800 text-sm md:text-base leading-relaxed text-justify">
+                                <strong>بسیار مهم:</strong> دانشجو موظف است <strong>حداقل ۱۰ روز قبل از تاریخ جلسه دفاع</strong> (چه دفاع از پروپوزال و چه دفاع نهایی از رساله)، نسخه نهایی و تاییدشده توسط استاد راهنما را به صورت رسمی و ترجیحاً الکترونیکی (PDF - در راستای حفظ محیط زیست و کاهش مصرف کاغذ) برای <strong>داوران داخلی و خارجی</strong> ارسال نماید. ارسال دیرهنگام می‌تواند منجر به لغو جلسه دفاع یا کسر نمره ارزیابی شود.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checklist Cards Grid -->
+                <div class="grid lg:grid-cols-3 gap-8 mb-12">
+                    
+                    <!-- Phase 1: 10 Days Before -->
+                    <div class="bg-white rounded-3xl border border-primary-100 p-6 shadow-sm hover:shadow-modern transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-6 pb-4 border-b border-primary-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-primary-100 text-primary-700 rounded-2xl flex items-center justify-center font-black">
+                                        <i data-lucide="calendar" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-black text-primary-900">۱۰ روز قبل از دفاع</h3>
+                                        <p class="text-xs text-primary-600 font-medium">ارسال نسخه نهایی و هماهنگی‌ها</p>
+                                    </div>
+                                </div>
+                                <span class="bg-primary-50 text-primary-700 text-xs font-bold px-3 py-1 rounded-full border border-primary-200">فاز ۱</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_10d_1" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        ارسال نسخه نهایی پروپوزال / رساله برای داوران داخلی و خارجی (حداقل ۱۰ روز قبل)
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_10d_2" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        اخذ تاییدیه کتبی یا سیستمی استاد راهنما و مشاور جهت آمادگی دفاع
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_10d_3" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        رزرو رسمی سالن دفاع، ویدئو پروژکتور و سیستم صوتی در آموزش دانشکده
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_10d_4" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        صدور و نصب اطلاعیه و پوستر جلسه دفاع در بردهای تحصیلات تکمیلی
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2: Day Before -->
+                    <div class="bg-white rounded-3xl border border-primary-100 p-6 shadow-sm hover:shadow-modern transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-6 pb-4 border-b border-primary-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-teal-100 text-teal-800 rounded-2xl flex items-center justify-center font-black">
+                                        <i data-lucide="clock" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-black text-primary-900">یک روز قبل از دفاع</h3>
+                                        <p class="text-xs text-primary-600 font-medium">تست‌های فنی و آمادگی ذهنی</p>
+                                    </div>
+                                </div>
+                                <span class="bg-teal-50 text-teal-800 text-xs font-bold px-3 py-1 rounded-full border border-teal-200">فاز ۲</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_1d_1" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        حضور در سالن دفاع و تست اتصال لپ‌تاپ، پورت HDMI/VGA و رزولوشن پروژکتور
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_1d_2" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        ذخیره فایل اسلایدها (PowerPoint و PDF) روی ۲ عدد فلش مموری و فضای ابری
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_1d_3" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        تمرین نهایی زمان‌بندی ارائه (دقیقاً ۲۰ دقیقه) با استفاده از کرنومتر
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_1d_4" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        آماده‌سازی لباس آراسته و رسمی، استراحت کافی و پرهیز از مطالعه سنگین شبانه
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3: Defense Day -->
+                    <div class="bg-white rounded-3xl border border-primary-100 p-6 shadow-sm hover:shadow-modern transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-6 pb-4 border-b border-primary-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center font-black">
+                                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-black text-primary-900">روز جلسه دفاع</h3>
+                                        <p class="text-xs text-primary-600 font-medium">اجرای مقتدرانه و مدیریت جلسه</p>
+                                    </div>
+                                </div>
+                                <span class="bg-emerald-50 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-200">فاز ۳</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_day_1" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        حضور در سالن ۱ ساعت قبل از شروع، کنترل تهویه، نور و چینش صندلی‌ها
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_day_2" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        آماده داشتن نسخه کامل الکترونیکی (PDF) رساله روی دسکتاپ جهت ارجاع سریع به سوالات داوران (حفظ محیط زیست و پرهیز از چاپ کاغذ)
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_day_3" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        آماده‌سازی خودکار و دفترچه یادداشت تمیز برای یادداشت دقیق نقدها و نظرات داوران
+                                    </span>
+                                </label>
+
+                                <label class="flex items-start gap-3.5 p-3.5 rounded-2xl hover:bg-primary-50/60 transition-colors cursor-pointer group border border-transparent hover:border-primary-100">
+                                    <input type="checkbox" data-save-key="def_check_day_4" class="w-5 h-5 mt-0.5 rounded-lg border-primary-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="text-sm font-bold text-surface-700 group-hover:text-primary-900 transition-colors leading-relaxed">
+                                        قرار دادن موبایل روی حالت پرواز و اطمینان از همراه داشتن بطری آب روی میز ارائه
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer Summary Card for Defense Day -->
+                <div class="bg-gradient-to-br from-primary-900 to-[#10332f] rounded-3xl p-8 text-white shadow-glow relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-48 h-48 bg-primary-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 bg-primary-800/80 rounded-2xl flex items-center justify-center border border-primary-600 shrink-0">
+                                <i data-lucide="award" class="w-8 h-8 text-teal-300"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black mb-1">رمز موفقیت در جلسه دفاع</h3>
+                                <p class="text-primary-200 text-sm leading-relaxed">
+                                    با آرامش، احترام علمی و اعتمادبه‌نفس صحبت کنید؛ شما مسلط‌ترین فرد حاضر در جلسه نسبت به موضوع پژوهش خود هستید.
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="px-6 py-3.5 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-2xl shadow-lg transition-all hover:-translate-y-0.5 whitespace-nowrap">
+                            بازگشت به بالای صفحه
+                        </button>
                     </div>
                 </div>
             </div>
