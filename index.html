@@ -159,22 +159,16 @@
             <button onclick="toggleAboutModal(false)" class="absolute top-6 left-6 text-primary-300 hover:text-primary-600 transition-colors">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
-            <a href="https://res.modares.ac.ir/res/forms" target="_blank" rel="noopener noreferrer" title="سامانه فرم‌های دانشگاه تربیت مدرس (کلیک جهت مشاهده)" class="w-20 h-20 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-glow overflow-hidden p-2 hover:scale-105 transition-transform border border-primary-100 block">
+            <div class="w-20 h-20 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-glow overflow-hidden p-2 border border-primary-100">
                 <img src="https://abrehamrahi.ir/o/public/9CzovJTW/" alt="University Logo" class="w-full h-full object-contain">
-            </a>
+            </div>
             <h3 class="text-2xl font-black text-primary-800 mb-4 leading-tight text-center">مسیر سخت تمام شد، وقت درخشش است!</h3>
             <p class="text-surface-700 leading-loose text-sm mb-8 text-justify opacity-80">
                 خسته نباشی؛ ما می‌دانیم برای رسیدن به این لحظه چقدر بی‌خوابی و سختی کشیده‌ای. دفاع‌یار اینجاست تا خیالت از بابت تمام جزئیاتِ روز دفاع راحت باشد. ما همه‌ی ابزارها، از استانداردهای بصری اسلایدها تا فنون پاسخگویی به داوران را برایت آماده کرده‌ایم. با دفاع‌یار، ارائه تو فقط یک گزارش نیست؛ یک اجرای به‌یادماندنی و مقتدرانه است.
             </p>
-            <div class="flex flex-col sm:flex-row gap-3">
-                <a href="https://res.modares.ac.ir/res/forms" target="_blank" rel="noopener noreferrer" class="flex-1 py-3.5 bg-gold-600 text-white rounded-2xl font-bold hover:bg-gold-700 transition-all shadow-md text-center text-sm flex items-center justify-center gap-2">
-                    <i data-lucide="file-text" class="w-4 h-4"></i>
-                    فرم‌های دانشگاه
-                </a>
-                <button onclick="toggleAboutModal(false)" class="flex-1 py-3.5 bg-primary-600 text-white rounded-2xl font-bold hover:bg-primary-700 transition-all shadow-md text-sm">
-                    متوجه شدم، بزن بریم!
-                </button>
-            </div>
+            <button onclick="toggleAboutModal(false)" class="w-full py-3.5 bg-primary-600 text-white rounded-2xl font-bold hover:bg-primary-700 transition-all shadow-md text-sm cursor-pointer">
+                متوجه شدم، بزن بریم!
+            </button>
         </div>
     </div>
 
@@ -225,6 +219,9 @@
         </div>
         
         <nav class="px-4 pb-4 space-y-1.5 flex-1 overflow-y-auto relative z-10 scrollbar-hide">
+            <button onclick="switchTab('academic-timeline')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="academic-timeline">
+                <i data-lucide="calendar-clock" class="w-5 h-5 transition-transform group-hover:scale-110 text-gold-300"></i> <span>تقویم و زمان‌بندی دفاع</span>
+            </button>
             <button onclick="switchTab('proposal')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="proposal">
                 <i data-lucide="map" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>دفاع از پروپوزال</span>
             </button>
@@ -247,7 +244,7 @@
                 <i data-lucide="users" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>آداب دفاع</span>
             </button>
             <button onclick="switchTab('slide-toolbox')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="slide-toolbox">
-                <i data-lucide="layers" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>جعبه‌ابزار طراحی</span>
+                <i data-lucide="layers" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>جعبه‌ابزار</span>
             </button>
             <button onclick="switchTab('defense-day-checklist')" class="nav-item group w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 text-primary-200 hover:text-white hover:bg-primary-700/50" data-tab="defense-day-checklist">
                 <i data-lucide="check-square" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>چک‌لیست روز دفاع</span>
@@ -256,34 +253,237 @@
                 <i data-lucide="pie-chart" class="w-5 h-5 transition-transform group-hover:scale-110"></i> <span>اینفوگرافیک‌ها</span>
             </button>
         </nav>
-
-        <div class="p-6 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-950 backdrop-blur-xl relative z-10 border-t border-gold-500/20 space-y-4 overflow-hidden group/footer">
-            <!-- Ambient Persian Gold & Cobalt Glow -->
-            <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-gold-500/10 rounded-full blur-3xl group-hover/footer:bg-gold-500/20 transition-all duration-1000"></div>
-            <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-400/30 to-transparent opacity-60"></div>
-
-            <div class="flex items-center gap-3.5 relative z-10">
-                 <a href="https://ktetmu.vercel.app/" target="_blank" rel="noopener noreferrer" title="وب‌سایت کارگروه ترجمان دانش" class="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary-800 to-primary-950 flex items-center justify-center text-gold-300 shrink-0 border border-gold-400/40 shadow-[0_0_20px_-5px_rgba(197,154,63,0.35)] hover:scale-105 hover:shadow-[0_0_25px_-5px_rgba(197,154,63,0.55)] transition-all duration-500 cursor-pointer">
-                    <i data-lucide="code" class="w-5 h-5"></i>
-                 </a>
-                 <div class="flex-1">
-                    <h4 class="font-bold text-white text-xs mb-1 tracking-wide">طراح و توسعه‌دهنده</h4>
-                    <p class="text-xs text-gold-200 font-bold bg-clip-text text-transparent bg-gradient-to-r from-gold-100 to-gold-300">کارگروه ترجمان دانش دانشکده</p>
-                    <a href="mailto:KTE@modares.ac.ir" class="text-[10px] text-primary-200/70 mt-1 font-mono tracking-wider hover:text-gold-200 transition-colors block">KTE@modares.ac.ir</a>
-                 </div>
-            </div>
-            
-            <div class="pt-3.5 border-t border-white/10 text-justify relative z-10">
-                <p class="text-[10px] text-primary-200/60 leading-relaxed font-light">
-                    تهیه شده به سفارش <span class="text-gold-200/80 font-medium hover:text-gold-100 transition-colors duration-300 cursor-default">معاونت پژوهشی دانشکده علوم پزشکی دانشگاه تربیت مدرس</span>
-                </p>
-            </div>
-        </div>
     </aside>
 
     <!-- Main Content -->
     <main id="main-content" class="flex-1 lg:mr-72 h-full overflow-y-auto overflow-x-hidden pt-16 lg:pt-0 scroll-smooth bg-surface-50">
-        <div class="max-w-6xl mx-auto p-6 md:p-10 lg:p-14 pb-32">
+        <div class="max-w-6xl mx-auto p-6 md:p-10 lg:p-14 pb-16 min-h-screen flex flex-col justify-between">
+            <div>
+                <!-- Academic Top Header Bar (Quick Term Search) -->
+                <header class="mb-10 pb-5 border-b border-primary-100/80 flex items-center justify-between gap-4 relative z-30">
+                    <!-- Quick Term Search Bar in Header -->
+                    <div class="w-full max-w-md relative" id="header-search-container">
+                        <div class="relative flex items-center bg-white hover:bg-white focus-within:bg-white rounded-2xl border border-primary-200 focus-within:border-primary-500 shadow-sm focus-within:shadow-md transition-all duration-300 p-1.5 pl-3">
+                            <div class="w-8 h-8 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="search" class="w-4 h-4"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="header-term-search" 
+                                oninput="searchHeaderTerm(this.value)" 
+                                onfocus="searchHeaderTerm(this.value)"
+                                placeholder="جستجوی سریع واژه و اصطلاح پژوهشی..." 
+                                class="w-full bg-transparent px-3 py-1.5 text-xs sm:text-sm text-surface-800 placeholder:text-surface-400 focus:outline-none"
+                                autocomplete="off"
+                            >
+                            <button id="btn-clear-header-search" onclick="clearHeaderTermSearch()" class="hidden text-surface-400 hover:text-surface-600 p-1 rounded-lg hover:bg-surface-100 transition-colors" title="پاک کردن">
+                                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+
+                        <!-- Live Results Dropdown pointing DOWN from Header -->
+                        <div id="header-search-results" class="hidden absolute top-full mt-2 inset-x-0 bg-white/95 backdrop-blur-xl rounded-2xl border border-primary-100 shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto divide-y divide-primary-50">
+                            <!-- Populated dynamically via searchHeaderTerm -->
+                        </div>
+                    </div>
+                </header>
+            
+            <!-- 0. Academic Timeline & Calendar Tab (Dedicated Tab in Sidebar) -->
+            <div id="academic-timeline" class="tab-content">
+                <header class="mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-gold-100/70 text-gold-800 text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider mb-2 border border-gold-200">
+                            <i data-lucide="clock" class="w-3.5 h-3.5 text-gold-600"></i>
+                            سامانه هوشمند زمان‌بندی و ددلاین‌های تحصیلی
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight">تقویم و زمان‌بندی دفاع</h2>
+                        <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">مدیریت ددلاین‌های اداری دانشگاه، شمارش معکوس زنده و تقویم گام‌به‌گام تا روز دفاع</p>
+                    </div>
+                    <a href="https://res.modares.ac.ir/res/forms" target="_blank" rel="noopener noreferrer" class="bg-white border border-primary-200 text-surface-800 hover:bg-primary-50 px-6 py-3.5 rounded-2xl font-bold flex items-center gap-3 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md whitespace-nowrap">
+                        <i data-lucide="file-check" class="w-5 h-5 text-gold-600"></i>
+                        فرم‌های اداری و پژوهشی دانشگاه
+                    </a>
+                </header>
+
+                <!-- Hero Countdown Banner -->
+                <div class="bg-gradient-to-br from-primary-900 via-primary-800 to-[#10332f] rounded-3xl p-8 md:p-10 text-white shadow-glow relative overflow-hidden mb-10 border border-primary-700">
+                    <div class="absolute -right-12 -top-12 w-64 h-64 bg-gold-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-12 -bottom-12 w-64 h-64 bg-primary-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div class="flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+                        <div class="space-y-4 text-center lg:text-right">
+                            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs font-bold text-gold-300">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-gold-400"></i>
+                                <span id="tab-event-badge">دفاع نهایی از پایان‌نامه / رساله</span>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-black tracking-tight leading-snug">
+                                تاریخ هدف: <span id="tab-target-date-display" class="text-gold-200 font-mono">تنظیم نشده</span>
+                            </h3>
+                            <p class="text-primary-200 text-sm leading-relaxed max-w-xl">
+                                با تعیین تاریخ مورد نظر خود، روزشمار زنده فعال شده و تمامی ددلاین‌های قانونی (ارسال به داوران، ایرانداک، رزرو سالن و تست فنی) به طور خودکار محاسبه و زمان‌بندی می‌شوند.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col items-center bg-white/10 backdrop-blur-xl border border-white/20 p-6 md:p-8 rounded-3xl min-w-[260px] text-center shadow-inner">
+                            <div class="w-14 h-14 bg-gold-400/20 rounded-2xl flex items-center justify-center text-gold-300 mb-3 border border-gold-400/30">
+                                <i data-lucide="hourglass" class="w-7 h-7 animate-pulse"></i>
+                            </div>
+                            <div id="tab-countdown-days" class="text-3xl md:text-4xl font-black font-mono text-gold-200 tracking-tight">--</div>
+                            <div id="tab-countdown-label" class="text-xs text-primary-200 font-bold mt-1">روز مانده تا رویداد</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Settings & Timeline Grid -->
+                <div class="grid lg:grid-cols-3 gap-8 mb-12">
+                    <!-- Column 1: Date & Target Configuration -->
+                    <div class="bg-white p-7 rounded-3xl border border-primary-100 shadow-sm space-y-6">
+                        <div class="border-b border-surface-200 pb-4">
+                            <h3 class="font-black text-primary-900 text-lg flex items-center gap-2.5">
+                                <i data-lucide="calendar" class="w-5 h-5 text-primary-600"></i>
+                                تنظیم تاریخ و نوع رویداد
+                            </h3>
+                            <p class="text-xs text-surface-500 mt-1">رویداد تحصیلی خود را انتخاب و تاریخ آن را وارد کنید</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-2">نوع فرآیند دانشگاهی:</label>
+                            <select id="timeline-event-type" onchange="updateTimelineType(this.value)" class="w-full bg-surface-50 border border-surface-200 rounded-2xl px-4 py-3 text-sm font-medium text-surface-800 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors">
+                                <option value="thesis">دفاع نهایی از پایان‌نامه / رساله</option>
+                                <option value="proposal">دفاع از پروپوزال</option>
+                                <option value="progress">تحویل گزارش ۶ ماهه پژوهشی</option>
+                                <option value="custom">رویداد یا ددلاین پژوهشی سفارشی</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-surface-700 mb-2">انتخاب تاریخ هدف:</label>
+                            <input type="date" id="timeline-date-picker" onchange="saveTimelineDate(this.value)" class="w-full bg-surface-50 border border-surface-200 rounded-2xl px-4 py-3 text-sm font-mono text-surface-800 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors">
+                            <p class="text-[11px] text-surface-500 mt-2 leading-relaxed">سیستم تاریخ‌های اداری را بر مبنای این تاریخ زمان‌بندی می‌کند.</p>
+                        </div>
+
+                        <div class="pt-4 border-t border-surface-200 flex items-center justify-between">
+                            <button onclick="resetTimelineDate()" class="text-xs text-rose-600 hover:text-rose-700 font-bold flex items-center gap-1.5 transition-colors p-2">
+                                <i data-lucide="rotate-ccw" class="w-4 h-4"></i> بازنشانی تاریخ
+                            </button>
+                            <span class="text-[11px] text-primary-600 bg-primary-50 px-3 py-1 rounded-xl font-bold">ذخیره خودکار</span>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 & 3: University Deadlines Timeline (Span 2) -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-white p-7 rounded-3xl border border-primary-100 shadow-sm">
+                            <div class="flex items-center justify-between border-b border-surface-200 pb-4 mb-6">
+                                <div>
+                                    <h3 class="font-black text-primary-900 text-lg flex items-center gap-2.5">
+                                        <i data-lucide="list-ordered" class="w-5 h-5 text-gold-600"></i>
+                                        فرجه‌های قانونی و ددلاین‌های دانشگاه تربیت مدرس
+                                    </h3>
+                                    <p class="text-xs text-surface-500 mt-1">اقدامات الزامی را به ترتیب تاریخ انجام داده و تیک بزنید</p>
+                                </div>
+                                <span class="bg-primary-50 text-primary-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-primary-200 hidden sm:inline">۴ فرجه اصلی</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <!-- Step 1: 30 Days Prior -->
+                                <div class="p-5 rounded-2xl border border-primary-100 bg-surface-50/70 hover:bg-white hover:border-primary-300 transition-all flex items-start gap-4 group">
+                                    <input type="checkbox" id="milestone-check-30" class="mt-1 w-5 h-5 text-primary-600 rounded-lg border-surface-300 focus:ring-primary-500 cursor-pointer" onchange="toggleMilestoneCheck('check-30', this.checked)">
+                                    <div class="flex-1">
+                                        <div class="flex flex-wrap items-center justify-between gap-2">
+                                            <span class="text-[11px] font-black text-primary-800 bg-primary-100/80 px-2.5 py-1 rounded-lg border border-primary-200">حداقل ۳۰ روز قبل از دفاع</span>
+                                            <span id="milestone-date-30" class="text-xs font-mono font-bold text-primary-700 bg-white px-2.5 py-0.5 rounded-md border border-primary-100">--</span>
+                                        </div>
+                                        <h4 class="text-sm font-black text-surface-900 mt-2">تحویل نسخه نهایی رساله / پایان‌نامه به اساتید داور</h4>
+                                        <p class="text-xs text-surface-600 mt-1 leading-relaxed">ارسال فایل کامل پایان‌نامه به داوران داخلی و خارجی جهت مطالعه و اعلام نظر اولیه.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: 15 Days Prior -->
+                                <div class="p-5 rounded-2xl border border-amber-200/80 bg-amber-50/20 hover:bg-white hover:border-amber-300 transition-all flex items-start gap-4 group">
+                                    <input type="checkbox" id="milestone-check-15" class="mt-1 w-5 h-5 text-primary-600 rounded-lg border-surface-300 focus:ring-primary-500 cursor-pointer" onchange="toggleMilestoneCheck('check-15', this.checked)">
+                                    <div class="flex-1">
+                                        <div class="flex flex-wrap items-center justify-between gap-2">
+                                            <span class="text-[11px] font-black text-amber-900 bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200">حداقل ۱۵ روز قبل از دفاع</span>
+                                            <span id="milestone-date-15" class="text-xs font-mono font-bold text-amber-800 bg-white px-2.5 py-0.5 rounded-md border border-amber-200">--</span>
+                                        </div>
+                                        <h4 class="text-sm font-black text-surface-900 mt-2">دریافت گواهی همانندجویی (ایرانداک / پژوهشیار)</h4>
+                                        <p class="text-xs text-surface-600 mt-1 leading-relaxed">بارگذاری متن در سامانه همانندجو، دریافت تاییدیه درصد مشابهت و تایید استاد راهنما.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: 10 Days Prior (Crucial) -->
+                                <div class="p-5 rounded-2xl border-2 border-gold-400/60 bg-gold-50/30 hover:bg-white hover:border-gold-500 transition-all flex items-start gap-4 group shadow-sm">
+                                    <input type="checkbox" id="milestone-check-10" class="mt-1 w-5 h-5 text-gold-600 rounded-lg border-surface-300 focus:ring-gold-500 cursor-pointer" onchange="toggleMilestoneCheck('check-10', this.checked)">
+                                    <div class="flex-1">
+                                        <div class="flex flex-wrap items-center justify-between gap-2">
+                                            <span class="text-[11px] font-black text-gold-900 bg-gold-100 px-2.5 py-1 rounded-lg border border-gold-300">حداقل ۱۰ روز قبل (قانون طلایی دانشگاه)</span>
+                                            <span id="milestone-date-10" class="text-xs font-mono font-bold text-gold-800 bg-white px-2.5 py-0.5 rounded-md border border-gold-300">--</span>
+                                        </div>
+                                        <h4 class="text-sm font-black text-surface-900 mt-2">رزرو قطعی سالن، هماهنگی ساعت داوران و صدور مجوز رسمی دفاع</h4>
+                                        <p class="text-xs text-surface-600 mt-1 leading-relaxed">ثبت درخواست دفاع در سامانه، رزرو سالن دفاع و صدور اطلاعیه رسمی و دعوت‌نامه داوران.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Step 4: 2 Days Prior -->
+                                <div class="p-5 rounded-2xl border border-teal-200/80 bg-teal-50/20 hover:bg-white hover:border-teal-300 transition-all flex items-start gap-4 group">
+                                    <input type="checkbox" id="milestone-check-2" class="mt-1 w-5 h-5 text-primary-600 rounded-lg border-surface-300 focus:ring-primary-500 cursor-pointer" onchange="toggleMilestoneCheck('check-2', this.checked)">
+                                    <div class="flex-1">
+                                        <div class="flex flex-wrap items-center justify-between gap-2">
+                                            <span class="text-[11px] font-black text-teal-900 bg-teal-100 px-2.5 py-1 rounded-lg border border-teal-200">۲ روز قبل از جلسه دفاع</span>
+                                            <span id="milestone-date-2" class="text-xs font-mono font-bold text-teal-800 bg-white px-2.5 py-0.5 rounded-md border border-teal-200">--</span>
+                                        </div>
+                                        <h4 class="text-sm font-black text-surface-900 mt-2">تست سخت‌افزاری سالن، فایل اسلایدها و چاپ صورتجلسه</h4>
+                                        <p class="text-xs text-surface-600 mt-1 leading-relaxed">بررسی پروژکتور، پورت HDMI لپ‌تاپ، پرزنتر و دریافت فرم‌های ارزشیابی داوران از آموزش.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Defense Rules & Strategy Card -->
+                <div class="bg-white rounded-3xl border border-primary-100 p-8 shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-600">
+                            <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-primary-900">نکات طلایی مدیریت زمان‌بندی و فصول دفاع</h3>
+                            <p class="text-xs text-surface-600">راهنمای پیشگیری از تاخیرهای ناخواسته و مشکلات سنوات تحصیلی</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="p-5 rounded-2xl bg-surface-50 border border-surface-200">
+                            <h4 class="font-bold text-primary-800 text-sm mb-2 flex items-center gap-2">
+                                <i data-lucide="calendar-range" class="w-4 h-4 text-primary-600"></i>
+                                پیک دفاع‌های دانشگاه (شهریور و بهمن)
+                            </h4>
+                            <p class="text-xs text-surface-600 leading-relaxed">
+                                ماه‌های شهریور و بهمن شلوغ‌ترین ایام دفاع هستند. سالن‌ها سریع پر می‌شوند؛ بنابراین رزرو سالن را حداقل ۳ هفته قبل نهایی کنید.
+                            </p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-surface-50 border border-surface-200">
+                            <h4 class="font-bold text-primary-800 text-sm mb-2 flex items-center gap-2">
+                                <i data-lucide="user-check" class="w-4 h-4 text-primary-600"></i>
+                                هماهنگی تقویم داوران
+                            </h4>
+                            <p class="text-xs text-surface-600 leading-relaxed">
+                                قبل از ثبت سامانه، حداقل ۳ گزینه ساعت و روز را به صورت هماهنگ با استاد راهنما و داور خارجی تایید کنید.
+                            </p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-surface-50 border border-surface-200">
+                            <h4 class="font-bold text-primary-800 text-sm mb-2 flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-4 h-4 text-primary-600"></i>
+                                ثبت گواهی‌های پژوهشی
+                            </h4>
+                            <p class="text-xs text-surface-600 leading-relaxed">
+                                اکسپت مقالات و نامه‌های مربوط به نمره نهایی را پیش از جلسه آماده و به تایید پژوهشی دانشکده برسانید.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
             
             <!-- 1. Proposal Tab (Redesigned) -->
             <div id="proposal" class="tab-content active">
@@ -1412,7 +1612,41 @@
                         مجموعه ابزارها و پلتفرم‌های هوشمند و آنلاین جهت ساخت اسلاید، تصویرسازی داده‌ها، فلوچارت‌ها، محاسبات آماری و مدیریت فایل‌های جلسه دفاع:
                     </p>
 
-                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 relative z-10">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 relative z-10">
+                        <!-- Tool 0A: Tik Irandoc (Added) -->
+                        <a href="https://tik.irandoc.ac.ir/User/Login" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-primary-700/80 to-primary-850 hover:from-primary-700 hover:to-primary-800 backdrop-blur-sm p-5 rounded-2xl border-2 border-gold-400/50 hover:border-gold-400 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 shadow-sm hover:shadow-glow">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <h4 class="font-bold text-white group-hover:text-gold-200 transition-colors flex items-center gap-1.5 text-sm">
+                                        <i data-lucide="file-check-2" class="w-4 h-4 text-gold-400"></i>
+                                        <span>سامانه همانندجو (ایرانداک)</span>
+                                    </h4>
+                                    <i data-lucide="external-link" class="w-4 h-4 text-gold-300 shrink-0 transition-colors"></i>
+                                </div>
+                                <span class="inline-block bg-gold-400/20 text-gold-200 border border-gold-400/30 text-[10px] px-2.5 py-0.5 rounded-full font-mono mb-2">tik.irandoc.ac.ir</span>
+                                <p class="text-xs text-primary-100 leading-relaxed">
+                                    استعلام درصد مشابهت و اصالت‌سنجی متن پایان‌نامه و رساله پیش از دفاع و صدور گواهی رسمی همانندجویی.
+                                </p>
+                            </div>
+                        </a>
+
+                        <!-- Tool 0B: Ethics in Research (Added) -->
+                        <a href="https://ethics.research.ac.ir/" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-primary-700/80 to-primary-850 hover:from-primary-700 hover:to-primary-800 backdrop-blur-sm p-5 rounded-2xl border-2 border-emerald-400/40 hover:border-emerald-400 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 shadow-sm hover:shadow-md">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <h4 class="font-bold text-white group-hover:text-emerald-200 transition-colors flex items-center gap-1.5 text-sm">
+                                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-300"></i>
+                                        <span>سامانه ملی اخلاق در پژوهش</span>
+                                    </h4>
+                                    <i data-lucide="external-link" class="w-4 h-4 text-emerald-300 shrink-0 transition-colors"></i>
+                                </div>
+                                <span class="inline-block bg-emerald-400/20 text-emerald-200 border border-emerald-400/30 text-[10px] px-2.5 py-0.5 rounded-full font-mono mb-2">ethics.research.ac.ir</span>
+                                <p class="text-xs text-primary-100 leading-relaxed">
+                                    استعلام، ثبت و دریافت کد اختصاصی اخلاق در پژوهش‌های زیست‌پزشکی و کارآزمایی‌های بالینی علوم پزشکی.
+                                </p>
+                            </div>
+                        </a>
+
                         <!-- Tool 1: Diagrams.net -->
                         <a href="https://app.diagrams.net/" target="_blank" rel="noopener noreferrer" class="group bg-primary-700/50 hover:bg-primary-700/80 backdrop-blur-sm p-5 rounded-2xl border border-primary-600/80 hover:border-gold-400/50 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 shadow-sm hover:shadow-md">
                             <div>
@@ -1708,7 +1942,7 @@
                         <div>
                             <h2 class="text-3xl md:text-4xl font-black text-primary-800 tracking-tight flex items-center gap-3">
                                 <i data-lucide="check-square" class="w-8 h-8 text-primary-600"></i>
-                                <span>چک‌لیست تعاملی روز دفاع و سوگندنامه</span>
+                                <span>چک لیست روز دفاع</span>
                             </h2>
                             <p class="text-surface-700 mt-2 text-lg opacity-80 font-light">مدیریت گام‌به‌گام اقدامات قبل از دفاع (پروپوزال و رساله نهایی)، شب قبل، روز جلسه و قرائت سوگندنامه</p>
                         </div>
@@ -1935,6 +2169,38 @@
                 </div>
             </div>
 
+            </div>
+
+            <!-- Global Minimal & Transparent Academic Footer -->
+            <footer class="mt-16 pt-8 pb-4 border-t border-primary-100/80 text-surface-600">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-5 text-xs">
+                    <!-- Developer & Team Credit -->
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-2.5 sm:gap-3.5">
+                        <a href="https://ktetmu.vercel.app/" target="_blank" rel="noopener noreferrer" title="وب‌سایت کارگروه ترجمان دانش" class="w-8 h-8 rounded-xl bg-primary-50 hover:bg-primary-100 text-primary-700 hover:text-primary-900 flex items-center justify-center border border-primary-200/60 shadow-sm transition-all hover:scale-105">
+                            <i data-lucide="code-2" class="w-4 h-4"></i>
+                        </a>
+                        <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                            <span class="text-surface-500 font-normal">طراح و توسعه‌دهنده:</span>
+                            <a href="https://ktetmu.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-bold text-primary-800 hover:text-primary-950 transition-colors underline underline-offset-4 decoration-primary-200 hover:decoration-primary-600">کارگروه ترجمان دانش دانشکده</a>
+                            <span class="text-surface-300 mx-1">•</span>
+                            <a href="mailto:KTE@modares.ac.ir" class="font-mono text-primary-600 hover:text-primary-800 transition-colors flex items-center gap-1" title="ارسال ایمیل به کارگروه">
+                                <i data-lucide="mail" class="w-3.5 h-3.5 text-primary-500"></i>
+                                KTE@modares.ac.ir
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Order / Faculty Attribution -->
+                    <div class="text-center md:text-left text-[11px] text-surface-500 font-light flex items-center gap-1.5">
+                        <span>تهیه شده به سفارش</span>
+                        <a href="https://res.modares.ac.ir/res/forms" target="_blank" rel="noopener noreferrer" class="font-medium text-surface-700 hover:text-primary-800 transition-colors flex items-center gap-1">
+                            <span>معاونت پژوهشی دانشکده علوم پزشکی دانشگاه تربیت مدرس</span>
+                            <i data-lucide="external-link" class="w-3 h-3 text-surface-400"></i>
+                        </a>
+                    </div>
+                </div>
+            </footer>
+
         </div>
     </main>
 
@@ -2089,6 +2355,114 @@
                 }
             }
         };
+
+        // --- Minimal Header Term Search ---
+        window.searchHeaderTerm = function(query) {
+            const resultsBox = document.getElementById('header-search-results');
+            const clearBtn = document.getElementById('btn-clear-header-search');
+            if (!resultsBox) return;
+
+            const q = (query || '').trim().toLowerCase();
+            if (clearBtn) {
+                if (q.length > 0) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            }
+
+            if (!q) {
+                resultsBox.classList.add('hidden');
+                resultsBox.innerHTML = '';
+                return;
+            }
+
+            const cards = document.querySelectorAll('.glossary-card');
+            const matches = [];
+
+            cards.forEach(card => {
+                const fa = (card.getAttribute('data-fa') || '').toLowerCase();
+                const en = (card.getAttribute('data-en') || '').toLowerCase();
+                const desc = (card.querySelector('p')?.textContent || '').toLowerCase();
+
+                if (fa.includes(q) || en.includes(q) || desc.includes(q)) {
+                    matches.push({
+                        fa: card.getAttribute('data-fa') || '',
+                        en: card.getAttribute('data-en') || '',
+                        desc: card.querySelector('p')?.textContent || ''
+                    });
+                }
+            });
+
+            if (matches.length === 0) {
+                resultsBox.innerHTML = `
+                    <div class="p-4 text-center text-xs text-surface-500">
+                        <i data-lucide="help-circle" class="w-5 h-5 mx-auto mb-1 text-surface-400"></i>
+                        واژه‌ای منطبق با «${query}» در واژه‌نامه یافت نشد.
+                    </div>
+                `;
+            } else {
+                resultsBox.innerHTML = `
+                    <div class="px-3.5 py-2 bg-primary-50/90 text-[11px] font-bold text-primary-800 flex items-center justify-between border-b border-primary-100 sticky top-0 backdrop-blur-md">
+                        <span>نتایج جستجوی واژگان تخصصی (${matches.length.toLocaleString('fa-IR')} مورد)</span>
+                        <span class="text-[10px] text-primary-600 font-normal">کلیک برای مشاهده کامل در واژه‌نامه</span>
+                    </div>
+                    ${matches.slice(0, 8).map(item => `
+                        <div onclick="jumpToGlossaryTerm('${item.fa}')" class="p-3 hover:bg-primary-50/70 transition-colors cursor-pointer group flex flex-col gap-1 text-right">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-xs font-bold text-primary-900 group-hover:text-primary-700 transition-colors">${item.fa}</span>
+                                <span class="text-[10px] font-mono font-bold bg-white text-primary-700 px-2 py-0.5 rounded-md border border-primary-100">${item.en}</span>
+                            </div>
+                            <p class="text-[11px] text-surface-600 line-clamp-2 leading-relaxed">${item.desc}</p>
+                        </div>
+                    `).join('')}
+                `;
+            }
+
+            resultsBox.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+        };
+
+        window.clearHeaderTermSearch = function() {
+            const input = document.getElementById('header-term-search');
+            const resultsBox = document.getElementById('header-search-results');
+            const clearBtn = document.getElementById('btn-clear-header-search');
+            if (input) input.value = '';
+            if (clearBtn) clearBtn.classList.add('hidden');
+            if (resultsBox) {
+                resultsBox.classList.add('hidden');
+                resultsBox.innerHTML = '';
+            }
+        };
+
+        window.jumpToGlossaryTerm = function(faTerm) {
+            window.switchTab('glossary');
+            window.clearHeaderTermSearch();
+            
+            setTimeout(() => {
+                const searchInput = document.getElementById('glossary-search');
+                if (searchInput) {
+                    searchInput.value = faTerm;
+                    window.filterGlossary();
+                }
+
+                // Find card and smooth scroll + highlight
+                const targetCard = Array.from(document.querySelectorAll('.glossary-card')).find(c => c.getAttribute('data-fa') === faTerm);
+                if (targetCard) {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetCard.classList.add('ring-4', 'ring-gold-400', 'scale-[1.02]');
+                    setTimeout(() => {
+                        targetCard.classList.remove('ring-4', 'ring-gold-400', 'scale-[1.02]');
+                    }, 2500);
+                }
+            }, 100);
+        };
+
+        // Close search dropdown on click outside
+        document.addEventListener('click', function(e) {
+            const container = document.getElementById('header-search-container');
+            const resultsBox = document.getElementById('header-search-results');
+            if (container && resultsBox && !container.contains(e.target)) {
+                resultsBox.classList.add('hidden');
+            }
+        });
         
         window.copyToClipboard = function(elementId) {
             const text = document.getElementById(elementId).innerText;
@@ -2125,6 +2499,121 @@
             }
         }
 
+        // --- Timeline & Countdown Planner Logic ---
+        window.updateTimelineType = function(type) {
+            localStorage.setItem('defayar_timeline_type', type);
+            window.renderTimeline();
+        };
+
+        window.saveTimelineDate = function(dateStr) {
+            if (!dateStr) return;
+            localStorage.setItem('defayar_timeline_date', dateStr);
+            showToast('تاریخ هدف با موفقیت ثبت و تقویم ددلاین‌ها به‌روز شد');
+            window.renderTimeline();
+        };
+
+        window.resetTimelineDate = function() {
+            localStorage.removeItem('defayar_timeline_date');
+            const picker = document.getElementById('timeline-date-picker');
+            if (picker) picker.value = '';
+            showToast('تاریخ هدف بازنشانی شد');
+            window.renderTimeline();
+        };
+
+        window.toggleMilestoneCheck = function(id, checked) {
+            localStorage.setItem('defayar_milestone_' + id, checked);
+            if (checked) showToast('وضعیت فرجه با موفقیت ذخیره شد');
+        };
+
+        window.renderTimeline = function() {
+            const dateStr = localStorage.getItem('defayar_timeline_date');
+            const type = localStorage.getItem('defayar_timeline_type') || 'thesis';
+            
+            const typeSelect = document.getElementById('timeline-event-type');
+            if (typeSelect) typeSelect.value = type;
+
+            const badge = document.getElementById('tab-event-badge');
+            const typeNames = {
+                thesis: 'دفاع نهایی از پایان‌نامه / رساله',
+                proposal: 'دفاع از پروپوزال',
+                progress: 'تحویل گزارش ۶ ماهه پژوهشی',
+                custom: 'رویداد پژوهشی سفارشی'
+            };
+            if (badge) badge.textContent = typeNames[type] || 'رویداد تحصیلی';
+
+            const display = document.getElementById('tab-target-date-display');
+            const countdownDays = document.getElementById('tab-countdown-days');
+            const countdownLabel = document.getElementById('tab-countdown-label');
+            const picker = document.getElementById('timeline-date-picker');
+
+            // Restore milestone checkboxes
+            ['check-30', 'check-15', 'check-10', 'check-2'].forEach(id => {
+                const el = document.getElementById('milestone-' + id);
+                if (el) {
+                    el.checked = localStorage.getItem('defayar_milestone_' + id) === 'true';
+                }
+            });
+
+            if (!dateStr) {
+                if (display) display.textContent = 'تنظیم نشده';
+                if (countdownDays) countdownDays.textContent = '--';
+                if (countdownLabel) countdownLabel.textContent = 'تاریخ را در کادر زیر انتخاب کنید';
+                if (picker) picker.value = '';
+                
+                ['30', '15', '10', '2'].forEach(days => {
+                    const el = document.getElementById('milestone-date-' + days);
+                    if (el) el.textContent = '--';
+                });
+                return;
+            }
+
+            if (picker) picker.value = dateStr;
+
+            const targetDate = new Date(dateStr + 'T00:00:00');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Format date for display
+            try {
+                const formattedFa = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'full' }).format(targetDate);
+                if (display) display.textContent = formattedFa;
+            } catch(e) {
+                if (display) display.textContent = dateStr;
+            }
+
+            // Calculate difference in days
+            const diffTime = targetDate.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (countdownDays && countdownLabel) {
+                if (diffDays > 0) {
+                    countdownDays.textContent = diffDays.toLocaleString('fa-IR');
+                    countdownLabel.textContent = 'روز مانده تا موعد ' + (typeNames[type] || 'رویداد');
+                } else if (diffDays === 0) {
+                    countdownDays.textContent = 'امروز';
+                    countdownLabel.textContent = 'روز جلسه و درخشش علمی شما';
+                } else {
+                    countdownDays.textContent = Math.abs(diffDays).toLocaleString('fa-IR');
+                    countdownLabel.textContent = 'روز از تاریخ موعد گذشته است';
+                }
+            }
+
+            // Calculate milestones
+            const daysOffsets = { '30': 30, '15': 15, '10': 10, '2': 2 };
+            Object.entries(daysOffsets).forEach(([key, offsetDays]) => {
+                const mDate = new Date(targetDate);
+                mDate.setDate(mDate.getDate() - offsetDays);
+                const el = document.getElementById('milestone-date-' + key);
+                if (el) {
+                    try {
+                        el.textContent = new Intl.DateTimeFormat('fa-IR', { month: 'long', day: 'numeric', year: 'numeric' }).format(mDate);
+                    } catch(e) {
+                        el.textContent = offsetDays + ' روز قبل';
+                    }
+                }
+            });
+        };
+
         function setupScrollToTop() {
             const btn = document.getElementById('back-to-top');
             const main = document.getElementById('main-content') || document.querySelector('main');
@@ -2153,6 +2642,7 @@
             lucide.createIcons();
             initPersistance();
             setupScrollToTop();
+            window.renderTimeline();
         });
     </script>
 <script type="module" src="/index.tsx"></script>
