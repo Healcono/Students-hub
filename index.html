@@ -17,27 +17,61 @@
                     fontFamily: { sans: ['Vazirmatn', 'sans-serif'] },
                     colors: {
                         primary: {
-                            50: '#F9F6F0',  /* Very Light Almond */
-                            100: '#F2E8DA', /* Light Almond */
-                            200: '#E6D0B3', /* Beige */
-                            300: '#D4B48C', /* Tan */
-                            400: '#C19A6B', /* Camel */
-                            500: '#A38350', /* Gold/Bronze Main */
-                            600: '#947243', /* Darker Bronze */
-                            700: '#6D5231', /* Walnut */
-                            800: '#3E3021', /* Espresso - Sidebar Bg */
-                            900: '#261C12'  /* Black Coffee */
+                            50: '#F2F6FC',  /* Pale Ice Azure / Ivory Tint */
+                            100: '#E1EDF9', /* Soft Sky Azure */
+                            200: '#C2DBF3', /* Light Persian Azure */
+                            300: '#8FBCE8', /* Persian Lapis Azure */
+                            400: '#4F8FD6', /* Cobalt Azure Highlight */
+                            500: '#2566BE', /* Persian Cobalt Blue */
+                            600: '#17498C', /* Deep Cobalt Royal */
+                            700: '#103467', /* Midnight Cobalt */
+                            800: '#0B2244', /* Imperial Navy - Sidebar & Royal Headers */
+                            900: '#07162E', /* Deep Imperial Midnight */
+                            950: '#030B17'  /* Deepest Royal Navy */
+                        },
+                        gold: {
+                            50: '#FDFBF5',  /* Ivory Gold */
+                            100: '#F8F2DC', /* Pale Champagne Cream */
+                            200: '#EFE1B0', /* Delicate Gold Leaf */
+                            300: '#DEC57A', /* Antique Gold Light */
+                            400: '#CBA74C', /* Persian Antique Gold */
+                            500: '#B68E2D', /* Royal Persian Gold */
+                            600: '#97721E', /* Burnished Medallion Bronze */
+                            700: '#755415', /* Deep Architectural Bronze */
+                            800: '#523A0E', /* Dark Bronze Engraving */
+                            900: '#322207'  /* Deepest Carved Bronze */
                         },
                         surface: {
-                            50: '#FDFBF9',
-                            100: '#F7F4F0', 
-                            200: '#EBE5DE', 
-                            700: '#5C544D', 
-                            800: '#3D3630'  
+                            50: '#FAF7F2',  /* Warm Ivory Cream Background */
+                            100: '#F4ECE0', /* Silk Cream Wall */
+                            200: '#E7DDD0', /* Carved Stucco Cream Border */
+                            300: '#D5C7B5', /* Warm Sandstone */
+                            400: '#AFA08D', /* Soft Antique Gray */
+                            500: '#877867', /* Heritage Taupe */
+                            600: '#5F5344', /* Dark Taupe */
+                            700: '#3C332A', /* Deep Espresso Charcoal */
+                            800: '#231E18', /* Dark Roast Antique */
+                            900: '#120F0C'  /* Obsidian Charcoal */
+                        },
+                        teal: {
+                            50: '#FAF4E8',  /* Gilded Cream */
+                            100: '#F2E4C9',
+                            200: '#E4C999',
+                            300: '#D4AD6B',
+                            400: '#C29141',
+                            500: '#A67727',
+                            600: '#875E1C',
+                            700: '#754F13',  /* Antique Gold Badge Text */
+                            800: '#4F3309',
+                            900: '#2C1B03'
                         },
                         accent: {
-                            light: '#FDE68A',
-                            DEFAULT: '#D97706' // Amber for highlights
+                            light: '#F8E8B6', /* Champagne Gold Light */
+                            DEFAULT: '#C59A3F', /* Persian Antique Gold */
+                            gold: '#C59A3F',
+                            bronze: '#8F6B23',
+                            cobalt: '#17498C',
+                            navy: '#0B2244'
                         }
                     },
                     borderRadius: {
@@ -46,8 +80,11 @@
                         '3xl': '32px'
                     },
                     boxShadow: {
-                        'modern': '0 10px 40px -10px rgba(163, 131, 80, 0.15), 0 0 10px -5px rgba(0,0,0,0.03)',
-                        'glow': '0 0 20px rgba(163, 131, 80, 0.2)'
+                        'modern': '0 12px 35px -8px rgba(11, 34, 68, 0.08), 0 3px 12px -2px rgba(197, 154, 63, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.85)',
+                        'glow': '0 0 25px rgba(197, 154, 63, 0.35)',
+                        'glow-cobalt': '0 0 30px rgba(23, 73, 140, 0.4)',
+                        'medallion': '0 10px 30px -5px rgba(7, 22, 46, 0.3), 0 0 0 1px rgba(197, 154, 63, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3)',
+                        'carved': 'inset 0 2px 4px rgba(11, 34, 68, 0.05), 0 1px 0 rgba(255, 255, 255, 0.95)'
                     }
                 }
             }
@@ -55,10 +92,14 @@
     </script>
     <style>
         body { 
-            background-color: #FDFBF9; 
-            color: #3E3021; 
+            background-color: #FAF7F2; 
+            color: #231E18; 
             scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(197, 154, 63, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 0% 100%, rgba(23, 73, 140, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(197, 154, 63, 0.02) 0%, transparent 65%);
         }
         
         .tab-content { display: none; opacity: 0; }
@@ -82,25 +123,29 @@
             padding-top: 1.5rem;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D4B48C; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #A38350; }
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: #F4ECE0; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #C59A3F, #97721E); 
+            border-radius: 10px; 
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #755415; }
 
         .min-h-dvh { min-height: 100dvh; }
         
         .hover-lift {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
         }
         .hover-lift:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px -10px rgba(163, 131, 80, 0.2);
+            box-shadow: 0 20px 40px -10px rgba(11, 34, 68, 0.12), 0 0 20px -3px rgba(197, 154, 63, 0.2);
         }
         
         /* Custom selection color */
         ::selection {
-            background-color: #F2E8DA;
-            color: #3E3021;
+            background-color: #0B2244;
+            color: #FDFBF5;
         }
 
     </style>
@@ -194,25 +239,25 @@
             </button>
         </nav>
 
-        <div class="p-6 bg-gradient-to-br from-primary-900 via-[#0f2926] to-primary-900 backdrop-blur-xl relative z-10 border-t border-white/10 space-y-4 overflow-hidden group/footer">
-            <!-- Ambient Green Glow -->
-            <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-teal-900/40 rounded-full blur-3xl group-hover/footer:bg-teal-800/50 transition-all duration-1000"></div>
-            <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-teal-500/20 to-transparent opacity-50"></div>
+        <div class="p-6 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-950 backdrop-blur-xl relative z-10 border-t border-gold-500/20 space-y-4 overflow-hidden group/footer">
+            <!-- Ambient Persian Gold & Cobalt Glow -->
+            <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-gold-500/10 rounded-full blur-3xl group-hover/footer:bg-gold-500/20 transition-all duration-1000"></div>
+            <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-400/30 to-transparent opacity-60"></div>
 
             <div class="flex items-center gap-3.5 relative z-10">
-                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-teal-800 to-teal-950 flex items-center justify-center text-teal-50 shrink-0 border border-teal-700/50 shadow-[0_0_20px_-5px_rgba(20,184,166,0.4)] group-hover/footer:scale-105 group-hover/footer:shadow-[0_0_25px_-5px_rgba(20,184,166,0.6)] transition-all duration-500">
+                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary-800 to-primary-950 flex items-center justify-center text-gold-300 shrink-0 border border-gold-400/40 shadow-[0_0_20px_-5px_rgba(197,154,63,0.35)] group-hover/footer:scale-105 group-hover/footer:shadow-[0_0_25px_-5px_rgba(197,154,63,0.55)] transition-all duration-500">
                     <i data-lucide="code" class="w-5 h-5"></i>
                  </div>
                  <div class="flex-1">
                     <h4 class="font-bold text-white text-xs mb-1 tracking-wide">طراح و توسعه‌دهنده</h4>
-                    <p class="text-xs text-teal-100 font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-100 to-teal-300">دکتر فاطمه زارعی</p>
-                    <a href="mailto:healcono@gmail.com" class="text-[10px] text-teal-200/50 mt-1 font-mono tracking-wider hover:text-teal-200 transition-colors block">healcono@gmail.com</a>
+                    <p class="text-xs text-gold-200 font-bold bg-clip-text text-transparent bg-gradient-to-r from-gold-100 to-gold-300">دکتر فاطمه زارعی</p>
+                    <a href="mailto:healcono@gmail.com" class="text-[10px] text-primary-200/70 mt-1 font-mono tracking-wider hover:text-gold-200 transition-colors block">healcono@gmail.com</a>
                  </div>
             </div>
             
-            <div class="pt-3.5 border-t border-white/5 text-justify relative z-10">
-                <p class="text-[10px] text-primary-200/50 leading-relaxed font-light">
-                    تهیه شده به سفارش <span class="text-primary-100/70 font-medium hover:text-teal-100 transition-colors duration-300 cursor-default">معاونت پژوهشی دانشکده علوم پزشکی دانشگاه تربیت مدرس</span>
+            <div class="pt-3.5 border-t border-white/10 text-justify relative z-10">
+                <p class="text-[10px] text-primary-200/60 leading-relaxed font-light">
+                    تهیه شده به سفارش <span class="text-gold-200/80 font-medium hover:text-gold-100 transition-colors duration-300 cursor-default">معاونت پژوهشی دانشکده علوم پزشکی دانشگاه تربیت مدرس</span>
                 </p>
             </div>
         </div>
@@ -439,8 +484,8 @@
                             <h3 class="font-bold text-primary-900">تحلیل موانع (با راهکار)</h3>
                         </div>
                         <div class="text-sm text-surface-600 space-y-2 text-justify">
-                            <p class="bg-red-50 text-red-800 p-2 rounded-lg border border-red-100"><strong class="ml-1">مانع:</strong> عدم دسترسی به آزمایشگاه/داده به دلیل X.</p>
-                            <p class="bg-green-50 text-green-800 p-2 rounded-lg border border-green-100"><strong class="ml-1">راهکار:</strong> استفاده از شبیه‌سازی نرم‌افزاری یا داده‌های ثانویه.</p>
+                            <p class="text-red-800 p-2 rounded-lg border border-red-100" style="background-color: #f5f3f0;"><strong class="ml-1">مانع:</strong> عدم دسترسی به آزمایشگاه/داده به دلیل X.</p>
+                            <p class="text-green-800 p-2 rounded-lg border border-green-100" style="background-color: #f2f8f4;"><strong class="ml-1">راهکار:</strong> استفاده از شبیه‌سازی نرم‌افزاری یا داده‌های ثانویه.</p>
                         </div>
                     </div>
 
@@ -1843,9 +1888,9 @@
                 circle.style.strokeDashoffset = offset;
                 text.textContent = `${val}%`;
                 
-                if(val > 75) circle.setAttribute('stroke', '#10B981'); 
-                else if(val > 40) circle.setAttribute('stroke', '#A38350'); 
-                else circle.setAttribute('stroke', '#D97706'); 
+                if(val > 75) circle.setAttribute('stroke', '#C59A3F'); 
+                else if(val > 40) circle.setAttribute('stroke', '#17498C'); 
+                else circle.setAttribute('stroke', '#B68E2D'); 
             }
         };
 
